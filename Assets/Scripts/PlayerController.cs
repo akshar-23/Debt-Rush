@@ -1,12 +1,13 @@
 using UnityEngine;
 
-// This line ensures that any GameObject with this script also has a CharacterController component.
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement Settings")]
     [Tooltip("The speed at which the player moves.")]
     public float moveSpeed = 7f;
+    [Tooltip("The speed at which the player rotates to face the movement direction.")]
+    public float rotationSpeed = 10f;
 
     [Header("Input Axis Names")]
     [Tooltip("The name of the horizontal input axis from the Input Manager.")]
@@ -36,9 +37,15 @@ public class PlayerController : MonoBehaviour
 
         moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
 
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
 
-        // Check for key press to trigger an event
         if (Input.GetKeyDown(KeyCode.E))
         {
             OnInteract();
@@ -51,8 +58,6 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        //GameObject newObject = Instantiate(itemEquipped, transform.position, transform.rotation);
-        //Debug.Log("Spawned: " + newObject.name);
         itemEquipped.Use();
     }
 }
