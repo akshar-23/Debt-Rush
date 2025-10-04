@@ -1,13 +1,13 @@
 .container {
-    width: 479px;
-    height: 454px;
+    width: 824px;
+    height: 772px;
     background-color: rgb(241, 241, 241);
     flex-direction: row;
-    margin-top: 14px;
-    margin-right: 14px;
-    margin-bottom: 14px;
-    margin-left: 14px;
-    translate: 0 21px;
+    margin-top: 19px;
+    margin-right: 19px;
+    margin-bottom: 19px;
+    margin-left: 19px;
+    translate: 0 16px;
     justify-content: center;
     align-self: center;
     border-top-left-radius: 5px;
@@ -43,13 +43,86 @@
 }
 
 .button {
-    height: 34%;
-    width: 49px;
+    height: 32%;
+    width: 77px;
     translate: 15px 17px;
-    font-size: 8px;
+    font-size: 15px;
     -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=8aed8cd85b271f542a574c85c519397f&type=3#NotInter-Regular");
     -unity-font-style: bold;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
 }
 
 .unity-text-element {
+}
+
+.player-title {
+    font-size: 44px;
+    -unity-text-align: upper-center;
+    height: -22px;
+    width: 126px;
+    align-self: center;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    translate: 0 21px;
+}
+
+.description-title {
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+    align-content: flex-end;
+    translate: 12px 6px;
+    font-size: 23px;
+}
+
+.price-text {
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+    align-content: flex-end;
+    translate: 14px 18px;
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+.description-text {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: auto;
+    align-self: center;
+    align-content: auto;
+    translate: 13px 5px;
+    font-size: 18px;
+    flex-wrap: wrap;
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.button:focus {
+    border-top-width: 3px;
+    border-right-width: 3px;
+    border-bottom-width: 3px;
+    border-left-width: 3px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-left-color: rgba(224, 141, 5, 0.6);
+    border-right-color: rgba(224, 141, 5, 0.6);
+    border-top-color: rgba(224, 141, 5, 0.6);
+    border-bottom-color: rgba(224, 141, 5, 0.6);
 }
