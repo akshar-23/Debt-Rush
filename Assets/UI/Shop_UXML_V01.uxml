@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Shop_UI.uss?fileID=7433441132597879392&amp;guid=fd87481d2fdf1614dafd9aa0be49b7dc&amp;type=3#Shop_UI" />
+    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 0; justify-content: center; align-items: center; width: 100%; background-color: rgba(0, 0, 0, 0); align-content: auto; align-self: auto; height: 100%; background-position-x: left 0; background-position-y: top 0; top: auto; left: auto; flex-direction: row; flex-wrap: nowrap; position: relative;">
+        <ui:VisualElement name="Container_1" class="container" style="flex-direction: column; align-items: center;">
+            <ui:VisualElement name="ShopList_1" class="frame" />
+            <ui:VisualElement name="Inventory_1" class="frame" />
+            <ui:VisualElement name="Description_1" class="frame" />
+        </ui:VisualElement>
+        <ui:VisualElement name="Container_2" class="container" style="flex-direction: column; align-items: center;">
+            <ui:VisualElement name="ShopList_1" class="frame" />
+            <ui:VisualElement name="Inventory_1" class="frame" />
+            <ui:VisualElement name="Description_1" class="frame" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

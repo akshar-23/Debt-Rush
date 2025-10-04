@@ -1,0 +1,41 @@
+.container {
+    width: 479px;
+    height: 454px;
+    background-color: rgb(241, 241, 241);
+    flex-direction: row;
+    margin-top: 14px;
+    margin-right: 14px;
+    margin-bottom: 14px;
+    margin-left: 14px;
+    translate: 0 21px;
+    justify-content: center;
+    align-self: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.frame {
+    background-color: rgb(255, 255, 255);
+    width: 95%;
+    height: 31%;
+    flex-direction: row;
+    translate: 0 0;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-left-color: rgb(112, 149, 147);
+    border-right-color: rgb(112, 149, 147);
+    border-top-color: rgb(112, 149, 147);
+    border-bottom-color: rgb(112, 149, 147);
+    margin-top: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    margin-left: 3px;
+}
