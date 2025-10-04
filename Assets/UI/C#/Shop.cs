@@ -25,6 +25,8 @@ public class Shop_UI : MonoBehaviour
     [SerializeField] List<ListItem> ShopItems2 = new();
     [SerializeField] List<ListItem> InventoryItems2 = new();
 
+    Label moneyLabel;
+
     void OnEnable()
     {
         var root = ui.rootVisualElement;
@@ -32,8 +34,8 @@ public class Shop_UI : MonoBehaviour
         SetupSide(root, "ShopList_1", "Inventory_1", ShopItems1, InventoryItems1);
         SetupSide(root, "ShopList_2", "Inventory_2", ShopItems2, InventoryItems2);
 
-        var moneyLabel = root.Q<Label>("MoneyLabel");
-        if (moneyLabel != null) moneyLabel.text = $"{money} $";
+        moneyLabel = root.Q<Label>("MoneyLabel");
+        UpdateMoneyLabel();
     }
 
     void SetupSide(VisualElement root, string shopPanelName, string invPanelName,
@@ -45,7 +47,6 @@ public class Shop_UI : MonoBehaviour
         shopPanel.Clear();
         invPanel.Clear();
 
-        // find labels in this player's column
         var playerRoot = shopPanel.parent.parent;
         var titleLabel = playerRoot.Q<Label>(className: "description-title");
         var priceLabel = playerRoot.Q<Label>(className: "price-text");
@@ -61,12 +62,16 @@ public class Shop_UI : MonoBehaviour
             var btn = new Button { text = item.itemName, focusable = true };
             btn.AddToClassList("button");
 
-         
             AttachInfoHandlers(btn, item, titleLabel, priceLabel, descLabel, isBuy: true);
 
             btn.clicked += () =>
             {
                 if (invPanel.childCount >= inventoryLimit) return;
+                if (money < item.itemPrice) return; // not enough funds
+
+                money -= item.itemPrice;            // deduct money
+                UpdateMoneyLabel();
+
                 AddInventoryButton(item, invPanel, true, titleLabel, priceLabel, descLabel);
             };
 
@@ -80,16 +85,23 @@ public class Shop_UI : MonoBehaviour
         var invBtn = new Button { text = item.itemName, focusable = true };
         invBtn.AddToClassList("button");
 
-       
         AttachInfoHandlers(invBtn, item, titleLabel, priceLabel, descLabel, isBuy: false);
 
         if (removable)
-            invBtn.clicked += () => invPanel.Remove(invBtn);
+        {
+            invBtn.clicked += () =>
+            {
+                invPanel.Remove(invBtn);
+
+                // add money back on selling
+                money += item.itemPrice;
+                UpdateMoneyLabel();
+            };
+        }
 
         invPanel.Add(invBtn);
     }
 
-    
     void AttachInfoHandlers(VisualElement ve, ListItem item,
                             Label titleLabel, Label priceLabel, Label descLabel,
                             bool isBuy)
@@ -105,6 +117,11 @@ public class Shop_UI : MonoBehaviour
         };
 
         ve.RegisterCallback<MouseEnterEvent>(_ => update());
-        ve.RegisterCallback<FocusInEvent>(_ => update());   
+        ve.RegisterCallback<FocusInEvent>(_ => update());
+    }
+
+    void UpdateMoneyLabel()
+    {
+        if (moneyLabel != null) moneyLabel.text = $"{money} $";
     }
 }
