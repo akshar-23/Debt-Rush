@@ -38,4 +38,18 @@
     margin-right: 3px;
     margin-bottom: 3px;
     margin-left: 3px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.button {
+    height: 34%;
+    width: 49px;
+    translate: 15px 17px;
+    font-size: 8px;
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=8aed8cd85b271f542a574c85c519397f&type=3#NotInter-Regular");
+    -unity-font-style: bold;
+}
+
+.unity-text-element {
 }
