@@ -17,6 +17,11 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private Vector3 moveDirection;
 
+    [Header("Items")]
+
+    [SerializeField]
+    public Item itemEquipped;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -32,5 +37,22 @@ public class PlayerController : MonoBehaviour
         moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
 
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
+
+        // Check for key press to trigger an event
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            OnInteract();
+        }
+    }
+
+    private void OnInteract()
+    {
+        if (itemEquipped == null)
+        {
+            return;
+        }
+        //GameObject newObject = Instantiate(itemEquipped, transform.position, transform.rotation);
+        //Debug.Log("Spawned: " + newObject.name);
+        itemEquipped.Use();
     }
 }

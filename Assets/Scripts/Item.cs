@@ -7,9 +7,6 @@ public class Item : MonoBehaviour
     public int cost;
     public Sprite icon;
 
-    [SerializeField]
-    public MoneyManager moneyManager;
-
     public Item(string name, string description, int cost, Sprite icon = null)
     {
         this.itemName = name;

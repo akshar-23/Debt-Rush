@@ -13,18 +13,9 @@ public class Consumable : Item
 
     public override void Use()
     {
-        //base.Use();
-        //Debug.Log("You pay " + cost + " money!");
-        //moneyManager.SubtractMoney(cost);
-        StartCoroutine(ExecuteWithDelay(10f));
-        uses--;
-    }
-
-    private IEnumerator ExecuteWithDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Debug.Log("Using item: " + itemName);
-        moneyManager.SubtractMoney(cost);
+        base.Use();
         Debug.Log("You pay " + cost + " money!");
+        MoneyManager.Instance.SubtractMoney(cost);
+        uses--;
     }
 }

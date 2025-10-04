@@ -23,7 +23,7 @@ public class CellphoneService : Item
     {
         yield return new WaitForSeconds(delay);
         Debug.Log("Using item: " + itemName);
-        moneyManager.SubtractMoney(cost);
+        MoneyManager.Instance.SubtractMoney(cost);
         Debug.Log("You pay " + cost + " money!");
     }
 }
