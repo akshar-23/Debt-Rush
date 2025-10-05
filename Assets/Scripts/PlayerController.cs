@@ -21,7 +21,7 @@ public class PlayerController : Character
     [Header("Items")]
 
     [SerializeField]
-    public Item itemEquipped;
+    public GameObject itemEquipped;
 
     void Awake()
     {
@@ -58,6 +58,12 @@ public class PlayerController : Character
         {
             return;
         }
-        itemEquipped.Use();
+        //itemEquipped.Use();
+
+        Vector3 spawnPos = transform.position + transform.forward * 1f;
+        GameObject proj = Instantiate(itemEquipped, spawnPos, transform.rotation);
+        Projectile p = proj.GetComponent<Projectile>();
+        if (p != null)
+            p.Init(transform.forward);
     }
 }
