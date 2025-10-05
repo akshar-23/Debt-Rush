@@ -556,8 +556,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
   detectionRange: 15
   attackRange: 2
+  attackDamage: 20
 --- !u!4 &641435363 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1563407479595666166, guid: 4056a1b31dc181241baafc200ef73550, type: 3}
@@ -601,6 +603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec726ddb29f132045aa69deb613911dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
   moveSpeed: 7
   rotationSpeed: 10
   horizontalInputAxis: Horizontal_P2
@@ -1345,6 +1348,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec726ddb29f132045aa69deb613911dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
   moveSpeed: 7
   rotationSpeed: 10
   horizontalInputAxis: Horizontal_P1

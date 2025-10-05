@@ -59,6 +59,5 @@ public class PlayerController : Character
             return;
         }
         itemEquipped.Use();
-        TakeDamage(20);
     }
 }
