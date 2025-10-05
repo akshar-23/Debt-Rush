@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : Character
 {
     public float detectionRange = 15f;
     public float attackRange = 2f;

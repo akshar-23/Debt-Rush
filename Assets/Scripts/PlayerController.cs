@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : Character
 {
     [Header("Movement Settings")]
     [Tooltip("The speed at which the player moves.")]
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         float moveX = Input.GetAxisRaw(horizontalInputAxis);
         float moveZ = Input.GetAxisRaw(verticalInputAxis);
 
-        Debug.Log($"Player: {gameObject.name}, Input: ({moveX}, {moveZ})");
+        //Debug.Log($"Player: {gameObject.name}, Input: ({moveX}, {moveZ})");
 
         moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
 
@@ -59,5 +59,6 @@ public class PlayerController : MonoBehaviour
             return;
         }
         itemEquipped.Use();
+        TakeDamage(20);
     }
 }
