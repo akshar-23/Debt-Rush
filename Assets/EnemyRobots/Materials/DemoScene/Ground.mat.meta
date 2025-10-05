@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3ba8dc55cdcb9bd4e87e5742bec12623
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 134968
+  packageName: Enemy Robots
+  packageVersion: 1.0
+  assetPath: Assets/EnemyRobots/Materials/DemoScene/Ground.mat
+  uploadId: 282353

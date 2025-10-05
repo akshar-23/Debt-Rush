@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d2f49958896edf44ebd937e9a6fa4cdc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 134968
+  packageName: Enemy Robots
+  packageVersion: 1.0
+  assetPath: Assets/EnemyRobots/Materials/MachineGunRobot/Particles/FireParticle.mat
+  uploadId: 282353

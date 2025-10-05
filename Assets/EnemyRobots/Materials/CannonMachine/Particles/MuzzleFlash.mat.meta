@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fed665eb592f66c4c8ab674d70185458
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 134968
+  packageName: Enemy Robots
+  packageVersion: 1.0
+  assetPath: Assets/EnemyRobots/Materials/CannonMachine/Particles/MuzzleFlash.mat
+  uploadId: 282353

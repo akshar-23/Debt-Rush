@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8eeb15e173e017d4c858987b2134ffcf
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 134968
+  packageName: Enemy Robots
+  packageVersion: 1.0
+  assetPath: Assets/EnemyRobots/Materials/MachineGunRobot/Particles/Laser.mat
+  uploadId: 282353
