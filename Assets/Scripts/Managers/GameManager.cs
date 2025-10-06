@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameOverScreen gameOverUI;
     public static GameManager Instance { get; private set; }
+
+    public Character[] players;
+    public Character[] enemies;
     [SerializeField] List<string> inventoryP1 = new();
     [SerializeField] List<string> inventoryP2 = new();
 
@@ -20,12 +24,21 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    void Start()
+    {
+        if (gameOverUI != null)
+        {
+            gameOverUI.gameObject.SetActive(false);
+        }
+        Time.timeScale = 1f;
+    }
+
 
     /// Read-only view 
     public IReadOnlyList<string> GetInventory(int playerIndex)
         => (playerIndex == 1) ? (IReadOnlyList<string>)inventoryP1 : inventoryP2;
 
-    /// Add one item by name to a player’s inventory
+    /// Add one item by name to a playerï¿½s inventory
     public void AddToInventory(int playerIndex, string itemName)
     {
         (playerIndex == 1 ? inventoryP1 : inventoryP2).Add(itemName);
@@ -43,5 +56,28 @@ public class GameManager : MonoBehaviour
     {
         inventoryP1.Clear();
         inventoryP2.Clear();
+    }
+
+    public void ShowGameOverScreen(string finaltext)
+    {
+        if (gameOverUI != null)
+        {
+            gameOverUI.gameObject.SetActive(true);
+            gameOverUI.gameOverText.text = finaltext;
+        }
+    }
+
+    public void CheckWinLossConditions()
+    {
+        if (players != null && players.Length == 0)
+        {
+            gameOverUI.gameObject.SetActive(true);
+            gameOverUI.gameOverText.text = "GAME OVER";
+        }
+        else if (enemies != null && enemies.Length == 0)
+        {
+            gameOverUI.gameObject.SetActive(true);
+            gameOverUI.gameOverText.text = "YOU WON";
+        }
     }
 }

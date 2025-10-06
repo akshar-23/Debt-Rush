@@ -26,6 +26,7 @@ public class Character : MonoBehaviour
     private void Die()
     {
         Debug.Log(gameObject.name + " died!");
+        GameManager.Instance.CheckWinLossConditions();
         Destroy(gameObject);
     }
 }
