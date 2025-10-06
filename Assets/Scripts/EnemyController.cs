@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : Character
+public class EnemyController : Character
 {
     [Header("Attack Settings")]
     public float detectionRange = 15f;
