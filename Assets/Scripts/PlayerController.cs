@@ -62,6 +62,7 @@ public class PlayerController : Character
             return;
         }
 
+        MoneyManager.Instance.SubtractMoney(itemEquipped.GetComponent<Consumable>().cost);
         Vector3 spawnPos = transform.position + transform.forward * 1f;
         GameObject proj = Instantiate(itemEquipped, spawnPos, transform.rotation);
         Projectile p = proj.GetComponent<Projectile>();
