@@ -10,7 +10,7 @@
                 <ui:VisualElement name="Container_1" class="container" style="flex-direction: column; align-items: center; display: flex;">
                     <ui:VisualElement name="ShopList_1" class="frame">
                         <ui:VisualElement name="Button_Style_Test" style="width: 100%; height: 100%; white-space: normal; flex-direction: row; display: flex; flex-wrap: wrap; align-items: flex-start;">
-                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" style="-unity-font-definition: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/LiberationSans%20SDF.asset?fileID=11400000&amp;guid=f48893d968d43984098c08bd59a70375&amp;type=2#LiberationSans SDF&quot;);" />
                             <ui:Button text="Button" class="button" />
                             <ui:Button text="Button" class="button" />
                             <ui:Button text="Button" class="button" />
