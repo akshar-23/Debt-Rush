@@ -51,4 +51,8 @@ public class MoneyManager : MonoBehaviour
         moneyAmount -= amount;
         Debug.Log("Money subtracted: " + amount + " - Total: " + moneyAmount);
     }
+
+    public int GetMoneyAmount() { 
+        return moneyAmount; 
+    }
 }

@@ -5,13 +5,13 @@ using UnityEngine.UIElements;
 public class Shop_UI : MonoBehaviour
 {
     [SerializeField] int inventoryLimit = 12;
-    [SerializeField] float money = 1500f;
+    [SerializeField] int initialMoney = 1500;
 
     [System.Serializable]
     public class ListItem
     {
         public string itemName;
-        public float itemPrice;
+        public int itemPrice;
         [TextArea] public string itemDescription;
     }
 
@@ -25,7 +25,16 @@ public class Shop_UI : MonoBehaviour
     [SerializeField] List<ListItem> ShopItems2 = new();
     [SerializeField] List<ListItem> InventoryItems2 = new();
 
+    Toggle done1, done2;                 // the two "I'm done" toggles
     Label moneyLabel;
+
+    // Panels we show/hide
+    VisualElement endPanel;              // EndPanel
+    VisualElement playerPanels;          // PlayerPanels
+    VisualElement moneyPanel;            // MoneyPanel
+
+    // Return button inside EndPanel
+    Button returnButton;                 // ReturnButton
 
     void OnEnable()
     {
@@ -35,7 +44,34 @@ public class Shop_UI : MonoBehaviour
         SetupSide(root, "ShopList_2", "Inventory_2", ShopItems2, InventoryItems2);
 
         moneyLabel = root.Q<Label>("MoneyLabel");
+
+        MoneyManager.Instance.AddMoney(initialMoney);
         UpdateMoneyLabel();
+
+        done1 = root.Q<Toggle>("DoneToggle_1");
+        done2 = root.Q<Toggle>("DoneToggle_2");
+
+        endPanel = root.Q<VisualElement>("EndPanel");
+        playerPanels = root.Q<VisualElement>("PlayerPanels");
+        moneyPanel = root.Q<VisualElement>("MoneyPanel");
+
+        returnButton = endPanel != null ? endPanel.Q<Button>("ReturnButton") : null;
+
+        if (done1 != null) done1.RegisterValueChangedCallback(_ => UpdateEndState());
+        if (done2 != null) done2.RegisterValueChangedCallback(_ => UpdateEndState());
+
+        if (returnButton != null)
+            returnButton.clicked += ResetToNormal;
+
+        UpdateEndState();
+    }
+
+    void OnDisable()
+    {
+        // optional clean-up
+        if (done1 != null) done1.UnregisterValueChangedCallback(_ => UpdateEndState());
+        if (done2 != null) done2.UnregisterValueChangedCallback(_ => UpdateEndState());
+        if (returnButton != null) returnButton.clicked -= ResetToNormal;
     }
 
     void SetupSide(VisualElement root, string shopPanelName, string invPanelName,
@@ -67,9 +103,9 @@ public class Shop_UI : MonoBehaviour
             btn.clicked += () =>
             {
                 if (invPanel.childCount >= inventoryLimit) return;
-                if (money < item.itemPrice) return; // not enough funds
+                if (MoneyManager.Instance.GetMoneyAmount() < item.itemPrice) return; // not enough funds
 
-                money -= item.itemPrice;            // deduct money
+                MoneyManager.Instance.SubtractMoney(item.itemPrice);   // deduct money
                 UpdateMoneyLabel();
 
                 AddInventoryButton(item, invPanel, true, titleLabel, priceLabel, descLabel);
@@ -92,9 +128,7 @@ public class Shop_UI : MonoBehaviour
             invBtn.clicked += () =>
             {
                 invPanel.Remove(invBtn);
-
-                // add money back on selling
-                money += item.itemPrice;
+                MoneyManager.Instance.AddMoney(item.itemPrice);
                 UpdateMoneyLabel();
             };
         }
@@ -111,8 +145,8 @@ public class Shop_UI : MonoBehaviour
             if (titleLabel != null) titleLabel.text = item.itemName;
             if (priceLabel != null)
                 priceLabel.text = isBuy
-                    ? $"Buy For -${item.itemPrice:0.##}"
-                    : $"Sell For +${item.itemPrice:0.##}";
+                    ? $"Buy For -${item.itemPrice}"
+                    : $"Sell For +${item.itemPrice}";
             if (descLabel != null) descLabel.text = item.itemDescription;
         };
 
@@ -122,6 +156,30 @@ public class Shop_UI : MonoBehaviour
 
     void UpdateMoneyLabel()
     {
-        if (moneyLabel != null) moneyLabel.text = $"{money} $";
+        if (moneyLabel != null) moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
+    }
+
+    void UpdateEndState()
+    {
+        bool bothDone = (done1 != null && done1.value) && (done2 != null && done2.value);
+
+        if (endPanel != null)
+            endPanel.style.display = bothDone ? DisplayStyle.Flex : DisplayStyle.None;
+
+        if (playerPanels != null)
+            playerPanels.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
+
+        if (moneyPanel != null)
+            moneyPanel.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
+    }
+
+    // Called by ReturnButton: restore panels and uncheck toggles
+    void ResetToNormal()
+    {
+        if (done1 != null) done1.value = false;
+        if (done2 != null) done2.value = false;
+
+        // Update visuals based on new toggle states
+        UpdateEndState();
     }
 }
