@@ -565,7 +565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &550417618
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2998,11 +2998,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1: {fileID: 1420241398}
   player2: {fileID: 716492853}
-  smoothSpeed: 0.125
   offset: {x: 0, y: 25, z: 0}
-  minZoom: 40
-  maxZoom: 2
-  zoomLimiter: 50
+  padding: 2
+  smoothSpeed: 0.125
 --- !u!1 &2137129399
 GameObject:
   m_ObjectHideFlags: 0
