@@ -67,7 +67,8 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="EndPanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none;">
-            <ui:Label text="Press Enter to Continue" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 -24px;" />
+            <ui:Label text="Are You Done?" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 -24px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+            <ui:Button text="Continue" name="ContinueButton" style="width: 204px; height: 63px; font-size: 35px; translate: 0 -25px;" />
             <ui:Button text="Return" name="ReturnButton" style="width: 204px; height: 63px; font-size: 35px; translate: 0 -19px;" />
         </ui:VisualElement>
     </ui:VisualElement>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.SceneManagement; // for scene loading
 
 public class Shop_UI : MonoBehaviour
 {
@@ -25,16 +26,17 @@ public class Shop_UI : MonoBehaviour
     [SerializeField] List<ListItem> ShopItems2 = new();
     [SerializeField] List<ListItem> InventoryItems2 = new();
 
-    Toggle done1, done2;                 // the two "I'm done" toggles
+    Toggle done1, done2;
     Label moneyLabel;
 
-    // Panels we show/hide
-    VisualElement endPanel;              // EndPanel
-    VisualElement playerPanels;          // PlayerPanels
-    VisualElement moneyPanel;            // MoneyPanel
+    // Panels
+    VisualElement endPanel;
+    VisualElement playerPanels;
+    VisualElement moneyPanel;
 
-    // Return button inside EndPanel
-    Button returnButton;                 // ReturnButton
+    // Buttons inside EndPanel
+    Button returnButton;
+    Button continueButton;               // NEW: loads "Prototype"
 
     void OnEnable()
     {
@@ -55,23 +57,25 @@ public class Shop_UI : MonoBehaviour
         playerPanels = root.Q<VisualElement>("PlayerPanels");
         moneyPanel = root.Q<VisualElement>("MoneyPanel");
 
-        returnButton = endPanel != null ? endPanel.Q<Button>("ReturnButton") : null;
+        if (endPanel != null)
+        {
+            returnButton = endPanel.Q<Button>("ReturnButton");
+            continueButton = endPanel.Q<Button>("ContinueButton"); // query by name
+        }
 
         if (done1 != null) done1.RegisterValueChangedCallback(_ => UpdateEndState());
         if (done2 != null) done2.RegisterValueChangedCallback(_ => UpdateEndState());
 
-        if (returnButton != null)
-            returnButton.clicked += ResetToNormal;
+        if (returnButton != null) returnButton.clicked += ResetToNormal;
+        if (continueButton != null) continueButton.clicked += LoadPrototypeScene;
 
         UpdateEndState();
     }
 
     void OnDisable()
     {
-        // optional clean-up
-        if (done1 != null) done1.UnregisterValueChangedCallback(_ => UpdateEndState());
-        if (done2 != null) done2.UnregisterValueChangedCallback(_ => UpdateEndState());
         if (returnButton != null) returnButton.clicked -= ResetToNormal;
+        if (continueButton != null) continueButton.clicked -= LoadPrototypeScene;
     }
 
     void SetupSide(VisualElement root, string shopPanelName, string invPanelName,
@@ -128,6 +132,8 @@ public class Shop_UI : MonoBehaviour
             invBtn.clicked += () =>
             {
                 invPanel.Remove(invBtn);
+
+                // add money back on selling
                 MoneyManager.Instance.AddMoney(item.itemPrice);
                 UpdateMoneyLabel();
             };
@@ -173,13 +179,18 @@ public class Shop_UI : MonoBehaviour
             moneyPanel.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
     }
 
-    // Called by ReturnButton: restore panels and uncheck toggles
+    // ReturnButton: restore panels and uncheck toggles
     void ResetToNormal()
     {
         if (done1 != null) done1.value = false;
         if (done2 != null) done2.value = false;
-
-        // Update visuals based on new toggle states
         UpdateEndState();
+    }
+
+    // ContinueButton: load the next scene
+    void LoadPrototypeScene()
+    {
+        // Make sure "Prototype" is added under File ? Build Settings ? Scenes In Build
+        SceneManager.LoadScene("Prototype");
     }
 }
