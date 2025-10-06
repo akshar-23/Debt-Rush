@@ -1,0 +1,153 @@
+.container {
+    width: 824px;
+    height: 772px;
+    background-color: rgb(241, 241, 241);
+    flex-direction: row;
+    margin-top: 19px;
+    margin-right: 19px;
+    margin-bottom: 19px;
+    margin-left: 19px;
+    translate: 0 16px;
+    justify-content: center;
+    align-self: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.frame {
+    background-color: rgb(255, 255, 255);
+    width: 95%;
+    height: 31%;
+    flex-direction: row;
+    translate: 0 0;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-left-color: rgb(112, 149, 147);
+    border-right-color: rgb(112, 149, 147);
+    border-top-color: rgb(112, 149, 147);
+    border-bottom-color: rgb(112, 149, 147);
+    margin-top: 3px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    margin-left: 3px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.button {
+    height: 32%;
+    width: 77px;
+    translate: 15px 17px;
+    font-size: 15px;
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=8aed8cd85b271f542a574c85c519397f&type=3#NotInter-Regular");
+    -unity-font-style: bold;
+    margin-top: 15px;
+    margin-right: 15px;
+    margin-bottom: 15px;
+    margin-left: 15px;
+}
+
+.unity-text-element {
+}
+
+.player-title {
+    font-size: 44px;
+    -unity-text-align: upper-center;
+    height: -22px;
+    width: 126px;
+    align-self: center;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    translate: 0 21px;
+}
+
+.description-title {
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+    align-content: flex-end;
+    translate: 12px 6px;
+    font-size: 23px;
+}
+
+.price-text {
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    align-items: center;
+    align-self: center;
+    align-content: flex-end;
+    translate: 14px 18px;
+    font-size: 18px;
+    -unity-font-style: bold;
+}
+
+.description-text {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-end;
+    align-items: auto;
+    align-self: center;
+    align-content: auto;
+    translate: 13px 5px;
+    font-size: 18px;
+    flex-wrap: wrap;
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.button:focus {
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-left-color: rgba(224, 141, 5, 0.6);
+    border-right-color: rgba(224, 141, 5, 0.6);
+    border-top-color: rgba(224, 141, 5, 0.6);
+    border-bottom-color: rgba(224, 141, 5, 0.6);
+}
+
+.done-button {
+    width: 162px;
+    align-self: flex-end;
+    translate: -13px 0;
+    font-size: 23px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+    margin-top: -7px;
+    margin-right: -7px;
+    margin-bottom: -7px;
+    margin-left: -7px;
+    height: 58px;
+    -unity-font-style: bold;
+}
+
+.done-toggle {
+    translate: 123px 7px;
+}

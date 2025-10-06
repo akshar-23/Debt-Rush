@@ -71,4 +71,8 @@ public class MoneyManager : MonoBehaviour
 
         UpdateMoneyText();
     }
+
+    public int GetMoneyAmount() { 
+        return moneyAmount; 
+    }
 }

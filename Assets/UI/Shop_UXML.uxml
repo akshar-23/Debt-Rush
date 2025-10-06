@@ -1,0 +1,75 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/USS/Shop_UI.uss?fileID=7433441132597879392&amp;guid=fd87481d2fdf1614dafd9aa0be49b7dc&amp;type=3#Shop_UI" />
+    <ui:VisualElement name="Canvas" style="flex-grow: 0; justify-content: center; align-items: center; width: 100%; background-color: rgba(0, 0, 0, 0); align-content: auto; align-self: auto; height: 100%; background-position-x: left 0; background-position-y: top 0; top: auto; left: auto; flex-direction: column; flex-wrap: nowrap; position: relative;">
+        <ui:VisualElement name="MoneyPanel" style="flex-grow: 0; height: 79px; width: 281px; background-color: rgb(183, 195, 194); align-self: center; align-items: center; justify-content: center; align-content: center; flex-direction: column; translate: 0 -40px; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgb(202, 202, 202); border-right-color: rgb(202, 202, 202); border-top-color: rgb(202, 202, 202); border-bottom-color: rgb(202, 202, 202); border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; display: flex;">
+            <ui:Label text="1500 $" name="MoneyLabel" style="width: 100%; height: 100%; -unity-text-align: middle-center; font-size: 33px; align-self: center; justify-content: center; align-items: center; align-content: center; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="PlayerPanels" style="flex-direction: row; display: flex;">
+            <ui:VisualElement name="Player_1" style="flex-grow: 1; display: flex;">
+                <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title" />
+                <ui:VisualElement name="Container_1" class="container" style="flex-direction: column; align-items: center; display: flex;">
+                    <ui:VisualElement name="ShopList_1" class="frame">
+                        <ui:VisualElement name="Button_Style_Test" style="width: 100%; height: 100%; white-space: normal; flex-direction: row; display: flex; flex-wrap: wrap; align-items: flex-start;">
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Inventory_1" class="frame">
+                        <ui:VisualElement name="Button_Style_Test" style="width: 100%; height: 100%; white-space: normal; flex-direction: row; display: flex; flex-wrap: wrap; align-items: flex-start;">
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                            <ui:Button text="Button" class="button" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Description_1" class="frame" style="justify-content: flex-start; flex-direction: column;">
+                        <ui:VisualElement name="Title" style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 150px; height: 40px; flex-basis: initial; align-self: flex-start; align-content: flex-end; justify-content: space-between; align-items: flex-end; translate: 12px 16px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+                            <ui:Label text="Grenade" class="description-title" style="translate: 12px 12px; font-size: 26px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Price" style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 150px; height: 40px; flex-basis: initial; align-self: flex-start; align-content: flex-end; justify-content: space-between; align-items: flex-end; translate: 30px 21px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+                            <ui:Label text="Sell For +500" class="price-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Paragraph" style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 716px; height: 106px; flex-basis: initial; align-self: auto; align-content: auto; justify-content: center; align-items: auto; translate: 29px 38px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; flex-wrap: wrap;">
+                            <ui:Label text="A timed explosive; After a short delay, it bursts and damages everything nearby. The number you can carry at a time is limited.&#10;" class="description-text" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Button text="I&apos;m Done" name="Done" selectable="true" class="done-button">
+                    <ui:Toggle name="DoneToggle_1" class="done-toggle" />
+                </ui:Button>
+            </ui:VisualElement>
+            <ui:VisualElement name="Player_2" style="flex-grow: 1; display: flex;">
+                <ui:Label text="Player 2" double-click-selects-word="false" triple-click-selects-line="false" display-tooltip-when-elided="false" class="player-title" />
+                <ui:VisualElement name="Container_2" class="container" style="flex-direction: column; align-items: center;">
+                    <ui:VisualElement name="ShopList_2" class="frame" />
+                    <ui:VisualElement name="Inventory_2" class="frame" />
+                    <ui:VisualElement name="Description_2" class="frame" style="flex-direction: column;">
+                        <ui:VisualElement name="Title" style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 150px; height: 40px; flex-basis: initial; align-self: flex-start; align-content: flex-end; justify-content: space-between; align-items: flex-end; translate: 12px 16px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+                            <ui:Label text="Phone Call" class="description-title" style="translate: 12px 12px; font-size: 26px;" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Price" style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 150px; height: 40px; flex-basis: initial; align-self: flex-start; align-content: flex-end; justify-content: space-between; align-items: flex-end; translate: 30px 21px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
+                            <ui:Label text="Buy For -500" enable-rich-text="true" emoji-fallback-support="true" class="price-text" />
+                        </ui:VisualElement>
+                        <ui:VisualElement name="Paragraph" style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 716px; height: 106px; flex-basis: initial; align-self: auto; align-content: auto; justify-content: center; align-items: auto; translate: 29px 38px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; flex-wrap: wrap;">
+                            <ui:Label text="Use to call for backup; after a short delay, your people arrive and clear nearby enemies." class="description-text" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Button text="I&apos;m Done" name="Done" selectable="true" class="done-button">
+                    <ui:Toggle name="DoneToggle_2" class="done-toggle" />
+                </ui:Button>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="EndPanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none;">
+            <ui:Label text="Are You Done?" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 -24px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+            <ui:Button text="Continue" name="ContinueButton" style="width: 204px; height: 63px; font-size: 35px; translate: 0 -25px;" />
+            <ui:Button text="Return" name="ReturnButton" style="width: 204px; height: 63px; font-size: 35px; translate: 0 -19px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
