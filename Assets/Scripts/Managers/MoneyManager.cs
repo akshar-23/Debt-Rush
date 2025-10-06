@@ -1,9 +1,12 @@
 using UnityEngine;
+using TMPro;
 
 public class MoneyManager : MonoBehaviour
 {
     // Singleton instance
     public static MoneyManager Instance { get; private set; }
+
+    public TextMeshProUGUI moneyText;
 
     [SerializeField]
     private int moneyAmount = 0;
@@ -22,6 +25,19 @@ public class MoneyManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Start()
+    {
+        UpdateMoneyText();
+    }
+
+    private void UpdateMoneyText()
+    {
+        if (moneyText != null)
+        {
+            moneyText.text = moneyAmount.ToString();
+        }
+    }
+
     public void AddMoney(int amount)
     {
         if (amount < 0)
@@ -32,6 +48,8 @@ public class MoneyManager : MonoBehaviour
 
         moneyAmount += amount;
         Debug.Log("Money added: " + amount + " - Total: " + moneyAmount);
+
+        UpdateMoneyText();
     }
 
     public void SubtractMoney(int amount)
@@ -50,5 +68,7 @@ public class MoneyManager : MonoBehaviour
 
         moneyAmount -= amount;
         Debug.Log("Money subtracted: " + amount + " - Total: " + moneyAmount);
+
+        UpdateMoneyText();
     }
 }
