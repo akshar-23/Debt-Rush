@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
-using UnityEngine.SceneManagement; // for scene loading
+using UnityEngine.SceneManagement;
 
 public class Shop_UI : MonoBehaviour
 {
@@ -18,35 +18,29 @@ public class Shop_UI : MonoBehaviour
 
     [SerializeField] UIDocument ui;
 
-    // Player 1 (left)
+    // Shop data (rich: name/price/description)
     [SerializeField] List<ListItem> ShopItems1 = new();
-    [SerializeField] List<ListItem> InventoryItems1 = new();
-
-    // Player 2 (right)
     [SerializeField] List<ListItem> ShopItems2 = new();
-    [SerializeField] List<ListItem> InventoryItems2 = new();
 
     Toggle done1, done2;
     Label moneyLabel;
 
-    // Panels
     VisualElement endPanel;
     VisualElement playerPanels;
     VisualElement moneyPanel;
 
-    // Buttons inside EndPanel
     Button returnButton;
-    Button continueButton;               // NEW: loads "Prototype"
+    Button continueButton;
 
     void OnEnable()
     {
         var root = ui.rootVisualElement;
 
-        SetupSide(root, "ShopList_1", "Inventory_1", ShopItems1, InventoryItems1);
-        SetupSide(root, "ShopList_2", "Inventory_2", ShopItems2, InventoryItems2);
+        // Build both sides from shop data + GameManager inventories
+        SetupSide(root, playerIndex: 1, "ShopList_1", "Inventory_1", ShopItems1);
+        SetupSide(root, playerIndex: 2, "ShopList_2", "Inventory_2", ShopItems2);
 
         moneyLabel = root.Q<Label>("MoneyLabel");
-
         MoneyManager.Instance.AddMoney(initialMoney);
         UpdateMoneyLabel();
 
@@ -60,7 +54,7 @@ public class Shop_UI : MonoBehaviour
         if (endPanel != null)
         {
             returnButton = endPanel.Q<Button>("ReturnButton");
-            continueButton = endPanel.Q<Button>("ContinueButton"); // query by name
+            continueButton = endPanel.Q<Button>("ContinueButton");
         }
 
         if (done1 != null) done1.RegisterValueChangedCallback(_ => UpdateEndState());
@@ -78,25 +72,28 @@ public class Shop_UI : MonoBehaviour
         if (continueButton != null) continueButton.clicked -= LoadPrototypeScene;
     }
 
-    void SetupSide(VisualElement root, string shopPanelName, string invPanelName,
-                   List<ListItem> shopItems, List<ListItem> invItems)
+    // ---------- UI BUILD PER PLAYER ----------
+    void SetupSide(VisualElement root, int playerIndex,
+                   string shopPanelName, string invPanelName,
+                   List<ListItem> shopItems)
     {
         var shopPanel = root.Q<VisualElement>(shopPanelName);
         var invPanel = root.Q<VisualElement>(invPanelName);
-
         shopPanel.Clear();
         invPanel.Clear();
 
+        // Resolve labels for the info box under this player
         var playerRoot = shopPanel.parent.parent;
         var titleLabel = playerRoot.Q<Label>(className: "description-title");
         var priceLabel = playerRoot.Q<Label>(className: "price-text");
         var descLabel = playerRoot.Q<Label>(className: "description-text");
 
-        // preload inventory (not removable)
-        foreach (var item in invItems)
-            AddInventoryButton(item, invPanel, false, titleLabel, priceLabel, descLabel);
+        // Preload INVENTORY from GameManager (names only)
+        foreach (var name in GameManager.Instance.GetInventory(playerIndex))
+            AddInventoryButton(name, invPanel, removable: true,  // preloaded items can be sold by your current logic; set false if not
+                               playerIndex, titleLabel, priceLabel, descLabel);
 
-        // build shop
+        // Build SHOP buttons (buy)
         foreach (var item in shopItems)
         {
             var btn = new Button { text = item.itemName, focusable = true };
@@ -106,42 +103,63 @@ public class Shop_UI : MonoBehaviour
 
             btn.clicked += () =>
             {
+                // capacity check can be UI-based or inventory-based
                 if (invPanel.childCount >= inventoryLimit) return;
-                if (MoneyManager.Instance.GetMoneyAmount() < item.itemPrice) return; // not enough funds
+                if (MoneyManager.Instance.GetMoneyAmount() < item.itemPrice) return;
 
-                MoneyManager.Instance.SubtractMoney(item.itemPrice);   // deduct money
+                // Deduct money, add to central inventory, and reflect in UI
+                MoneyManager.Instance.SubtractMoney(item.itemPrice);
                 UpdateMoneyLabel();
 
-                AddInventoryButton(item, invPanel, true, titleLabel, priceLabel, descLabel);
+                GameManager.Instance.AddToInventory(playerIndex, item.itemName);
+                AddInventoryButton(item.itemName, invPanel, removable: true,
+                                   playerIndex, titleLabel, priceLabel, descLabel);
             };
 
             shopPanel.Add(btn);
         }
     }
 
-    void AddInventoryButton(ListItem item, VisualElement invPanel, bool removable,
-                            Label titleLabel, Label priceLabel, Label descLabel)
+    // Create a button inside inventory list for a single item name
+    void AddInventoryButton(string itemName, VisualElement invPanel, bool removable,
+                            int playerIndex, Label titleLabel, Label priceLabel, Label descLabel)
     {
-        var invBtn = new Button { text = item.itemName, focusable = true };
+        var invBtn = new Button { text = itemName, focusable = true };
         invBtn.AddToClassList("button");
 
-        AttachInfoHandlers(invBtn, item, titleLabel, priceLabel, descLabel, isBuy: false);
+        // For SELL preview we need price/description; pull from SHOP data by name
+        var itemData = FindItemDataForPlayer(playerIndex, itemName);
+        if (itemData != null)
+            AttachInfoHandlers(invBtn, itemData, titleLabel, priceLabel, descLabel, isBuy: false);
 
         if (removable)
         {
             invBtn.clicked += () =>
             {
-                invPanel.Remove(invBtn);
-
-                // add money back on selling
-                MoneyManager.Instance.AddMoney(item.itemPrice);
-                UpdateMoneyLabel();
+                // Remove one occurrence from central inventory, give money back, and update UI
+                if (GameManager.Instance.RemoveFromInventory(playerIndex, itemName))
+                {
+                    invPanel.Remove(invBtn);
+                    if (itemData != null)
+                    {
+                        MoneyManager.Instance.AddMoney(itemData.itemPrice);
+                        UpdateMoneyLabel();
+                    }
+                }
             };
         }
 
         invPanel.Add(invBtn);
     }
 
+    // Lookup helper: given player and name, find the shop item (to show price/desc on hover)
+    ListItem FindItemDataForPlayer(int playerIndex, string itemName)
+    {
+        var list = (playerIndex == 1) ? ShopItems1 : ShopItems2;
+        return list.Find(x => x.itemName == itemName);
+    }
+
+    // ---------- Shared helpers ----------
     void AttachInfoHandlers(VisualElement ve, ListItem item,
                             Label titleLabel, Label priceLabel, Label descLabel,
                             bool isBuy)
@@ -162,7 +180,8 @@ public class Shop_UI : MonoBehaviour
 
     void UpdateMoneyLabel()
     {
-        if (moneyLabel != null) moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
+        if (moneyLabel != null)
+            moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
     }
 
     void UpdateEndState()
@@ -179,7 +198,6 @@ public class Shop_UI : MonoBehaviour
             moneyPanel.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
     }
 
-    // ReturnButton: restore panels and uncheck toggles
     void ResetToNormal()
     {
         if (done1 != null) done1.value = false;
@@ -187,10 +205,8 @@ public class Shop_UI : MonoBehaviour
         UpdateEndState();
     }
 
-    // ContinueButton: load the next scene
     void LoadPrototypeScene()
     {
-        // Make sure "Prototype" is added under File ? Build Settings ? Scenes In Build
-        SceneManager.LoadScene("Prototype");
+        SceneManager.LoadScene("Prototype"); // ensure in Build Settings
     }
 }
