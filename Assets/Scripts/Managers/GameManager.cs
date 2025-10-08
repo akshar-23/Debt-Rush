@@ -71,13 +71,11 @@ public class GameManager : MonoBehaviour
     {
         if (players != null && players.Length == 0)
         {
-            gameOverUI.gameObject.SetActive(true);
-            gameOverUI.gameOverText.text = "GAME OVER";
+            ShowGameOverScreen("GAME OVER");
         }
         else if (enemies != null && enemies.Length == 0)
         {
-            gameOverUI.gameObject.SetActive(true);
-            gameOverUI.gameOverText.text = "YOU WON";
+            ShowGameOverScreen("YOU WON");
         }
     }
 }
