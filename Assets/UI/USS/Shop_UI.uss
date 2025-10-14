@@ -47,7 +47,7 @@
     width: 77px;
     translate: 15px 17px;
     font-size: 15px;
-    -unity-font-definition: url('project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=8aed8cd85b271f542a574c85c519397f&type=3#NotInter-Regular');
+    -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=8aed8cd85b271f542a574c85c519397f&type=3#NotInter-Regular");
     -unity-font-style: bold;
     margin-top: 15px;
     margin-right: 15px;
@@ -151,4 +151,9 @@
 
 .unity-text-element {
     -unity-font-definition: url("project://database/Library/unity%20default%20resources?fileID=10102&guid=0000000000000000e000000000000000&type=0#LegacyRuntime");
+}
+
+.ammo-label {
+    translate: 18px 37px;
+    font-size: 13px;
 }

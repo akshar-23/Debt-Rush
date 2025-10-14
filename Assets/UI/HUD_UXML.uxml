@@ -7,7 +7,9 @@
         <ui:VisualElement name="PlayerPanels" style="flex-direction: row; display: flex; align-items: auto; align-content: auto; align-self: auto; justify-content: flex-start;">
             <ui:VisualElement name="Inventory_1" class="inventory" style="translate: -147px -523px; flex-direction: row;">
                 <ui:VisualElement name="Button_Style_Test" style="flex-direction: row;">
-                    <ui:Button text="Button" class="button inventory-button" />
+                    <ui:Button text="Button" class="button inventory-button">
+                        <ui:Label text="15/15&#10;" class="ammo-label" />
+                    </ui:Button>
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />

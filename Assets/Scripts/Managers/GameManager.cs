@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class GameManager : MonoBehaviour
 {
     public GameOverScreen gameOverUI;
@@ -9,8 +8,24 @@ public class GameManager : MonoBehaviour
 
     public Character[] players;
     public Character[] enemies;
-    [SerializeField] List<string> inventoryP1 = new();
-    [SerializeField] List<string> inventoryP2 = new();
+
+    [System.Serializable]
+    public struct ShopItem
+    {
+        public string Name;
+        public int Price;
+        [TextArea] public string Description;
+        public int Limit;                
+        [SerializeField, HideInInspector] public int Current;  
+    }
+
+    [Header("Shop Data (edit in Inspector)")]
+    [SerializeField] private List<ShopItem> shopItemsP1 = new();
+    [SerializeField] private List<ShopItem> shopItemsP2 = new();
+
+   
+    [SerializeField, HideInInspector] private List<ShopItem> inventoryP1 = new();
+    [SerializeField, HideInInspector] private List<ShopItem> inventoryP2 = new();
 
     private void Awake()
     {
@@ -19,45 +34,49 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     void Start()
     {
-        if (gameOverUI != null)
-        {
-            gameOverUI.gameObject.SetActive(false);
-        }
+        if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
         Time.timeScale = 1f;
     }
 
+   
+    public IReadOnlyList<ShopItem> GetShop(int playerIndex)
+        => (playerIndex == 1) ? (IReadOnlyList<ShopItem>)shopItemsP1 : shopItemsP2;
 
-    /// Read-only view 
-    public IReadOnlyList<string> GetInventory(int playerIndex)
-        => (playerIndex == 1) ? (IReadOnlyList<string>)inventoryP1 : inventoryP2;
+    public IReadOnlyList<ShopItem> GetInventory(int playerIndex)
+        => (playerIndex == 1) ? (IReadOnlyList<ShopItem>)inventoryP1 : inventoryP2;
 
-    /// Add one item by name to a player�s inventory
-    public void AddToInventory(int playerIndex, string itemName)
+    public void AddToInventory(int playerIndex, ShopItem item)
     {
-        (playerIndex == 1 ? inventoryP1 : inventoryP2).Add(itemName);
+        (playerIndex == 1 ? inventoryP1 : inventoryP2).Add(item);
     }
 
-    /// Remove one item by name. Returns true if removed.
-    public bool RemoveFromInventory(int playerIndex, string itemName)
+    public bool TryRemoveFromInventory(int playerIndex, string name, out ShopItem removed)
     {
-        return (playerIndex == 1 ? inventoryP1 : inventoryP2).Remove(itemName);
+        var list = (playerIndex == 1) ? inventoryP1 : inventoryP2;
+        int i = list.FindIndex(x => x.Name == name);
+        if (i >= 0)
+        {
+            removed = list[i];
+            list.RemoveAt(i);
+            return true;
+        }
+        removed = default;
+        return false;
     }
 
-
-    /// Wipe inventories 
     public void ClearInventories()
     {
         inventoryP1.Clear();
         inventoryP2.Clear();
     }
 
+   
     public void ShowGameOverScreen(string finaltext)
     {
         if (gameOverUI != null)

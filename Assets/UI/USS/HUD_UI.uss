@@ -23,3 +23,8 @@
     margin-right: 14px;
     width: 70px;
 }
+
+.ammo-label {
+    translate: 16px 25px;
+    font-size: 11px;
+}

@@ -2,43 +2,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class Shop_UI : MonoBehaviour
 {
     [SerializeField] int inventoryLimit = 12;
     [SerializeField] int initialMoney = 1500;
-
-    [System.Serializable]
-    public class ListItem
-    {
-        public string itemName;
-        public int itemPrice;
-        [TextArea] public string itemDescription;
-    }
-
     [SerializeField] UIDocument ui;
-
-    // Shop data (rich: name/price/description)
-    [SerializeField] List<ListItem> ShopItems1 = new();
-    [SerializeField] List<ListItem> ShopItems2 = new();
 
     Toggle done1, done2;
     Label moneyLabel;
-
-    VisualElement endPanel;
-    VisualElement playerPanels;
-    VisualElement moneyPanel;
-
-    Button returnButton;
-    Button continueButton;
+    VisualElement endPanel, playerPanels, moneyPanel;
+    Button returnButton, continueButton;
 
     void OnEnable()
     {
         var root = ui.rootVisualElement;
 
-        // Build both sides from shop data + GameManager inventories
-        SetupSide(root, playerIndex: 1, "ShopList_1", "Inventory_1", ShopItems1);
-        SetupSide(root, playerIndex: 2, "ShopList_2", "Inventory_2", ShopItems2);
+        // Build both sides from GameManager data
+        SetupSide(root, 1, "ShopList_1", "Inventory_1");
+        SetupSide(root, 2, "ShopList_2", "Inventory_2");
 
         moneyLabel = root.Q<Label>("MoneyLabel");
         MoneyManager.Instance.AddMoney(initialMoney);
@@ -59,7 +42,6 @@ public class Shop_UI : MonoBehaviour
 
         if (done1 != null) done1.RegisterValueChangedCallback(_ => UpdateEndState());
         if (done2 != null) done2.RegisterValueChangedCallback(_ => UpdateEndState());
-
         if (returnButton != null) returnButton.clicked += ResetToNormal;
         if (continueButton != null) continueButton.clicked += LoadPrototypeScene;
 
@@ -73,78 +55,87 @@ public class Shop_UI : MonoBehaviour
     }
 
     // ---------- UI BUILD PER PLAYER ----------
-    void SetupSide(VisualElement root, int playerIndex,
-                   string shopPanelName, string invPanelName,
-                   List<ListItem> shopItems)
+    void SetupSide(VisualElement root, int playerIndex, string shopPanelName, string invPanelName)
     {
         var shopPanel = root.Q<VisualElement>(shopPanelName);
         var invPanel = root.Q<VisualElement>(invPanelName);
         shopPanel.Clear();
         invPanel.Clear();
 
-        // Resolve labels for the info box under this player
+        // Info labels for this player column
         var playerRoot = shopPanel.parent.parent;
         var titleLabel = playerRoot.Q<Label>(className: "description-title");
         var priceLabel = playerRoot.Q<Label>(className: "price-text");
         var descLabel = playerRoot.Q<Label>(className: "description-text");
 
-        // Preload INVENTORY from GameManager (names only)
-        foreach (var name in GameManager.Instance.GetInventory(playerIndex))
-            AddInventoryButton(name, invPanel, removable: true,  // preloaded items can be sold by your current logic; set false if not
-                               playerIndex, titleLabel, priceLabel, descLabel);
+        // Preload inventory (from GameManager)
+        foreach (var itm in GameManager.Instance.GetInventory(playerIndex))
+            AddInventoryButton(itm, invPanel, removable: true, titleLabel, priceLabel, descLabel, playerIndex);
 
-        // Build SHOP buttons (buy)
-        foreach (var item in shopItems)
+        // Build shop buttons (buy)
+        foreach (var item in GameManager.Instance.GetShop(playerIndex))
         {
-            var btn = new Button { text = item.itemName, focusable = true };
+            var btn = new Button { text = item.Name, focusable = true };
             btn.AddToClassList("button");
 
+            // preview info
             AttachInfoHandlers(btn, item, titleLabel, priceLabel, descLabel, isBuy: true);
 
+            // buy click
             btn.clicked += () =>
             {
-                // capacity check can be UI-based or inventory-based
                 if (invPanel.childCount >= inventoryLimit) return;
-                if (MoneyManager.Instance.GetMoneyAmount() < item.itemPrice) return;
+                if (MoneyManager.Instance.GetMoneyAmount() < item.Price) return;
 
-                // Deduct money, add to central inventory, and reflect in UI
-                MoneyManager.Instance.SubtractMoney(item.itemPrice);
+                MoneyManager.Instance.SubtractMoney(item.Price);
                 UpdateMoneyLabel();
 
-                GameManager.Instance.AddToInventory(playerIndex, item.itemName);
-                AddInventoryButton(item.itemName, invPanel, removable: true,
-                                   playerIndex, titleLabel, priceLabel, descLabel);
+                // Add a fresh instance to inventory;
+                // for ammo-like items, start Current at full Limit
+                var toAdd = item;
+                if (toAdd.Limit > 0) toAdd.Current = toAdd.Limit;
+
+                GameManager.Instance.AddToInventory(playerIndex, toAdd);
+                AddInventoryButton(toAdd, invPanel, removable: true, titleLabel, priceLabel, descLabel, playerIndex);
             };
 
             shopPanel.Add(btn);
+
+            // show ammo badge in shop (non-interactive)
+            if (item.Limit > 0)
+            {
+                var ammo = new Label($"{item.Limit}/{item.Limit}");
+                ammo.AddToClassList("ammo-label");
+                btn.Add(ammo);
+            }
         }
     }
 
-    // Create a button inside inventory list for a single item name
-    void AddInventoryButton(string itemName, VisualElement invPanel, bool removable,
-                            int playerIndex, Label titleLabel, Label priceLabel, Label descLabel)
+    // Create one inventory button with optional ammo label and sell behavior
+    void AddInventoryButton(GameManager.ShopItem item, VisualElement invPanel, bool removable,
+                            Label titleLabel, Label priceLabel, Label descLabel, int playerIndex)
     {
-        var invBtn = new Button { text = itemName, focusable = true };
+        var invBtn = new Button { text = item.Name, focusable = true };
         invBtn.AddToClassList("button");
 
-        // For SELL preview we need price/description; pull from SHOP data by name
-        var itemData = FindItemDataForPlayer(playerIndex, itemName);
-        if (itemData != null)
-            AttachInfoHandlers(invBtn, itemData, titleLabel, priceLabel, descLabel, isBuy: false);
+        AttachInfoHandlers(invBtn, item, titleLabel, priceLabel, descLabel, isBuy: false);
+
+        if (item.Limit > 0)
+        {
+            var ammo = new Label($"{item.Current}/{item.Limit}");
+            ammo.AddToClassList("ammo-label");
+            invBtn.Add(ammo);
+        }
 
         if (removable)
         {
             invBtn.clicked += () =>
             {
-                // Remove one occurrence from central inventory, give money back, and update UI
-                if (GameManager.Instance.RemoveFromInventory(playerIndex, itemName))
+                if (GameManager.Instance.TryRemoveFromInventory(playerIndex, item.Name, out var removed))
                 {
                     invPanel.Remove(invBtn);
-                    if (itemData != null)
-                    {
-                        MoneyManager.Instance.AddMoney(itemData.itemPrice);
-                        UpdateMoneyLabel();
-                    }
+                    MoneyManager.Instance.AddMoney(removed.Price);
+                    UpdateMoneyLabel();
                 }
             };
         }
@@ -152,26 +143,16 @@ public class Shop_UI : MonoBehaviour
         invPanel.Add(invBtn);
     }
 
-    // Lookup helper: given player and name, find the shop item (to show price/desc on hover)
-    ListItem FindItemDataForPlayer(int playerIndex, string itemName)
-    {
-        var list = (playerIndex == 1) ? ShopItems1 : ShopItems2;
-        return list.Find(x => x.itemName == itemName);
-    }
-
     // ---------- Shared helpers ----------
-    void AttachInfoHandlers(VisualElement ve, ListItem item,
-                            Label titleLabel, Label priceLabel, Label descLabel,
-                            bool isBuy)
+    void AttachInfoHandlers(VisualElement ve, GameManager.ShopItem item,
+                            Label titleLabel, Label priceLabel, Label descLabel, bool isBuy)
     {
         System.Action update = () =>
         {
-            if (titleLabel != null) titleLabel.text = item.itemName;
+            if (titleLabel != null) titleLabel.text = item.Name;
             if (priceLabel != null)
-                priceLabel.text = isBuy
-                    ? $"Buy For -${item.itemPrice}"
-                    : $"Sell For +${item.itemPrice}";
-            if (descLabel != null) descLabel.text = item.itemDescription;
+                priceLabel.text = isBuy ? $"Buy For -${item.Price}" : $"Sell For +${item.Price}";
+            if (descLabel != null) descLabel.text = item.Description;
         };
 
         ve.RegisterCallback<MouseEnterEvent>(_ => update());
@@ -180,22 +161,16 @@ public class Shop_UI : MonoBehaviour
 
     void UpdateMoneyLabel()
     {
-        if (moneyLabel != null)
-            moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
+        if (moneyLabel != null) moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
     }
 
     void UpdateEndState()
     {
         bool bothDone = (done1 != null && done1.value) && (done2 != null && done2.value);
 
-        if (endPanel != null)
-            endPanel.style.display = bothDone ? DisplayStyle.Flex : DisplayStyle.None;
-
-        if (playerPanels != null)
-            playerPanels.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
-
-        if (moneyPanel != null)
-            moneyPanel.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
+        if (endPanel != null) endPanel.style.display = bothDone ? DisplayStyle.Flex : DisplayStyle.None;
+        if (playerPanels != null) playerPanels.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
+        if (moneyPanel != null) moneyPanel.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
     }
 
     void ResetToNormal()
@@ -205,8 +180,5 @@ public class Shop_UI : MonoBehaviour
         UpdateEndState();
     }
 
-    void LoadPrototypeScene()
-    {
-        SceneManager.LoadScene("Prototype"); // ensure in Build Settings
-    }
+    void LoadPrototypeScene() => SceneManager.LoadScene("Prototype"); // ensure in Build Settings
 }
