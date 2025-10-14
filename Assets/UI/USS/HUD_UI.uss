@@ -2,11 +2,11 @@
     background-color: rgb(221, 233, 228);
     width: 545px;
     align-self: auto;
-    align-items: auto;
-    justify-content: flex-start;
+    align-items: center;
+    justify-content: flex-end;
     align-content: auto;
     translate: -425px -523px;
-    height: 70px;
+    height: 98px;
     border-top-left-radius: 17px;
     border-top-right-radius: 17px;
     border-bottom-right-radius: 17px;
@@ -27,4 +27,13 @@
 .ammo-label {
     translate: 16px 25px;
     font-size: 11px;
+}
+
+.num-Labels {
+    flex-grow: 1;
+    flex-direction: row;
+    margin-top: -5px;
+    margin-right: 70px;
+    translate: -15px 0;
+    font-size: 14px;
 }
