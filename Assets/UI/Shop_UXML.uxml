@@ -30,7 +30,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="Inventory_1" class="frame">
-                            <ui:Label text="4/5" class="capacity-labels" />
+                            <ui:Label text="3/6" class="capacity-labels" />
                             <ui:VisualElement name="Button_Style_Test" style="width: 100%; height: 100%; white-space: normal; flex-direction: row; display: flex; flex-wrap: wrap; align-items: flex-start;">
                                 <ui:Button text="Button" class="button" />
                                 <ui:Button text="Button" class="button" />
