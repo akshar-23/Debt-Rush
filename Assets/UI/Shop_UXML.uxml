@@ -5,7 +5,7 @@
             <ui:Label text="1500 $" name="MoneyLabel" style="width: 100%; height: 100%; -unity-text-align: middle-center; font-size: 33px; align-self: center; justify-content: center; align-items: center; align-content: center; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
         </ui:VisualElement>
         <ui:VisualElement name="PlayerPanels" style="flex-direction: row; display: flex;">
-            <ui:VisualElement name="Player_1" style="flex-grow: 1; display: flex;">
+            <ui:VisualElement name="Player_1" style="flex-grow: 1; display: flex; align-content: stretch;">
                 <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title" />
                 <ui:VisualElement name="Panel_1" style="flex-grow: 1; flex-direction: row;">
                     <ui:VisualElement name="Titles" style="flex-grow: 1;">
@@ -30,6 +30,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                         <ui:VisualElement name="Inventory_1" class="frame">
+                            <ui:Label text="4/5" class="capacity-labels" />
                             <ui:VisualElement name="Button_Style_Test" style="width: 100%; height: 100%; white-space: normal; flex-direction: row; display: flex; flex-wrap: wrap; align-items: flex-start;">
                                 <ui:Button text="Button" class="button" />
                                 <ui:Button text="Button" class="button" />
@@ -58,7 +59,9 @@
                 <ui:VisualElement name="Panel_2" style="flex-grow: 1; flex-direction: row;">
                     <ui:VisualElement name="Container_2" class="container" style="flex-direction: column; align-items: center;">
                         <ui:VisualElement name="ShopList_2" class="frame" />
-                        <ui:VisualElement name="Inventory_2" class="frame" />
+                        <ui:VisualElement name="Inventory_2" class="frame">
+                            <ui:VisualElement name="Capacity_2" />
+                        </ui:VisualElement>
                         <ui:VisualElement name="Description_2" class="frame" style="flex-direction: column;">
                             <ui:VisualElement name="Title" style="flex-grow: 0; background-color: rgb(255, 255, 255); width: 150px; height: 40px; flex-basis: initial; align-self: flex-start; align-content: flex-end; justify-content: space-between; align-items: flex-end; translate: 12px 16px; border-top-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px;">
                                 <ui:Label text="Phone Call" class="description-title" style="translate: 12px 12px; font-size: 26px;" />

@@ -174,3 +174,12 @@
     margin-right: 0;
     margin-left: -45px;
 }
+
+.capacity-labels {
+    align-self: flex-end;
+    -unity-text-align: middle-right;
+    align-items: flex-end;
+    white-space: pre;
+    translate: 0 0;
+    font-size: 25px;
+}
