@@ -157,3 +157,20 @@
     translate: 18px 37px;
     font-size: 13px;
 }
+
+.panel-title {
+    rotate: -90deg;
+    margin-top: 203px;
+    translate: 0 -51px;
+    font-size: 27px;
+    margin-right: -45px;
+}
+
+.panel2-title {
+    rotate: 90deg;
+    margin-top: 203px;
+    translate: 0 -51px;
+    font-size: 27px;
+    margin-right: 0;
+    margin-left: -45px;
+}
