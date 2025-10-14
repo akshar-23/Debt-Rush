@@ -19,4 +19,9 @@ public class GameOverScreen : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("UI_Scene");
     }
+
+    public void SetGameOverText(string newGameOverText)
+    {
+        gameOverText.text = newGameOverText;
+    }
 }
