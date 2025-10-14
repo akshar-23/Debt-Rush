@@ -6,53 +6,65 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private UIDocument ui;
 
+    private const string kMoneyLabelName = "MoneyLabel";
+    private const string kButtonsP1Container = "Button_Style_Test_1";
+    private const string kButtonsP2Container = "Button_Style_Test_2";
+
+    private const string kButtonClass = "inventory-button"; // your USS style for HUD buttons
+    private const string kAmmoClass = "ammo-label";       // your USS badge for ammo/limit
+
     private void OnEnable()
     {
         BuildUI();
     }
 
-    // Call this after money or inventory changes to refresh the HUD
+    /// <summary>
+    /// Call this after money or inventory changes to refresh the HUD.
+    /// </summary>
     public void BuildUI()
     {
         if (ui == null || GameManager.Instance == null) return;
 
         var root = ui.rootVisualElement;
 
-        // Money
-        var moneyLabel = root.Q<Label>("MoneyLabel");
+        // Update money
+        var moneyLabel = root.Q<Label>(kMoneyLabelName);
         if (moneyLabel != null && MoneyManager.Instance != null)
             moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
 
-        // Inventories
-        var invPanel1 = root.Q<VisualElement>("Inventory_1");
-        var invPanel2 = root.Q<VisualElement>("Inventory_2");
+        // Find the dedicated button containers (we do NOT touch your numbers/labels pack)
+        var buttonsP1 = root.Q<VisualElement>(kButtonsP1Container);
+        var buttonsP2 = root.Q<VisualElement>(kButtonsP2Container);
 
-        PopulateInventory(invPanel1, GameManager.Instance.GetInventory(1));
-        PopulateInventory(invPanel2, GameManager.Instance.GetInventory(2));
+        PopulateButtons(buttonsP1, GameManager.Instance.GetInventory(1));
+        PopulateButtons(buttonsP2, GameManager.Instance.GetInventory(2));
     }
 
-    // NOTE: we now accept the rich item type from GameManager
-    private void PopulateInventory(VisualElement panel, IReadOnlyList<GameManager.ShopItem> items)
+    /// <summary>
+    /// Fills the given container with inventory buttons ONLY (safe to Clear()).
+    /// Your static number labels stay in their own container and are never cleared.
+    /// </summary>
+    private void PopulateButtons(VisualElement container, IReadOnlyList<GameManager.ShopItem> items)
     {
-        if (panel == null || items == null) return;
+        if (container == null || items == null) return;
 
-        panel.Clear();
+        // This container is dedicated to runtime buttons, so it's safe to clear it
+        container.Clear();
 
         foreach (var item in items)
         {
-            // Main inventory button (keeps your existing .inventory-button style)
             var btn = new Button { text = item.Name, focusable = true };
-            btn.AddToClassList("inventory-button");
+            btn.AddToClassList(kButtonClass);
 
-            // Optional ammo/limit badge (e.g., "12/12") using your .ammo-label style
+            // Optional ammo/limit badge (e.g. "12/12")
             if (item.Limit > 0)
             {
                 var ammo = new Label($"{item.Current}/{item.Limit}");
-                ammo.AddToClassList("ammo-label");
+                ammo.AddToClassList(kAmmoClass);
                 btn.Add(ammo);
             }
 
-            panel.Add(btn);
+            container.Add(btn);
         }
     }
 }

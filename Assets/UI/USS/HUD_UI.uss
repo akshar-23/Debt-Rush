@@ -3,7 +3,7 @@
     width: 545px;
     align-self: auto;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     align-content: auto;
     translate: -425px -523px;
     height: 98px;
@@ -11,6 +11,7 @@
     border-top-right-radius: 17px;
     border-bottom-right-radius: 17px;
     border-bottom-left-radius: 17px;
+    flex-direction: row;
 }
 
 .inventory-button {
@@ -33,7 +34,15 @@
     flex-grow: 1;
     flex-direction: row;
     margin-top: -5px;
-    margin-right: 70px;
+    margin-right: 75px;
     translate: -15px 0;
     font-size: 14px;
+}
+
+.labels-pack {
+    flex-direction: row;
+    translate: 0 0;
+    position: absolute;
+    top: 79px;
+    left: 57px;
 }
