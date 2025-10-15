@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  damage: 10
+  damage: 25
   lifetime: 5
   usePhysicsCollision: 0
 --- !u!114 &1930159957953791726

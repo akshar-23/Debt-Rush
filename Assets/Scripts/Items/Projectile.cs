@@ -3,7 +3,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 20f;
-    public int damage = 50;
+    public int damage = 25;
     public float lifetime = 5f;
     public bool usePhysicsCollision = false; // true -> OnCollisionEnter, false -> OnTriggerEnter
 
@@ -55,7 +55,13 @@ public class Projectile : MonoBehaviour
     {
         Debug.Log("Enemy should take damage");
         // We should add more tags (Players) to ignore them for now, still in testing
-        if (other.CompareTag("Projectile") || other.CompareTag("Player")) return;
+        if (other.CompareTag("Projectile")) return;
+
+        if (other.CompareTag("Shield"))
+        {
+            Destroy(gameObject);
+            return;
+        }
 
         Character character = other.GetComponent<Character>();
         if (character != null)
