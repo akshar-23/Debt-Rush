@@ -4,37 +4,72 @@ using UnityEngine.AI;
 public class EnemyController : Character
 {
     [Header("Attack Settings")]
-    public float detectionRange = 15f;
-    public float attackRange = 2f;
+    public float detectionRange = 25f;
+    public float attackRange = 10f;
     public float attackDamage;
+    [Tooltip("The projectile prefab the enemy will shoot.")]
+    [SerializeField] private GameObject projectilePrefab;
+    [Tooltip("How many shots the enemy can fire per second.")]
+    [SerializeField] private float fireRate = 1f;
 
     private Transform targetPlayer;
     private NavMeshAgent agent;
-    private float distanceToPlayer;
-    
-    
+    private float nextFireTime = 1f;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("NavMeshAgent component not found on " + gameObject.name);
+            return;
+        }
+        
+        agent.stoppingDistance = attackRange;
     }
 
     void Update()
     {
+        if (agent.stoppingDistance != attackRange)
+        {
+            Debug.LogError("WARNING: stoppingDistance has been changed! Is now " + agent.stoppingDistance);
+        }
+
         FindClosestPlayer();
 
-        if (targetPlayer != null)
+        if (targetPlayer == null)
         {
-            distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.position);
-
-            if (distanceToPlayer <= detectionRange)
+            if (!agent.isStopped)
             {
-                ChasePlayer();
+                agent.isStopped = true;
+            }
+            return;
+        }
 
-                if (distanceToPlayer <= attackRange)
-                {
-                    AttackPlayer();
-                }
+        float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.position);
+
+        Debug.Log(gameObject.name + " | Distance: " + distanceToPlayer.ToString("F2") + " | Attack Range: " + attackRange);
+
+        if (distanceToPlayer > attackRange)
+        {
+            // STATE: CHASE
+            agent.isStopped = false;
+            agent.SetDestination(targetPlayer.position);
+        }
+        else
+        {
+            // STATE: ATTACK
+            agent.isStopped = true;
+
+            Vector3 lookDirection = (targetPlayer.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(new Vector3(lookDirection.x, 0, lookDirection.z));
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 5f);
+
+            if (Time.time >= nextFireTime)
+            {
+                nextFireTime = Time.time + 1f / fireRate;
+                Shoot();
+                Debug.Log(gameObject.name + " is SHOOTING!");
             }
         }
     }
@@ -48,38 +83,34 @@ public class EnemyController : Character
         foreach (GameObject player in players)
         {
             float distance = Vector3.Distance(transform.position, player.transform.position);
-
             if (distance < closestDistance)
             {
                 closestDistance = distance;
                 closestPlayer = player;
             }
         }
-
-        if (closestPlayer != null)
-        {
-            targetPlayer = closestPlayer.transform;
-        }
-        else
-        {
-            targetPlayer = null; // No players found safety check
-        }
+        targetPlayer = (closestPlayer != null) ? closestPlayer.transform : null;
     }
 
-    void ChasePlayer()
+    void Shoot()
     {
-        agent.SetDestination(targetPlayer.position);
+        if (projectilePrefab == null)
+        {
+            Debug.LogError("Projectile Prefab not assigned on " + gameObject.name);
+            return;
+        }
+        Vector3 spawnPos = transform.position + transform.forward * 1.5f;
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, transform.rotation);
+
+        Projectile p = proj.GetComponent<Projectile>();
+        if (p != null) p.Init(transform.forward);
     }
 
-    void AttackPlayer()
+    private void OnDrawGizmosSelected()
     {
-        agent.SetDestination(transform.position);
-
-        transform.LookAt(targetPlayer);
-
-        // Attack Logic, working on it
-        targetPlayer.GetComponent<Character>().TakeDamage(attackDamage);
-
-        Debug.Log("Attacking " + targetPlayer.name);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }
