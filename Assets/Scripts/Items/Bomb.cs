@@ -1,0 +1,81 @@
+using UnityEngine;
+
+public class Bomb : MonoBehaviour
+{
+    public float explosionRadius = 5f;   // Area of effect
+    public float explosionDamage = 50f;  // Damage amount
+    public GameObject explosionEffect;   // Optional visual effect
+
+    private bool hasExploded = false;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (hasExploded) return; // Prevent multiple explosions
+
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Enemy"))
+        {
+            Debug.Log("Explosion!");
+            Explode();
+        }
+    }
+
+    void Explode()
+    {
+        hasExploded = true;
+
+        // Optional: spawn a particle effect
+        if (explosionEffect != null)
+        {
+            Instantiate(explosionEffect, transform.position, Quaternion.identity);
+        }
+
+        // Find all nearby colliders within the radius
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
+
+        foreach (Collider nearbyObject in colliders)
+        {
+            Debug.Log("Enemies nearby!");
+            // Apply damage to enemies
+            if (nearbyObject.CompareTag("Enemy"))
+            {
+                // Example: if the enemy has a script with a TakeDamage() method
+                Character enemy = nearbyObject.GetComponent<Character>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(explosionDamage);
+                }
+            }
+        }
+
+        // Optionally: add a physics explosion force
+        foreach (Collider nearbyObject in colliders)
+        {
+            Rigidbody rb = nearbyObject.attachedRigidbody;
+            if (rb != null)
+            {
+                rb.AddExplosionForce(500f, transform.position, explosionRadius);
+            }
+        }
+
+        // Destroy the bomb
+        Destroy(gameObject);
+    }
+
+    // Optional: visualize explosion range in editor
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
+    }
+}
