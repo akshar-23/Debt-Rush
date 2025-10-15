@@ -5,8 +5,30 @@
             <ui:Label text="1500 $" name="MoneyLabel" style="width: 100%; height: 100%; -unity-text-align: middle-center; font-size: 33px; align-self: center; justify-content: center; align-items: center; align-content: center; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
         </ui:VisualElement>
         <ui:VisualElement name="PlayerPanels" style="flex-direction: row; display: flex; align-items: auto; align-content: auto; align-self: auto; justify-content: flex-start;">
-            <ui:VisualElement name="Inventory_1" class="inventory" style="translate: -147px -523px; flex-direction: row;">
-                <ui:VisualElement name="Button_Style_Test" style="flex-direction: row;">
+            <ui:VisualElement name="Container_1" style="flex-grow: 1; align-items: auto; justify-content: center; align-self: auto; align-content: auto;">
+                <ui:VisualElement name="Inventory_1" class="inventory" style="translate: -151px -523px; flex-direction: row;">
+                    <ui:VisualElement name="Button_Style_Test_1" style="flex-direction: row; align-items: center;">
+                        <ui:Button text="Button" class="button inventory-button">
+                            <ui:Label text="15/15&#10;" class="ammo-label" />
+                        </ui:Button>
+                        <ui:Button text="Button" class="button inventory-button" />
+                        <ui:Button text="Button" class="button inventory-button" />
+                        <ui:Button text="Button" class="button inventory-button" />
+                        <ui:Button text="Button" class="button inventory-button" />
+                        <ui:Button text="Button" class="button inventory-button" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Labels" class="labels-pack">
+                        <ui:Label text="1" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                        <ui:Label text="2" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                        <ui:Label text="3" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                        <ui:Label text="4" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                        <ui:Label text="5" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                        <ui:Label text="6" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto; margin-right: -42px; flex-direction: row;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="Inventory_2" class="inventory" style="translate: 150px -523px; flex-direction: row;">
+                <ui:VisualElement name="Button_Style_Test_2" style="flex-direction: row;">
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />
@@ -14,15 +36,13 @@
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />
                 </ui:VisualElement>
-            </ui:VisualElement>
-            <ui:VisualElement name="Inventory_2" class="inventory" style="translate: 150px -523px; flex-direction: row;">
-                <ui:VisualElement name="Button_Style_Test" style="flex-direction: row;">
-                    <ui:Button text="Button" class="button inventory-button" />
-                    <ui:Button text="Button" class="button inventory-button" />
-                    <ui:Button text="Button" class="button inventory-button" />
-                    <ui:Button text="Button" class="button inventory-button" />
-                    <ui:Button text="Button" class="button inventory-button" />
-                    <ui:Button text="Button" class="button inventory-button" />
+                <ui:VisualElement name="Labels" class="labels-pack" style="flex-direction: row;">
+                    <ui:Label text="1" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                    <ui:Label text="2" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                    <ui:Label text="3" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                    <ui:Label text="4" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                    <ui:Label text="5" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
+                    <ui:Label text="6" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto; margin-right: -42px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
