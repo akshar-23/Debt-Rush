@@ -28,6 +28,7 @@ public class PlayerController : Character
     public GameObject itemEquipped;
     public GameObject itemAuxPrefab;
 
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -61,7 +62,7 @@ public class PlayerController : Character
                 OnInteract();
             }
         }
-        
+
 
 
     }
@@ -79,8 +80,8 @@ public class PlayerController : Character
             canPlayerMove = false;
             //itemEquipped.GetComponent<CellphoneService>();
 
-            GameObject cursor = Instantiate(itemEquipped, spawnPos, new Quaternion(90,0,0,90));
-            
+            GameObject cursor = Instantiate(itemEquipped, spawnPos, new Quaternion(90, 0, 0, 90));
+
             cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
             cursor.GetComponent<Cursor>().player = this;
         }

@@ -1,7 +1,18 @@
 using UnityEngine;
 
+
+
 public class Character : MonoBehaviour
 {
+    public enum Archetype
+    {
+        Player,
+        Enemy
+    }
+
+    public Archetype archetype;
+    public static event System.Action<Transform> OnPlayerDied;
+
     [Header("Health Settings")]
     public float maxHealth = 100f;
     private float currentHealth;
@@ -25,6 +36,10 @@ public class Character : MonoBehaviour
 
     private void Die()
     {
+        if (archetype == Archetype.Player)
+        {
+            OnPlayerDied?.Invoke(transform);
+        }
         Debug.Log(gameObject.name + " died!");
         // GameManager.Instance.CheckWinLossConditions();
         Destroy(gameObject);

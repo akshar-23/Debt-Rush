@@ -396,6 +396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 1
   maxHealth: 100
   detectionRange: 25
   attackRange: 15
@@ -549,6 +550,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 1
   maxHealth: 100
   detectionRange: 25
   attackRange: 15
@@ -702,6 +704,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 1
   maxHealth: 100
   detectionRange: 25
   attackRange: 15
@@ -1270,6 +1273,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec726ddb29f132045aa69deb613911dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 0
   maxHealth: 100
   playerNumber: 2
   moveSpeed: 7
@@ -1427,6 +1431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 1
   maxHealth: 100
   detectionRange: 25
   attackRange: 15
@@ -2288,6 +2293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 1
   maxHealth: 100
   detectionRange: 25
   attackRange: 15
@@ -2441,6 +2447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 1
   maxHealth: 100
   detectionRange: 25
   attackRange: 15
@@ -2914,6 +2921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec726ddb29f132045aa69deb613911dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 0
   maxHealth: 100
   playerNumber: 1
   moveSpeed: 7
@@ -3707,6 +3715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fa45321fab116498f17b584ca02de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  archetype: 1
   maxHealth: 100
   detectionRange: 25
   attackRange: 15
@@ -8565,6 +8574,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3280710858600410804, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
+      propertyPath: archetype
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7119420217191431337, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
