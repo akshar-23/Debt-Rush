@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 {
     public GameObject gameOverUI;
     private bool isGameOver;
+    public bool checkConditions = false;
     public static GameManager Instance { get; private set; }
 
     public Character[] players;
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour
     [System.Serializable]
     public struct ShopItem
     {
+        public int Id;
         public string Name;
         public int Price;
         [TextArea] public string Description;
@@ -84,9 +86,10 @@ public class GameManager : MonoBehaviour
         }
 
 
-
-        CheckWinLossConditions();
-
+        if (checkConditions)
+        {
+            CheckWinLossConditions();
+        }
     }
 
         /// Read-only view    
@@ -150,6 +153,11 @@ public class GameManager : MonoBehaviour
         int minutes = Mathf.FloorToInt(timer / 60);
         int seconds = Mathf.FloorToInt(timer % 60);
         timerText.text = $"{minutes:00}:{seconds:00}";
+    }
+    public void SetTimer(float time)
+    {
+        timer = time;
+        isTimerRunning = true;
     }
 
     public void StopTimer()

@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using static GameManager;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : Character
@@ -13,6 +16,9 @@ public class PlayerController : Character
     public float moveSpeed = 7f;
     [Tooltip("The speed at which the player rotates to face the movement direction.")]
     public float rotationSpeed = 10f;
+
+    [Header("Inventory")]
+    [SerializeField] private List<ShopItem> inventory = new();
 
     // setting these automatically in code
     private string horizontalInputAxis;
@@ -40,6 +46,30 @@ public class PlayerController : Character
         canPlayerMove = true;
     }
 
+    private void Start()
+    {
+        Transform childTransform = this.transform.Find("Shield");
+        if (childTransform != null)
+        {
+            GameObject childGameObject = childTransform.gameObject;
+            childGameObject.SetActive(false);
+        }
+
+        foreach (var item in inventory)
+        {
+            if (item.Name.Equals("Shield"))
+            {
+                if (childTransform != null)
+                {
+                    GameObject childGameObject = childTransform.gameObject;
+                    childGameObject.SetActive(true);
+                    Debug.Log("Found child: " + childGameObject.name);
+                }
+            }
+        }
+
+    }
+
     void Update()
     {
         if (canPlayerMove)
@@ -62,9 +92,6 @@ public class PlayerController : Character
                 OnInteract();
             }
         }
-
-
-
     }
 
     private void OnInteract()
@@ -103,5 +130,10 @@ public class PlayerController : Character
     {
         canPlayerMove = true;
         Debug.Log("My spawned object died.");
+    }
+
+    public void CopyInventory(List<ShopItem> itemsList)
+    {
+        inventory = itemsList;
     }
 }

@@ -1278,6 +1278,7 @@ MonoBehaviour:
   playerNumber: 2
   moveSpeed: 7
   rotationSpeed: 10
+  inventory: []
   canPlayerMove: 0
   itemEquipped: {fileID: 1087458065748392346, guid: 999410dc66ba5034f84d10897e127b36, type: 3}
   itemAuxPrefab: {fileID: 3496234742590253038, guid: 8e6ce35ab9eac4547996acbdd9e1c720, type: 3}
@@ -1781,6 +1782,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 907025750}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &916890338
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 916890339}
+  - component: {fileID: 916890340}
+  m_Layer: 0
+  m_Name: GameplaySceneManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &916890339
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916890338}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &916890340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916890338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c9bd52e72b83d4090398dd3a9d0378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _player1: {fileID: 1420241393}
+  _player2: {fileID: 716492849}
+  _gameOverUI: {fileID: 1406385326}
+  _timerText: {fileID: 1341120937}
+  _timer: 90
 --- !u!1 &1029374539
 GameObject:
   m_ObjectHideFlags: 0
@@ -2926,6 +2976,7 @@ MonoBehaviour:
   playerNumber: 1
   moveSpeed: 7
   rotationSpeed: 10
+  inventory: []
   canPlayerMove: 0
   itemEquipped: {fileID: 5828508778685869409, guid: 4277a8c00f61f5b49b5f59e6adbc8bfa, type: 3}
   itemAuxPrefab: {fileID: 0}
@@ -9510,5 +9561,6 @@ SceneRoots:
   - {fileID: 1482525927}
   - {fileID: 1115077850}
   - {fileID: 1698475156}
+  - {fileID: 916890339}
   - {fileID: 1627188074}
   - {fileID: 576505060}

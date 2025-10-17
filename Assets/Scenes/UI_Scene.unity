@@ -368,24 +368,30 @@ MonoBehaviour:
   players: []
   enemies: []
   shopItemsP1:
-  - Name: Gun 1
+  - Id: 0
+    Name: Gun 1
     Price: 200
     Description: oiwjiorjewoij or jmkwi9oij iojj fieojio jfiowej
     Limit: 15
     Current: 0
-  - Name: Health
+  - Id: 0
+    Name: Health
     Price: 100
     Description: jwioji  iewj jiojefio jiowjioj wiojwioj
     Limit: 0
     Current: 0
   shopItemsP2:
-  - Name: Sheild
+  - Id: 0
+    Name: Shield
     Price: 500
     Description: dfoekfeosjfopj poekpoj foijsio jij
     Limit: 0
     Current: 0
   inventoryP1: []
   inventoryP2: []
+  timer: 0
+  isTimerRunning: 1
+  timerText: {fileID: 0}
 --- !u!4 &779668492
 Transform:
   m_ObjectHideFlags: 0
