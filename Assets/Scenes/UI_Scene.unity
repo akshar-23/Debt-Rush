@@ -365,26 +365,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameOverUI: {fileID: 0}
+  checkConditions: 0
   players: []
   enemies: []
   shopItemsP1:
   - Id: 0
     Name: Gun 1
     Price: 200
-    Description: oiwjiorjewoij or jmkwi9oij iojj fieojio jfiowej
+    Description: Your average gun!
     Limit: 15
     Current: 0
   - Id: 0
     Name: Health
     Price: 100
-    Description: jwioji  iewj jiojefio jiowjioj wiojwioj
+    Description: This item will heal yourself in 20 points!
     Limit: 0
     Current: 0
   shopItemsP2:
   - Id: 0
     Name: Shield
     Price: 500
-    Description: dfoekfeosjfopj poekpoj foijsio jij
+    Description: Defensive shield. Useful to block bullets and projectiles.
     Limit: 0
     Current: 0
   inventoryP1: []
