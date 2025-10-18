@@ -388,6 +388,13 @@ MonoBehaviour:
     Description: Defensive shield. Useful to block bullets and projectiles.
     Limit: 0
     Current: 0
+  - Id: 0
+    Name: Bomb
+    Price: 400
+    Description: This service lets you request bombs! Move the cursor and place them
+      where you want, they will drop off at that location.
+    Limit: 0
+    Current: 0
   inventoryP1: []
   inventoryP2: []
   timer: 0
