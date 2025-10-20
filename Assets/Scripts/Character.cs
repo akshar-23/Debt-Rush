@@ -15,7 +15,7 @@ public class Character : MonoBehaviour
 
     [Header("Health Settings")]
     public float maxHealth = 100f;
-    private float currentHealth;
+    public float currentHealth;
 
     void Start()
     {

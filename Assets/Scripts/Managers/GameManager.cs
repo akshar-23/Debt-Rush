@@ -6,10 +6,10 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
     public GameObject gameOverUI;
     private bool isGameOver;
     public bool checkConditions = false;
-    public static GameManager Instance { get; private set; }
 
     public Character[] players;
     public Character[] enemies;
