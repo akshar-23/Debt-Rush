@@ -1,3 +1,4 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ public class GameplaySceneManager : MonoBehaviour
     [SerializeField] private float _timer;
     [SerializeField] private Character[] _players;
     [SerializeField] private Character[] _enemies;
+    [SerializeField] private TextMeshProUGUI _enemiesText;
 
 
     void Awake()
@@ -26,5 +28,10 @@ public class GameplaySceneManager : MonoBehaviour
         GameManager.Instance.SetTimer(_timer);
         GameManager.Instance.players = _players;
         GameManager.Instance.enemies = _enemies;
+    }
+
+    void FixedUpdate()
+    {
+        _enemiesText.text = "Enemies: " + _enemies.Count();
     }
 }
