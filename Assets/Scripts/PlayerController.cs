@@ -25,6 +25,8 @@ public class PlayerController : Character
     private string verticalInputAxis;
     private string interactButton;
 
+    public bool isAtDestination = false;
+
     private CharacterController controller;
     private Vector3 moveDirection;
     [SerializeField] private bool canPlayerMove;

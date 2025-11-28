@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections;
 
 
 public class Character : MonoBehaviour
@@ -11,11 +11,13 @@ public class Character : MonoBehaviour
     }
 
     public Archetype archetype;
-    public static event System.Action<Transform> OnPlayerDied;
+    public static event System.Action<int> OnPlayerDied;
 
     [Header("Health Settings")]
     public float maxHealth = 100f;
     public float currentHealth;
+    public bool isDead = false;
+    public int id;
 
     void Start()
     {
@@ -36,12 +38,16 @@ public class Character : MonoBehaviour
 
     private void Die()
     {
+        Debug.Log(gameObject.name + " died!");
         if (archetype == Archetype.Player)
         {
-            OnPlayerDied?.Invoke(transform);
+            OnPlayerDied?.Invoke(id);
+            gameObject.SetActive(false);
+            isDead = true;
         }
-        Debug.Log(gameObject.name + " died!");
-        // GameManager.Instance.CheckWinLossConditions();
-        Destroy(gameObject);
+        else if (archetype == Archetype.Enemy)
+        {
+            Destroy(gameObject);
+        }
     }
 }

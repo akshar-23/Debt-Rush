@@ -10,6 +10,7 @@ public class MoneyManager : MonoBehaviour
 
     [SerializeField]
     private int moneyAmount = 0;
+    public int targetMoney = 1000;
 
 
     private void Awake()

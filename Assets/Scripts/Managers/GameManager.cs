@@ -21,22 +21,18 @@ public class GameManager : MonoBehaviour
         public string Name;
         public int Price;
         [TextArea] public string Description;
-        public int Limit;                
-        [SerializeField, HideInInspector] public int Current;  
+        public int Limit;
+        [SerializeField, HideInInspector] public int Current;
     }
 
     [Header("Shop Data (edit in Inspector)")]
     [SerializeField] private List<ShopItem> shopItemsP1 = new();
     [SerializeField] private List<ShopItem> shopItemsP2 = new();
 
-   
+
     [SerializeField, HideInInspector] private List<ShopItem> inventoryP1 = new();
     [SerializeField, HideInInspector] private List<ShopItem> inventoryP2 = new();
 
-    [Header("Timer Settings")]
-    [SerializeField]  private float timer = 0f;
-    [SerializeField]  private bool isTimerRunning = true;
-    public TextMeshProUGUI timerText;
 
     private void Awake()
     {
@@ -54,37 +50,11 @@ public class GameManager : MonoBehaviour
         if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
         Time.timeScale = 1f;
         isGameOver = false;
-
-        if (isTimerRunning)
-        {
-            UpdateTimerDisplay();
-        }
-        else
-        {
-            timerText.text = "";
-        }
-        
     }
 
     void Update()
     {
         if (isGameOver) return;
-
-        if (isTimerRunning) {            
-            if (timer > 0)
-            {
-                timer -= Time.deltaTime;
-            }
-            else
-            {
-                isTimerRunning = false;
-                timer = 0;                
-                Debug.Log("Time’s up!");
-            }
-
-            UpdateTimerDisplay();
-        }
-
 
         if (checkConditions)
         {
@@ -92,7 +62,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-        /// Read-only view    
+    /// Read-only view    
     public IReadOnlyList<ShopItem> GetShop(int playerIndex)
         => (playerIndex == 1) ? (IReadOnlyList<ShopItem>)shopItemsP1 : shopItemsP2;
 
@@ -124,7 +94,7 @@ public class GameManager : MonoBehaviour
         inventoryP2.Clear();
     }
 
-   
+
     public void ShowGameOverScreen(string finaltext)
     {
         isGameOver = true;
@@ -138,36 +108,18 @@ public class GameManager : MonoBehaviour
     public void CheckWinLossConditions()
     {
         //If Players are both null (dead), or timer reach 0
-        if ((players[0] == null && players[1] == null) || timer == 0)
+        if (players[0].isDead && players[1].isDead)
         {
             ShowGameOverScreen("GAME OVER");
         }
-        else if(enemies == null || enemies.Length == 0 || enemies.All(e => e == null))
+        else if (
+            !players[0].isDead && players[0].GetComponent<PlayerController>().isAtDestination &&
+            !players[1].isDead && players[1].GetComponent<PlayerController>().isAtDestination &&
+            MoneyManager.Instance.GetMoneyAmount() >= MoneyManager.Instance.targetMoney
+        )
         {
+            MoneyManager.Instance.SubtractMoney(MoneyManager.Instance.targetMoney);
             ShowGameOverScreen("YOU WON");
         }
-    }
-
-    void UpdateTimerDisplay()
-    {
-        int minutes = Mathf.FloorToInt(timer / 60);
-        int seconds = Mathf.FloorToInt(timer % 60);
-        timerText.text = $"{minutes:00}:{seconds:00}";
-    }
-    public void SetTimer(float time)
-    {
-        timer = time;
-        isTimerRunning = true;
-    }
-
-    public void StopTimer()
-    {
-        isTimerRunning = false;
-    }
-
-    public void ResetTimer()
-    {
-        timer = 0f;
-        isTimerRunning = true;
     }
 }
