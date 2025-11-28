@@ -180,6 +180,6 @@
     -unity-text-align: middle-right;
     align-items: flex-end;
     white-space: pre;
-    translate: 0 0;
+    translate: 731px 0;
     font-size: 25px;
 }
