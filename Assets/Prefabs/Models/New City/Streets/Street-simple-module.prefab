@@ -163,6 +163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: road-straight-barrier-half
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 11b07d2ce217a5c4eb0205fcfac9bb5d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
