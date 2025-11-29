@@ -40,6 +40,10 @@ public class PlayerController : Character
     [SerializeField]
     public int killCount = 0;
 
+    [Space]
+    [SerializeField]
+    public int hiddenStash = 0;
+
     protected override void Awake()
     {
         base.Awake();
