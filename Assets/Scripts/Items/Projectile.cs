@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public Archetype archetype;
     public float speed = 20f;
     public int damage = 25;
     public float lifetime = 5f;
+    public int playerId;
 
     Rigidbody rb;
     float spawnTime;
@@ -56,8 +58,8 @@ public class Projectile : MonoBehaviour
         }
 
         Character character = other.GetComponent<Character>();
-        if (character != null)
-            character.TakeDamage(damage);
+        if (character != null && character.archetype != archetype)
+            character.TakeDamage(damage, playerId);
 
         // Deactivate/destroy
         //gameObject.SetActive(false); // better for pooling; otherwise Destroy(gameObject);

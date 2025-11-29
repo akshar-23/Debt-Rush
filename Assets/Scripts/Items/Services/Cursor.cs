@@ -61,6 +61,7 @@ public class Cursor : MonoBehaviour
         if (BombPrefab != null)
         {
             GameObject bomb = Instantiate(BombPrefab, new Vector3(transform.position.x, transform.position.y + height, transform.position.z), transform.rotation);
+            bomb.GetComponent<Bomb>().playerId = player.playerNumber;
         }
         Destroy(gameObject);
     }

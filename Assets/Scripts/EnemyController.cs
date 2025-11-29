@@ -24,7 +24,7 @@ public class EnemyController : Character
             Debug.LogError("NavMeshAgent component not found on " + gameObject.name);
             return;
         }
-        
+
         agent.stoppingDistance = attackRange;
     }
 
@@ -103,7 +103,11 @@ public class EnemyController : Character
         GameObject proj = Instantiate(projectilePrefab, spawnPos, transform.rotation);
 
         Projectile p = proj.GetComponent<Projectile>();
-        if (p != null) p.Init(transform.forward);
+        if (p != null)
+        {
+            p.archetype = Archetype.Enemy;
+            p.Init(transform.forward);
+        }
     }
 
     private void OnDrawGizmosSelected()

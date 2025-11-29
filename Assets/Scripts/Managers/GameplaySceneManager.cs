@@ -9,7 +9,7 @@ public class GameplaySceneManager : MonoBehaviour
     [SerializeField] private Character[] _players;
     [SerializeField] private Character[] _enemies;
     [SerializeField] private TextMeshProUGUI _enemiesText;
-    [SerializeField] private float respawnDelay = 5f;
+    private float respawnDelay = 5f;
     [SerializeField] private Transform respawnPoint;
     public static event System.Action<int, Transform> OnPlayerRespawn;
 
@@ -69,8 +69,8 @@ public class GameplaySceneManager : MonoBehaviour
         player.transform.rotation = respawnPoint.rotation;
 
         player.gameObject.GetComponent<CharacterController>().enabled = true;
-        player.isDead = false;
+        player.Reset();
         player.gameObject.SetActive(true);
-        OnPlayerRespawn?.Invoke(player.id, respawnPoint);
+        OnPlayerRespawn?.Invoke(player.id, player.transform);
     }
 }

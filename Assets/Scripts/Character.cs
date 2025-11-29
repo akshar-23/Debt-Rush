@@ -1,15 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
+public enum Archetype
+{
+    Player,
+    Enemy
+}
 
 public class Character : MonoBehaviour
 {
-    public enum Archetype
-    {
-        Player,
-        Enemy
-    }
-
     public Archetype archetype;
     public static event System.Action<int> OnPlayerDied;
 
@@ -24,7 +23,7 @@ public class Character : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float receivedDamage)
+    public void TakeDamage(float receivedDamage, int _playerId)
     {
         currentHealth -= receivedDamage;
         Debug.Log(gameObject.name + " took " + receivedDamage + " damage. Current HP: " + currentHealth);
@@ -32,7 +31,7 @@ public class Character : MonoBehaviour
         // Health below 0
         if (currentHealth <= 0f)
         {
-            Die();
+            Die(_playerId);
         }
     }
 
@@ -41,7 +40,7 @@ public class Character : MonoBehaviour
         return currentHealth;
     }
 
-    private void Die()
+    private void Die(int _playerId)
     {
         Debug.Log(gameObject.name + " died!");
         if (archetype == Archetype.Player)
@@ -52,7 +51,15 @@ public class Character : MonoBehaviour
         }
         else if (archetype == Archetype.Enemy)
         {
+            GameManager.Instance.players[_playerId-1].GetComponent<PlayerController>().killCount += 1;
+            Debug.LogWarning("Enemy killed by Player " + (_playerId-1) + ". Player's kill count: " + GameManager.Instance.players[_playerId-1].GetComponent<PlayerController>().killCount);
             Destroy(gameObject);
         }
+    }
+
+    public void Reset()
+    {
+        currentHealth = maxHealth;
+        isDead = false;
     }
 }
