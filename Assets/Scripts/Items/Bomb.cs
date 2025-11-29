@@ -6,18 +6,9 @@ public class Bomb : MonoBehaviour
     public float explosionDamage = 50f;  // Damage amount
     public GameObject explosionEffect;   // Optional visual effect
 
+    public int playerId;
+
     private bool hasExploded = false;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
 
     void OnCollisionEnter(Collision collision)
     {
@@ -53,7 +44,7 @@ public class Bomb : MonoBehaviour
                 Character enemy = nearbyObject.GetComponent<Character>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(explosionDamage);
+                    enemy.TakeDamage(explosionDamage, playerId);
                 }
             }
         }

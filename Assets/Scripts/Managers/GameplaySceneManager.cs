@@ -1,15 +1,18 @@
 using System.Linq;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
 public class GameplaySceneManager : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOverUI;
-    [SerializeField] private TextMeshProUGUI _timerText;
-    [SerializeField] private float _timer;
     [SerializeField] private Character[] _players;
     [SerializeField] private Character[] _enemies;
     [SerializeField] private TextMeshProUGUI _enemiesText;
+    private float respawnDelay = 5f;
+    [SerializeField] private Transform respawnPoint;
+    public static event System.Action<int, Transform> OnPlayerRespawn;
+
 
 
     void Awake()
@@ -23,9 +26,7 @@ public class GameplaySceneManager : MonoBehaviour
             _players[1].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<GameManager.ShopItem>)GameManager.Instance.GetInventory(2));
         }
         GameManager.Instance.gameOverUI = _gameOverUI;
-        GameManager.Instance.timerText = _timerText;
         GameManager.Instance.checkConditions = true;
-        GameManager.Instance.SetTimer(_timer);
         GameManager.Instance.players = _players;
         GameManager.Instance.enemies = _enemies;
     }
@@ -33,5 +34,43 @@ public class GameplaySceneManager : MonoBehaviour
     void FixedUpdate()
     {
         _enemiesText.text = "Enemies: " + _enemies.Count();
+    }
+
+    private void OnEnable()
+    {
+        PlayerController.OnPlayerDied += HandlePlayerDeath;
+    }
+
+    private void OnDisable()
+    {
+        PlayerController.OnPlayerDied -= HandlePlayerDeath;
+    }
+
+    private void HandlePlayerDeath(int _id)
+    {
+        Character player = _players.FirstOrDefault(p => p.id == _id);
+        if (player != null)
+        {
+            StartCoroutine(RespawnCoroutine(player));
+        }
+    }
+
+    private IEnumerator RespawnCoroutine(Character player)
+    {
+        player.gameObject.GetComponent<CharacterController>().enabled = false;
+
+        Debug.Log("Player Respawning in " + respawnDelay + " seconds...");
+
+        yield return new WaitForSeconds(respawnDelay);
+
+        Debug.Log("Respawning player!");
+
+        player.transform.position = respawnPoint.position;
+        player.transform.rotation = respawnPoint.rotation;
+
+        player.gameObject.GetComponent<CharacterController>().enabled = true;
+        player.Reset();
+        player.gameObject.SetActive(true);
+        OnPlayerRespawn?.Invoke(player.id, player.transform);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System; // Required for Action
 
 public class CameraManager : MonoBehaviour
 {
@@ -35,15 +36,19 @@ public class CameraManager : MonoBehaviour
     private Vector3 p1CamVelocity;
     private Vector3 p2CamVelocity;
 
+
     private void OnEnable()
     {
         PlayerController.OnPlayerDied += HandlePlayerDeath;
+        GameplaySceneManager.OnPlayerRespawn += HandlePlayerRespawn;
     }
 
     private void OnDisable()
     {
         PlayerController.OnPlayerDied -= HandlePlayerDeath;
+        GameplaySceneManager.OnPlayerRespawn -= HandlePlayerRespawn;
     }
+
 
     void Start()
     {
@@ -84,13 +89,14 @@ public class CameraManager : MonoBehaviour
         }
     }
 
-    private void HandlePlayerDeath(Transform deadPlayerTransform)
+
+    private void HandlePlayerDeath(int _id)
     {
-        if (deadPlayerTransform == player1)
+        if (_id == 0)
         {
             player1 = null;
         }
-        else if (deadPlayerTransform == player2)
+        else if (_id == 1)
         {
             player2 = null;
         }
@@ -101,8 +107,28 @@ public class CameraManager : MonoBehaviour
         }
     }
 
+
+    private void HandlePlayerRespawn(int _id, Transform playerTransform)
+    {
+        if (_id == 0)
+        {
+            player1 = playerTransform;
+            Debug.Log("CameraManager re-acquired Player 1");
+        }
+        else if (_id == 1)
+        {
+            player2 = playerTransform;
+            Debug.Log("CameraManager re-acquired Player 2");
+        }
+    }
+
     private void FollowSinglePlayer(Transform survivor)
     {
+        if (currentState != CameraState.Single)
+        {
+            SwitchToSingleCamera();
+        }
+
         Vector3 desiredPosition = survivor.position + singleCamOffset;
         mainCamera.transform.position = Vector3.SmoothDamp(mainCamera.transform.position, desiredPosition, ref mainCamVelocity, singleCamSmoothSpeed);
     }
@@ -130,7 +156,9 @@ public class CameraManager : MonoBehaviour
     {
         Vector3 centerPoint = (player1.position + player2.position) / 2f;
         float requiredDistance = CalculateRequiredDistance();
+        
         Vector3 desiredPosition = centerPoint + singleCamOffset.normalized * requiredDistance;
+        
         mainCamera.transform.position = Vector3.SmoothDamp(mainCamera.transform.position, desiredPosition, ref mainCamVelocity, singleCamSmoothSpeed);
     }
 
@@ -143,14 +171,17 @@ public class CameraManager : MonoBehaviour
         player2Camera.transform.position = Vector3.SmoothDamp(player2Camera.transform.position, p2DesiredPos, ref p2CamVelocity, splitCamSmoothSpeed);
     }
 
+
     private float CalculateRequiredDistance()
     {
         float defaultDistance = singleCamOffset.magnitude;
+        
         Bounds bounds = new Bounds(player1.position, Vector3.zero);
         bounds.Encapsulate(player2.position);
         bounds.Expand(singleCamPadding);
 
         float maxBoundsSize = Mathf.Max(bounds.size.x, bounds.size.z);
+        
         float distanceToFit = (maxBoundsSize / 2f) / Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
 
         return Mathf.Max(distanceToFit, defaultDistance);

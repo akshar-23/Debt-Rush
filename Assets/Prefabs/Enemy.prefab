@@ -66,6 +66,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -87,6 +89,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -150,7 +153,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   archetype: 0
   maxHealth: 100
-  currentHealth: 0
+  isDead: 0
+  id: 0
   detectionRange: 25
   attackRange: 10
   attackDamage: 20
@@ -218,6 +222,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -239,6 +245,7 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
@@ -276,6 +283,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBarCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2914560958389791987, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: character
+      value: 
+      objectReference: {fileID: 3280710858600410804}
     - target: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -355,6 +366,14 @@ PrefabInstance:
     - target: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

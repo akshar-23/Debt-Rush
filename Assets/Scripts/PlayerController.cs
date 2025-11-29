@@ -25,6 +25,8 @@ public class PlayerController : Character
     private Vector2 moveInput;
     private Vector2 directionInput;
 
+    public bool isAtDestination = false;
+
     private CharacterController controller;
     private Vector3 moveDirection;
     [SerializeField] private bool canPlayerMove;
@@ -34,9 +36,17 @@ public class PlayerController : Character
     public GameObject itemEquipped;
     public GameObject itemAuxPrefab;
 
+    [Header("Objective Bools")]
+    [SerializeField]
+    public int killCount = 0;
 
-    void Awake()
+    [Space]
+    [SerializeField]
+    public int hiddenStash = 0;
+
+    protected override void Awake()
     {
+        base.Awake();
         controller = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
 
@@ -133,7 +143,11 @@ public class PlayerController : Character
         GameObject proj = Instantiate(itemEquipped, spawnPos, transform.rotation);
         Projectile p = proj.GetComponent<Projectile>();
         if (p != null)
+        {
+            p.archetype = Archetype.Player;
             p.Init(transform.forward);
+            p.playerId = playerNumber;
+        }
     }
 
     public void SetCanPlayerMove(bool _canPlayerMove)
