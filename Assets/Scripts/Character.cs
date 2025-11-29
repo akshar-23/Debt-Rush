@@ -15,11 +15,11 @@ public class Character : MonoBehaviour
 
     [Header("Health Settings")]
     public float maxHealth = 100f;
-    public float currentHealth;
+    private float currentHealth;
     public bool isDead = false;
     public int id;
 
-    void Start()
+    protected virtual void Awake()
     {
         currentHealth = maxHealth;
     }
@@ -34,6 +34,11 @@ public class Character : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
     }
 
     private void Die()

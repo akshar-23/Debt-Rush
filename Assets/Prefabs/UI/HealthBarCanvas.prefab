@@ -266,4 +266,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba86b3c8a9f434e4f96d3f27335dcd45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 0}
+  playerController: {fileID: 0}
+  fillImg: {fileID: 4808975774240278052}

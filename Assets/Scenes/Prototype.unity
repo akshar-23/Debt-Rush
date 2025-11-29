@@ -1977,7 +1977,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   archetype: 0
   maxHealth: 100
-  currentHealth: 0
   isDead: 0
   id: 1
   playerNumber: 2
@@ -3271,6 +3270,10 @@ PrefabInstance:
       propertyPath: character
       value: 
       objectReference: {fileID: 716492849}
+    - target: {fileID: 2914560958389791987, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 716492849}
     - target: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3350,6 +3353,14 @@ PrefabInstance:
     - target: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4514,7 +4525,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   archetype: 0
   maxHealth: 100
-  currentHealth: 0
   isDead: 0
   id: 0
   playerNumber: 1
@@ -11088,6 +11098,10 @@ PrefabInstance:
       propertyPath: character
       value: 
       objectReference: {fileID: 1420241393}
+    - target: {fileID: 2914560958389791987, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: playerController
+      value: 
+      objectReference: {fileID: 1420241393}
     - target: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -11166,6 +11180,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4808975774240278052, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

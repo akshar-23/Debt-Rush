@@ -5,7 +5,6 @@ public class Projectile : MonoBehaviour
     public float speed = 20f;
     public int damage = 25;
     public float lifetime = 5f;
-    public bool usePhysicsCollision = false; // true -> OnCollisionEnter, false -> OnTriggerEnter
 
     Rigidbody rb;
     float spawnTime;
@@ -41,14 +40,7 @@ public class Projectile : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (usePhysicsCollision) return;
         HandleHit(other.gameObject);
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        if (!usePhysicsCollision) return;
-        HandleHit(collision.gameObject);
     }
 
     void HandleHit(GameObject other)

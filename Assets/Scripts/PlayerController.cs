@@ -37,8 +37,9 @@ public class PlayerController : Character
     public GameObject itemAuxPrefab;
 
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         controller = GetComponent<CharacterController>();
 
         horizontalInputAxis = "Horizontal_P" + playerNumber;
