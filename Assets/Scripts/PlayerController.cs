@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using static GameManager;
 
 [RequireComponent(typeof(CharacterController))]
@@ -20,10 +21,9 @@ public class PlayerController : Character
     [Header("Inventory")]
     [SerializeField] private List<ShopItem> inventory = new();
 
-    // setting these automatically in code
-    private string horizontalInputAxis;
-    private string verticalInputAxis;
-    private string interactButton;
+    public PlayerInput input;
+    private Vector2 moveInput;
+    private Vector2 directionInput;
 
     public bool isAtDestination = false;
 
@@ -48,10 +48,7 @@ public class PlayerController : Character
     {
         base.Awake();
         controller = GetComponent<CharacterController>();
-
-        horizontalInputAxis = "Horizontal_P" + playerNumber;
-        verticalInputAxis = "Vertical_P" + playerNumber;
-        interactButton = "Interact_P" + playerNumber;
+        input = GetComponent<PlayerInput>();
 
         canPlayerMove = true;
     }
@@ -82,26 +79,44 @@ public class PlayerController : Character
 
     void Update()
     {
+        if (Gamepad.current != null)
+        {
+            Debug.Log("Player " + playerNumber + " " +  Gamepad.current.leftStick.ReadValue());
+            Debug.Log("Gamepads detected: " + Gamepad.all.Count);
+        }
+        else
+        {
+            Debug.Log("No gamepad detected.");
+        }
+
         if (canPlayerMove)
         {
-            float moveX = Input.GetAxisRaw(horizontalInputAxis);
-            float moveZ = Input.GetAxisRaw(verticalInputAxis);
+            Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
+            transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
 
-            moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
+            Vector3 direction = new Vector3(directionInput.x, 0, directionInput.y);
+            moveDirection = direction.normalized;
 
             if (moveDirection != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
             }
-
-            controller.Move(moveDirection * moveSpeed * Time.deltaTime);
-
-            if (Input.GetButtonDown(interactButton))
-            {
-                OnInteract();
-            }
         }
+    }
+
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        moveInput = ctx.ReadValue<Vector2>();
+    }
+
+    public void OnLook(InputAction.CallbackContext ctx)
+    {
+        directionInput = ctx.ReadValue<Vector2>();
+    }
+    public void OnInteract(InputAction.CallbackContext ctx)
+    {
+        OnInteract();
     }
 
     private void OnInteract()
