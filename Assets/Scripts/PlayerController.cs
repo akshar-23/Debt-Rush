@@ -40,6 +40,7 @@ public class PlayerController : Character
     [Header("Objective Bools")]
     [SerializeField]
     public int killCount = 0;
+    public int lastMultiKillCount = 0;
 
     [Space]
     [SerializeField]
@@ -86,7 +87,7 @@ public class PlayerController : Character
     {
         if (Gamepad.current != null)
         {
-            Debug.Log("Player " + playerNumber + " " +  Gamepad.current.leftStick.ReadValue());
+            Debug.Log("Player " + playerNumber + " " + Gamepad.current.leftStick.ReadValue());
             Debug.Log("Gamepads detected: " + Gamepad.all.Count);
         }
         else
