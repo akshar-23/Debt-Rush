@@ -19,7 +19,7 @@ public class GameplaySceneManager : MonoBehaviour
     {
         if (_players[0] != null)
         {
-            //_players[0].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(1));
+            _players[0].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(1));
         }
         if (_players[1] != null)
         {

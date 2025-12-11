@@ -31,6 +31,7 @@ public class PlayerController : Character
     private CharacterController controller;
     public Vector3 moveDirection;
     [SerializeField] private bool canPlayerMove;
+    [SerializeField] private bool canPlayerAct;
 
     [Header("Items")]
     [SerializeField]
@@ -53,9 +54,11 @@ public class PlayerController : Character
         input = GetComponent<PlayerInput>();
 
         canPlayerMove = true;
+        canPlayerAct = true;
         if (inventory.Count != 0)
         {
             inventoryPos = 0;
+            itemEquipped = inventory[0];
         }        
     }
 
@@ -146,20 +149,14 @@ public class PlayerController : Character
             inventoryPos = inventory.Count;
             itemEquipped = inventory[inventoryPos];//. FininventoryPos];
         }
-            
-            //itemEquipped
     }
 
     private void OnInteract()
     {
-        itemEquipped = inventory[0];
-        itemEquipped.Execute();
-
-        if (itemEquipped == null)
+        if (itemEquipped == null || !canPlayerAct)
         {
             return;
         }
-        Vector3 spawnPos = transform.position + transform.forward * 1f;
 
         if (itemEquipped.CompareTag("Target"))
         {
@@ -171,6 +168,12 @@ public class PlayerController : Character
             //cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
             //cursor.GetComponent<Cursor>().player = this;
         }
+
+        itemEquipped = inventory[0];
+        itemEquipped.Execute();
+
+        
+
     }
 
     public void SetCanPlayerMove(bool _canPlayerMove)
@@ -178,9 +181,15 @@ public class PlayerController : Character
         canPlayerMove = _canPlayerMove;
     }
 
+    public void SetCanPlayerAct(bool _canPlayerAct)
+    {
+        canPlayerAct = _canPlayerAct;
+    }
+
     public void OnSpawnedObjectDestroyed()
     {
         canPlayerMove = true;
+        canPlayerAct = true;
         Debug.Log("My spawned object died.");
     }
 
