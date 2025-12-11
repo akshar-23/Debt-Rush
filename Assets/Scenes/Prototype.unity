@@ -10905,6 +10905,7 @@ MonoBehaviour:
   isAtDestination: 0
   moveDirection: {x: 0, y: 0, z: 0}
   canPlayerMove: 0
+  canPlayerAct: 0
   itemEquipped: {fileID: 1087458065748392346, guid: 999410dc66ba5034f84d10897e127b36, type: 3}
   itemAuxPrefab: {fileID: 3496234742590253038, guid: 8e6ce35ab9eac4547996acbdd9e1c720, type: 3}
   killCount: 0
@@ -11212,7 +11213,7 @@ MonoBehaviour:
     m_ActionId: 4047056d-835c-4746-93a3-7cbad8c40a3d
     m_ActionName: 'Player2/ChangeInventory_R[/Keyboard/numpad6]'
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player2
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -22364,6 +22365,7 @@ GameObject:
   - component: {fileID: 1420241393}
   - component: {fileID: 1420241399}
   - component: {fileID: 1420241400}
+  - component: {fileID: 1420241401}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -22396,6 +22398,7 @@ MonoBehaviour:
   isAtDestination: 0
   moveDirection: {x: 0, y: 0, z: 0}
   canPlayerMove: 0
+  canPlayerAct: 0
   itemEquipped: {fileID: 5828508778685869409, guid: 4277a8c00f61f5b49b5f59e6adbc8bfa, type: 3}
   itemAuxPrefab: {fileID: 0}
   killCount: 0
@@ -22680,7 +22683,7 @@ MonoBehaviour:
     m_ActionId: 4047056d-835c-4746-93a3-7cbad8c40a3d
     m_ActionName: 'Player2/ChangeInventory_R[/Keyboard/numpad6]'
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player1
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -22706,6 +22709,29 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &1420241401
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420241392}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1429658335
 PrefabInstance:
   m_ObjectHideFlags: 0

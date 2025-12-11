@@ -124,7 +124,10 @@ public class PlayerController : Character
     }
     public void OnInteract(InputAction.CallbackContext ctx)
     {
-        OnInteract();
+        if (canPlayerAct)
+        {
+            OnInteract();
+        }
     }
 
     public void OnChangeInventory_L(InputAction.CallbackContext ctx)
@@ -167,12 +170,7 @@ public class PlayerController : Character
             //cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
             //cursor.GetComponent<Cursor>().player = this;
         }
-
-        itemEquipped = inventory[0];
         itemEquipped.Execute();
-
-        
-
     }
 
     public void SetCanPlayerMove(bool _canPlayerMove)
