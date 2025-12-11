@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f654d38184d9baa4db2d00c824008112, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BombPackage
-  Id: 2
-  Name: Bombs
-  Price: 400
-  Description: Package of bombs.
-  Limit: 4
-  Current: 4
+  id: 1
+  itemName: Bombs
+  itemPrice: 400
+  description: 
+  maxCount: 4
+  currentCount: 0
+  isActiveItem: 0
   cursorObj: {fileID: 1087458065748392346, guid: 999410dc66ba5034f84d10897e127b36, type: 3}

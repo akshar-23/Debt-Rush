@@ -41,6 +41,15 @@ public class ObjectivesManager : MonoBehaviour
             reward = 100,
             condition = () => GameManager.Instance.players[0].GetComponent<PlayerController>().killCount >= 1 
         });
+        objsP2.Add(new Objective 
+        { 
+            index = 1, 
+            name = "First Kill", 
+            playerId = 1,
+            isCompleted = false, 
+            reward = 100,
+            condition = () => GameManager.Instance.players[1].GetComponent<PlayerController>().lastMultiKillCount >= 2 
+        });
     }
 
     public void Update()

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public enum Archetype
 {
@@ -23,7 +24,7 @@ public class Character : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float receivedDamage, int _playerId)
+    public void TakeDamage(float receivedDamage, int _playerId, Action<bool> isDead = null)
     {
         currentHealth -= receivedDamage;
         Debug.Log(gameObject.name + " took " + receivedDamage + " damage. Current HP: " + currentHealth);
@@ -32,6 +33,7 @@ public class Character : MonoBehaviour
         if (currentHealth <= 0f)
         {
             Die(_playerId);
+            isDead?.Invoke(true);
         }
     }
 

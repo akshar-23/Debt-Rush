@@ -19,11 +19,11 @@ public class HUD : MonoBehaviour
         bar1 = root.Q<VisualElement>("Button_Style_Test_1") ?? root.Q<VisualElement>("Inventory_1");
         bar2 = root.Q<VisualElement>("Button_Style_Test_2") ?? root.Q<VisualElement>("Inventory_2");
 
-        
+
 
         // Also guard at root so nothing slips through
         root.RegisterCallback<NavigationMoveEvent>(ev => ev.StopImmediatePropagation(), TrickleDown.TrickleDown);
-       
+
 
         BuildUI();
     }
@@ -67,13 +67,13 @@ public class HUD : MonoBehaviour
 
         foreach (var item in items)
         {
-            var btn = new Button { text = item.Name, focusable = true };
+            var btn = new Button { text = item.itemName, focusable = true };
             btn.tabIndex = -1;                       // keep it out of Tab focus order
             btn.AddToClassList("inventory-button");  // your HUD button style
 
-            if (item.Limit > 0)
+            if (item.maxCount > 0)
             {
-                var ammo = new Label($"{item.Current}/{item.Limit}");
+                var ammo = new Label($"{item.currentCount}/{item.maxCount}");
                 ammo.AddToClassList("ammo-label");
                 btn.Add(ammo);
             }
@@ -82,9 +82,9 @@ public class HUD : MonoBehaviour
         }
     }
 
-    
-    }
 
-    
-    
+}
+
+
+
 

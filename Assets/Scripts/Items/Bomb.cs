@@ -7,6 +7,7 @@ public class Bomb : MonoBehaviour
     public GameObject explosionEffect;   // Optional visual effect
 
     public int playerId;
+    public int multiKill = 0;
 
     private bool hasExploded = false;
 
@@ -44,7 +45,14 @@ public class Bomb : MonoBehaviour
                 Character enemy = nearbyObject.GetComponent<Character>();
                 if (enemy != null)
                 {
-                    enemy.TakeDamage(explosionDamage, playerId);
+                    enemy.TakeDamage(explosionDamage, playerId, isDead =>
+                    {
+                        if (isDead)
+                        {
+                            multiKill++;
+                            Debug.Log("Enemy killed by bomb! Total kills from this bomb: " + multiKill);
+                        }
+                    });
                 }
             }
         }
@@ -58,6 +66,8 @@ public class Bomb : MonoBehaviour
                 rb.AddExplosionForce(500f, transform.position, explosionRadius);
             }
         }
+
+        GameManager.Instance.players[playerId - 1].GetComponent<PlayerController>().lastMultiKillCount = multiKill;
 
         // Destroy the bomb
         Destroy(gameObject);

@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
     public bool TryRemoveFromInventory(int playerIndex, string name, out ShopItem removed)
     {
         var list = (playerIndex == 1) ? inventoryP1 : inventoryP2;
-        int i = list.FindIndex(x => x.Name == name);
+        int i = list.FindIndex(x => x.itemName == name);
         if (i >= 0)
         {
             removed = list[i];

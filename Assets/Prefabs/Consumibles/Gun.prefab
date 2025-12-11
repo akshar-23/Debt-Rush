@@ -44,10 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2da52e94c3c69a54d86f32a26ada0d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Gun
-  Id: 1
-  Name: Gun
-  Price: 200
-  Description: Basic survival gun.
-  Limit: 15
-  Current: 15
+  id: 0
+  itemName: Gun
+  itemPrice: 150
+  description: 
+  maxCount: 25
+  currentCount: 25
+  isActiveItem: 0
+  fireRate: 0.1
   projectile: {fileID: 5828508778685869409, guid: 4277a8c00f61f5b49b5f59e6adbc8bfa, type: 3}
