@@ -20,6 +20,7 @@ public class PlayerController : Character
 
     [Header("Inventory")]
     [SerializeField] private List<ShopItem> inventory = new();
+    private int inventoryPos = -1;
 
     public PlayerInput input;
     private Vector2 moveInput;
@@ -28,12 +29,12 @@ public class PlayerController : Character
     public bool isAtDestination = false;
 
     private CharacterController controller;
-    private Vector3 moveDirection;
+    public Vector3 moveDirection;
     [SerializeField] private bool canPlayerMove;
 
     [Header("Items")]
     [SerializeField]
-    public GameObject itemEquipped;
+    public ShopItem itemEquipped;
     public GameObject itemAuxPrefab;
 
     [Header("Objective Bools")]
@@ -51,6 +52,10 @@ public class PlayerController : Character
         input = GetComponent<PlayerInput>();
 
         canPlayerMove = true;
+        if (inventory.Count != 0)
+        {
+            inventoryPos = 0;
+        }        
     }
 
     private void Start()
@@ -119,8 +124,36 @@ public class PlayerController : Character
         OnInteract();
     }
 
+    public void OnChangeInventory_L(InputAction.CallbackContext ctx)
+    {
+        ChangeInventoryPosition(true);
+    }
+
+    public void OnChangeInventory_R(InputAction.CallbackContext ctx)
+    {
+        ChangeInventoryPosition(false);
+    }
+
+    private void ChangeInventoryPosition(bool isLeft)
+    {
+        if (inventory.Count == 0)
+        {
+            return;
+        }
+        else if(inventoryPos == 0)
+        {
+            inventoryPos = inventory.Count;
+            itemEquipped = inventory[inventoryPos];//. FininventoryPos];
+        }
+            
+            //itemEquipped
+    }
+
     private void OnInteract()
     {
+        itemEquipped = inventory[0];
+        itemEquipped.Execute();
+
         if (itemEquipped == null)
         {
             return;
@@ -132,21 +165,10 @@ public class PlayerController : Character
             canPlayerMove = false;
             //itemEquipped.GetComponent<CellphoneService>();
 
-            GameObject cursor = Instantiate(itemEquipped, spawnPos, new Quaternion(90, 0, 0, 90));
+            //GameObject cursor = Instantiate(itemEquipped, spawnPos, new Quaternion(90, 0, 0, 90));
 
-            cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
-            cursor.GetComponent<Cursor>().player = this;
-        }
-
-        //Gun Logic
-        MoneyManager.Instance.SubtractMoney(itemEquipped.GetComponent<Consumable>().cost);
-        GameObject proj = Instantiate(itemEquipped, spawnPos, transform.rotation);
-        Projectile p = proj.GetComponent<Projectile>();
-        if (p != null)
-        {
-            p.archetype = Archetype.Player;
-            p.Init(transform.forward);
-            p.playerId = playerNumber;
+            //cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
+            //cursor.GetComponent<Cursor>().player = this;
         }
     }
 

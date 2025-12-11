@@ -14,21 +14,9 @@ public class GameManager : MonoBehaviour
     public Character[] players;
     public Character[] enemies;
 
-    [System.Serializable]
-    public struct ShopItem
-    {
-        public int Id;
-        public string Name;
-        public int Price;
-        [TextArea] public string Description;
-        public int Limit;
-        [SerializeField, HideInInspector] public int Current;
-    }
-
     [Header("Shop Data (edit in Inspector)")]
     [SerializeField] private List<ShopItem> shopItemsP1 = new();
     [SerializeField] private List<ShopItem> shopItemsP2 = new();
-
 
     [SerializeField, HideInInspector] private List<ShopItem> inventoryP1 = new();
     [SerializeField, HideInInspector] private List<ShopItem> inventoryP2 = new();

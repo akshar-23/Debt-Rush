@@ -138,7 +138,7 @@ public class Shop_UI : MonoBehaviour
     }
 
     // Create one inventory button with optional ammo label and sell behavior
-    void AddInventoryButton(GameManager.ShopItem item, VisualElement invPanel, bool removable,
+    void AddInventoryButton(ShopItem item, VisualElement invPanel, bool removable,
                             Label titleLabel, Label priceLabel, Label descLabel, int playerIndex)
     {
         var invBtn = new Button { text = item.Name, focusable = true };
@@ -171,7 +171,7 @@ public class Shop_UI : MonoBehaviour
     }
 
     // ---------- Shared helpers ----------
-    void AttachInfoHandlers(VisualElement ve, GameManager.ShopItem item,
+    void AttachInfoHandlers(VisualElement ve, ShopItem item,
                             Label titleLabel, Label priceLabel, Label descLabel, bool isBuy)
     {
         System.Action update = () =>
