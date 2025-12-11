@@ -17,17 +17,9 @@
                         <ui:Button text="Button" class="button inventory-button" />
                         <ui:Button text="Button" class="button inventory-button" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="Labels" class="labels-pack">
-                        <ui:Label text="1" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                        <ui:Label text="2" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                        <ui:Label text="3" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                        <ui:Label text="4" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                        <ui:Label text="5" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                        <ui:Label text="6" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto; margin-right: -42px; flex-direction: row;" />
-                    </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="Inventory_2" class="inventory" style="translate: 150px -523px; flex-direction: row;">
+            <ui:VisualElement name="Inventory_2" enabled="true" class="inventory" style="translate: 150px -523px; flex-direction: row;">
                 <ui:VisualElement name="Button_Style_Test_2" style="flex-direction: row;">
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />
@@ -35,14 +27,6 @@
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />
                     <ui:Button text="Button" class="button inventory-button" />
-                </ui:VisualElement>
-                <ui:VisualElement name="Labels" class="labels-pack" style="flex-direction: row;">
-                    <ui:Label text="1" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                    <ui:Label text="2" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                    <ui:Label text="3" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                    <ui:Label text="4" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                    <ui:Label text="5" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto;" />
-                    <ui:Label text="6" class="num-Labels" style="align-items: auto; align-self: auto; align-content: auto; margin-right: -42px;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
