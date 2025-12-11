@@ -49,7 +49,7 @@ public class Cursor : MonoBehaviour
 
         }
 
-        if (Input.GetButtonDown(interactButton))
+        if (Input.GetButtonUp(interactButton))
         {
             OnInteract();
         }

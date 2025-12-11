@@ -19,11 +19,11 @@ public class GameplaySceneManager : MonoBehaviour
     {
         if (_players[0] != null)
         {
-            _players[0].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<GameManager.ShopItem>)GameManager.Instance.GetInventory(1));
+            _players[0].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(1));
         }
         if (_players[1] != null)
         {
-            _players[1].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<GameManager.ShopItem>)GameManager.Instance.GetInventory(2));
+            _players[1].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(2));
         }
         GameManager.Instance.gameOverUI = _gameOverUI;
         GameManager.Instance.checkConditions = true;

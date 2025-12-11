@@ -20,6 +20,7 @@ public class PlayerController : Character
 
     [Header("Inventory")]
     [SerializeField] private List<ShopItem> inventory = new();
+    private int inventoryPos = -1;
 
     public PlayerInput input;
     private Vector2 moveInput;
@@ -28,12 +29,13 @@ public class PlayerController : Character
     public bool isAtDestination = false;
 
     private CharacterController controller;
-    private Vector3 moveDirection;
+    public Vector3 moveDirection;
     [SerializeField] private bool canPlayerMove;
+    [SerializeField] private bool canPlayerAct;
 
     [Header("Items")]
     [SerializeField]
-    public GameObject itemEquipped;
+    public ShopItem itemEquipped;
     public GameObject itemAuxPrefab;
 
     [Header("Objective Bools")]
@@ -51,6 +53,12 @@ public class PlayerController : Character
         input = GetComponent<PlayerInput>();
 
         canPlayerMove = true;
+        canPlayerAct = true;
+        if (inventory.Count != 0)
+        {
+            inventoryPos = 0;
+            itemEquipped = inventory[0];
+        }        
     }
 
     private void Start()
@@ -119,35 +127,52 @@ public class PlayerController : Character
         OnInteract();
     }
 
-    private void OnInteract()
+    public void OnChangeInventory_L(InputAction.CallbackContext ctx)
     {
-        if (itemEquipped == null)
+        ChangeInventoryPosition(true);
+    }
+
+    public void OnChangeInventory_R(InputAction.CallbackContext ctx)
+    {
+        ChangeInventoryPosition(false);
+    }
+
+    private void ChangeInventoryPosition(bool isLeft)
+    {
+        if (inventory.Count == 0)
         {
             return;
         }
-        Vector3 spawnPos = transform.position + transform.forward * 1f;
+        else if(inventoryPos == 0)
+        {
+            inventoryPos = inventory.Count;
+            itemEquipped = inventory[inventoryPos];//. FininventoryPos];
+        }
+    }
+
+    private void OnInteract()
+    {
+        if (itemEquipped == null || !canPlayerAct)
+        {
+            return;
+        }
 
         if (itemEquipped.CompareTag("Target"))
         {
             canPlayerMove = false;
             //itemEquipped.GetComponent<CellphoneService>();
 
-            GameObject cursor = Instantiate(itemEquipped, spawnPos, new Quaternion(90, 0, 0, 90));
+            //GameObject cursor = Instantiate(itemEquipped, spawnPos, new Quaternion(90, 0, 0, 90));
 
-            cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
-            cursor.GetComponent<Cursor>().player = this;
+            //cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
+            //cursor.GetComponent<Cursor>().player = this;
         }
 
-        //Gun Logic
-        MoneyManager.Instance.SubtractMoney(itemEquipped.GetComponent<Consumable>().cost);
-        GameObject proj = Instantiate(itemEquipped, spawnPos, transform.rotation);
-        Projectile p = proj.GetComponent<Projectile>();
-        if (p != null)
-        {
-            p.archetype = Archetype.Player;
-            p.Init(transform.forward);
-            p.playerId = playerNumber;
-        }
+        itemEquipped = inventory[0];
+        itemEquipped.Execute();
+
+        
+
     }
 
     public void SetCanPlayerMove(bool _canPlayerMove)
@@ -155,9 +180,15 @@ public class PlayerController : Character
         canPlayerMove = _canPlayerMove;
     }
 
+    public void SetCanPlayerAct(bool _canPlayerAct)
+    {
+        canPlayerAct = _canPlayerAct;
+    }
+
     public void OnSpawnedObjectDestroyed()
     {
         canPlayerMove = true;
+        canPlayerAct = true;
         Debug.Log("My spawned object died.");
     }
 

@@ -59,7 +59,7 @@ public class HUD : MonoBehaviour
         foreach (var c in remove) bar.Remove(c);
     }
 
-    private void PopulateBar(VisualElement bar, IReadOnlyList<GameManager.ShopItem> items)
+    private void PopulateBar(VisualElement bar, IReadOnlyList<ShopItem> items)
     {
         if (bar == null || items == null) return;
 
