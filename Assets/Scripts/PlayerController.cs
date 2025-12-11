@@ -38,7 +38,6 @@ public class PlayerController : Character
     [Header("Items")]
     [SerializeField]
     public ShopItem itemEquipped;
-    public GameObject itemAuxPrefab;
 
     [Header("Objective Bools")]
     [SerializeField]
@@ -57,7 +56,7 @@ public class PlayerController : Character
     protected override void Awake()
     {
         base.Awake();
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
 
         canPlayerMove = true;
