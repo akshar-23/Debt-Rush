@@ -98,7 +98,7 @@ public class Shop_UI : MonoBehaviour
         {
             foreach (var item in shopList)
             {
-                var btn = new Button { text = item.Name, focusable = true };
+                var btn = new Button { text = item.itemName, focusable = true };
                 btn.AddToClassList("button");
 
                 // Preview info
@@ -109,14 +109,14 @@ public class Shop_UI : MonoBehaviour
                 {
                     if (invPanel == null) return;
                     if (invPanel.childCount - 1 >= inventoryLimit) return; // -1 because capacity label occupies index 0
-                    if (MoneyManager.Instance.GetMoneyAmount() < item.Price) return;
+                    if (MoneyManager.Instance.GetMoneyAmount() < item.itemPrice) return;
 
-                    MoneyManager.Instance.SubtractMoney(item.Price);
+                    MoneyManager.Instance.SubtractMoney(item.itemPrice);
                     UpdateMoneyLabel();
 
                     // Add a fresh instance to inventory (set Current to full Limit if applicable)
                     var toAdd = item;
-                    if (toAdd.Limit > 0) toAdd.Current = toAdd.Limit;
+                    if (toAdd.maxCount > 0) toAdd.currentCount = toAdd.maxCount;
 
                     GameManager.Instance.AddToInventory(playerIndex, toAdd);
                     AddInventoryButton(toAdd, invPanel, removable: true, titleLabel, priceLabel, descLabel, playerIndex);
@@ -127,9 +127,9 @@ public class Shop_UI : MonoBehaviour
                 shopPanel.Add(btn);
 
                 // Ammo badge in shop (non-interactive)
-                if (item.Limit > 0)
+                if (item.maxCount > 0)
                 {
-                    var ammo = new Label($"{item.Limit}/{item.Limit}");
+                    var ammo = new Label($"{item.maxCount}/{item.maxCount}");
                     ammo.AddToClassList("ammo-label");
                     btn.Add(ammo);
                 }
@@ -141,14 +141,14 @@ public class Shop_UI : MonoBehaviour
     void AddInventoryButton(ShopItem item, VisualElement invPanel, bool removable,
                             Label titleLabel, Label priceLabel, Label descLabel, int playerIndex)
     {
-        var invBtn = new Button { text = item.Name, focusable = true };
+        var invBtn = new Button { text = item.itemName, focusable = true };
         invBtn.AddToClassList("button");
 
         AttachInfoHandlers(invBtn, item, titleLabel, priceLabel, descLabel, isBuy: false);
 
-        if (item.Limit > 0)
+        if (item.maxCount > 0)
         {
-            var ammo = new Label($"{item.Current}/{item.Limit}");
+            var ammo = new Label($"{item.currentCount}/{item.maxCount}");
             ammo.AddToClassList("ammo-label");
             invBtn.Add(ammo);
         }
@@ -157,10 +157,10 @@ public class Shop_UI : MonoBehaviour
         {
             invBtn.clicked += () =>
             {
-                if (GameManager.Instance.TryRemoveFromInventory(playerIndex, item.Name, out var removed))
+                if (GameManager.Instance.TryRemoveFromInventory(playerIndex, item.itemName, out var removed))
                 {
                     invPanel.Remove(invBtn);
-                    MoneyManager.Instance.AddMoney(removed.Price);
+                    MoneyManager.Instance.AddMoney(removed.itemPrice);
                     UpdateMoneyLabel();
                     UpdateCapacityLabels();
                 }
@@ -176,10 +176,10 @@ public class Shop_UI : MonoBehaviour
     {
         System.Action update = () =>
         {
-            if (titleLabel != null) titleLabel.text = item.Name;
+            if (titleLabel != null) titleLabel.text = item.itemName;
             if (priceLabel != null)
-                priceLabel.text = isBuy ? $"Buy For -${item.Price}" : $"Sell For +${item.Price}";
-            if (descLabel != null) descLabel.text = item.Description;
+                priceLabel.text = isBuy ? $"Buy For -${item.itemPrice}" : $"Sell For +${item.itemPrice}";
+            if (descLabel != null) descLabel.text = item.description;
         };
 
         ve.RegisterCallback<MouseEnterEvent>(_ => update());

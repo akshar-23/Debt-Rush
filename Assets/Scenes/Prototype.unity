@@ -1067,6 +1067,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 539408351472717942, guid: de0e675c028ea8d479c15faf8ecfc479, type: 3}
   m_PrefabInstance: {fileID: 94510124}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &100887517
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 100887518}
+  m_Layer: 0
+  m_Name: WeaponHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &100887518
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100887517}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1420241398}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &109605800
 GameObject:
   m_ObjectHideFlags: 0
@@ -5352,6 +5383,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1563407479595666166, guid: 4056a1b31dc181241baafc200ef73550, type: 3}
   m_PrefabInstance: {fileID: 363634254}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &366531357
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 366531358}
+  m_Layer: 0
+  m_Name: WeaponHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &366531358
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366531357}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.598916, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 716492853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &367331548
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10899,16 +10961,20 @@ MonoBehaviour:
   playerNumber: 2
   moveSpeed: 7
   rotationSpeed: 10
+  weaponHolder: {fileID: 366531358}
   inventory:
   - {fileID: 7099855293211640458, guid: d0d7a433ed5ca9d4da19884beb47d90c, type: 3}
   input: {fileID: 0}
   isAtDestination: 0
   moveDirection: {x: 0, y: 0, z: 0}
   canPlayerMove: 0
+  canPlayerAct: 0
   itemEquipped: {fileID: 1087458065748392346, guid: 999410dc66ba5034f84d10897e127b36, type: 3}
   itemAuxPrefab: {fileID: 3496234742590253038, guid: 8e6ce35ab9eac4547996acbdd9e1c720, type: 3}
   killCount: 0
+  lastMultiKillCount: 0
   hiddenStash: 0
+  hudref: {fileID: 1331330676}
 --- !u!143 &716492850
 CharacterController:
   m_ObjectHideFlags: 0
@@ -11006,6 +11072,7 @@ Transform:
   - {fileID: 1718368153}
   - {fileID: 907025751}
   - {fileID: 1088710349}
+  - {fileID: 366531358}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &716492854
@@ -22390,16 +22457,19 @@ MonoBehaviour:
   playerNumber: 1
   moveSpeed: 7
   rotationSpeed: 10
-  inventory:
-  - {fileID: 552158336560925379, guid: 580f49aacf99cff4abf907e1f130bd2f, type: 3}
+  weaponHolder: {fileID: 100887518}
+  inventory: []
   input: {fileID: 0}
   isAtDestination: 0
   moveDirection: {x: 0, y: 0, z: 0}
   canPlayerMove: 0
+  canPlayerAct: 0
   itemEquipped: {fileID: 5828508778685869409, guid: 4277a8c00f61f5b49b5f59e6adbc8bfa, type: 3}
   itemAuxPrefab: {fileID: 0}
   killCount: 0
+  lastMultiKillCount: 0
   hiddenStash: 0
+  hudref: {fileID: 1331330676}
 --- !u!143 &1420241394
 CharacterController:
   m_ObjectHideFlags: 0
@@ -22496,6 +22566,7 @@ Transform:
   m_Children:
   - {fileID: 1883380564}
   - {fileID: 1983331731}
+  - {fileID: 100887518}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1420241399

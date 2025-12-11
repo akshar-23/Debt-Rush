@@ -18,8 +18,10 @@ public class PlayerController : Character
     [Tooltip("The speed at which the player rotates to face the movement direction.")]
     public float rotationSpeed = 10f;
 
+    public Transform weaponHolder;
+
     [Header("Inventory")]
-    [SerializeField] private List<ShopItem> inventory = new();
+    [SerializeField] private List<ShopItem> inventory = new List<ShopItem>();
     private int inventoryPos = -1;
 
     public PlayerInput input;
@@ -47,6 +49,11 @@ public class PlayerController : Character
     [SerializeField]
     public int hiddenStash = 0;
 
+    [Space]
+    [Header("I don't like this, not proud of it!")]
+    public HUD hudref;
+
+
     protected override void Awake()
     {
         base.Awake();
@@ -55,11 +62,8 @@ public class PlayerController : Character
 
         canPlayerMove = true;
         canPlayerAct = true;
-        if (inventory.Count != 0)
-        {
-            inventoryPos = 0;
-            itemEquipped = inventory[0];
-        }        
+
+        InventoryInit();
     }
 
     private void Start()
@@ -73,7 +77,7 @@ public class PlayerController : Character
 
         foreach (var item in inventory)
         {
-            if (item.Name.Equals("Shield"))
+            if (item.itemName.Equals("Shield"))
             {
                 if (childTransform != null)
                 {
@@ -144,7 +148,7 @@ public class PlayerController : Character
         {
             return;
         }
-        else if(inventoryPos == 0)
+        else if (inventoryPos == 0)
         {
             inventoryPos = inventory.Count;
             itemEquipped = inventory[inventoryPos];//. FininventoryPos];
@@ -169,10 +173,9 @@ public class PlayerController : Character
             //cursor.GetComponent<Cursor>().player = this;
         }
 
-        itemEquipped = inventory[0];
         itemEquipped.Execute();
 
-        
+
 
     }
 
@@ -195,6 +198,45 @@ public class PlayerController : Character
 
     public void CopyInventory(List<ShopItem> itemsList)
     {
-        inventory = itemsList;
+        foreach (var item in itemsList)
+        {
+            GameObject itemObj = Instantiate(item.gameObject, weaponHolder);
+            ShopItem newItem = itemObj.GetComponent<ShopItem>();
+            newItem.isActiveItem = false;
+            inventory.Add(newItem);
+            newItem.gameObject.SetActive(false);
+        }
+    }
+
+    private void InventoryInit()
+    {
+        if (inventory.Count != 0)
+        {
+            inventoryPos = 0;
+            itemEquipped = inventory[inventoryPos];
+            itemEquipped.gameObject.SetActive(true);
+            itemEquipped.isActiveItem = true;
+        }
+    }
+
+    public void DeleteInventoryItem(ShopItem _item)
+    {
+        Destroy(_item.gameObject);
+        inventory.Remove(_item);
+        GameManager.Instance.TryRemoveFromInventory(playerNumber, _item.itemName, out ShopItem removed);
+        hudref.BuildUI();
+        
+        if (inventory.Count == 0)
+        {
+            inventoryPos = -1;
+            itemEquipped = null;
+        }
+        else
+        {
+            inventoryPos = 0;
+            itemEquipped = inventory[inventoryPos];
+            itemEquipped.gameObject.SetActive(true);
+            itemEquipped.isActiveItem = true;
+        }
     }
 }
