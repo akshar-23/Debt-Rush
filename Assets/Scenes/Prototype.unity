@@ -21477,7 +21477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -28141,7 +28141,8 @@ MonoBehaviour:
   moveSpeed: 7
   rotationSpeed: 10
   weaponHolder: {fileID: 0}
-  inventory: []
+  inventory:
+  - {fileID: 7099855293211640458, guid: d0d7a433ed5ca9d4da19884beb47d90c, type: 3}
   input: {fileID: 0}
   isAtDestination: 0
   moveDirection: {x: 0, y: 0, z: 0}
@@ -28433,7 +28434,7 @@ MonoBehaviour:
     m_ActionId: c3a80cf5-ae97-4406-82b6-bd7e0edbfd69
     m_ActionName: 'PlayerCursor/Interact[/Keyboard/numpad0,/DualSenseGamepadHID1/buttonWest]'
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Gamepad
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player2
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -33951,7 +33952,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -36706,7 +36707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -56566,7 +56567,8 @@ MonoBehaviour:
   moveSpeed: 7
   rotationSpeed: 10
   weaponHolder: {fileID: 0}
-  inventory: []
+  inventory:
+  - {fileID: 552158336560925379, guid: 580f49aacf99cff4abf907e1f130bd2f, type: 3}
   input: {fileID: 0}
   isAtDestination: 0
   moveDirection: {x: 0, y: 0, z: 0}
@@ -56857,7 +56859,7 @@ MonoBehaviour:
     m_ActionId: c3a80cf5-ae97-4406-82b6-bd7e0edbfd69
     m_ActionName: 'PlayerCursor/Interact[/Keyboard/numpad0,/DualSenseGamepadHID1/buttonWest]'
   m_NeverAutoSwitchControlSchemes: 1
-  m_DefaultControlScheme: Gamepad
+  m_DefaultControlScheme: 
   m_DefaultActionMap: Player1
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -63529,7 +63531,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -73088,7 +73090,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -78807,6 +78809,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -83376,7 +83382,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -88886,6 +88892,10 @@ PrefabInstance:
     - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7652669233999057659, guid: e4e38bcb74d7cc44cb12278a915f3355, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
