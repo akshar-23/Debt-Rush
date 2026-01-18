@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class GameplaySceneManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class GameplaySceneManager : MonoBehaviour
     private float respawnDelay = 5f;
     [SerializeField] private Transform respawnPoint;
     public static event System.Action<int, Transform> OnPlayerRespawn;
-
+    private Dictionary<Character, Coroutine> _respawnRoutines = new Dictionary<Character, Coroutine>();
 
 
     void Awake()
@@ -49,21 +50,32 @@ public class GameplaySceneManager : MonoBehaviour
     private void HandlePlayerDeath(int _id)
     {
         Character player = _players.FirstOrDefault(p => p.id == _id);
-        if (player != null)
+        
+        if (player != null && AtleastOnePlayerIsAlive())
         {
-            StartCoroutine(RespawnCoroutine(player));
+            _respawnRoutines[player] = StartCoroutine(RespawnCoroutine(player));
         }
+        else
+        {
+            StopAllCoroutines();
+            _respawnRoutines.Clear();
+        }
+    }
+
+    private bool AtleastOnePlayerIsAlive()
+    {
+        return _players.Any(p => !p.isDead);
     }
 
     private IEnumerator RespawnCoroutine(Character player)
     {
         player.gameObject.GetComponent<CharacterController>().enabled = false;
 
-        Debug.Log("Player Respawning in " + respawnDelay + " seconds...");
+        Debug.LogWarning("Player Respawning in " + respawnDelay + " seconds...");
 
         yield return new WaitForSeconds(respawnDelay);
 
-        Debug.Log("Respawning player!");
+        Debug.LogWarning("Respawning player!");
 
         player.transform.position = respawnPoint.position;
         player.transform.rotation = respawnPoint.rotation;

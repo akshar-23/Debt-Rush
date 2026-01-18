@@ -47,9 +47,9 @@ public class Character : MonoBehaviour
         Debug.Log(gameObject.name + " died!");
         if (archetype == Archetype.Player)
         {
-            OnPlayerDied?.Invoke(id);
             gameObject.SetActive(false);
             isDead = true;
+            OnPlayerDied?.Invoke(id);
         }
         else if (archetype == Archetype.Enemy)
         {
