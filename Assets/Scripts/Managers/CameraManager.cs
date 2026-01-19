@@ -186,4 +186,16 @@ public class CameraManager : MonoBehaviour
 
         return Mathf.Max(distanceToFit, defaultDistance);
     }
+
+    public void AssignTransformPosition(Transform position, int playerIndex)
+    {
+        if(playerIndex == 0)
+        {
+            player1 = position;            
+        }
+        if(playerIndex == 1)
+        {
+            player2 = position;
+        }
+    }
 }

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using static GameManager;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : Character
+public class PlayerMoveController : Character
 {
     [Header("Player Settings")]
     [Tooltip("The unique number for this player (1, 2, 3, etc.).")]
@@ -56,7 +56,7 @@ public class PlayerController : Character
     protected override void Awake()
     {
         base.Awake();
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
         input = GetComponent<PlayerInput>();
 
         canPlayerMove = true;
@@ -104,8 +104,7 @@ public class PlayerController : Character
         if (canPlayerMove)
         {
             Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
-            //transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
-            controller.Move(movement * moveSpeed * Time.deltaTime);
+            transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
 
             Vector3 direction = new Vector3(directionInput.x, 0, directionInput.y);
             moveDirection = direction.normalized;
