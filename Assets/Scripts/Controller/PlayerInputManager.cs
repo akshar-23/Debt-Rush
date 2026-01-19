@@ -47,6 +47,12 @@ public class PlayerInputManager : MonoBehaviour
                 gamesceneManager.CopyInventory(0);
             }
 
+            GameObject cameraManager = GameObject.Find("CameraManager");
+            if (cameraManager != null)
+            {
+                cameraManager.GetComponent<CameraManager>().AssignTransformPosition(player.transform, 0);
+            }
+
             wasdJoined = true;
         }
 
@@ -66,6 +72,12 @@ public class PlayerInputManager : MonoBehaviour
                 gamesceneManager.AddPlayer(player.gameObject.GetComponent<PlayerController>(), 1);
                 gamesceneManager.CopyInventory(1);
 
+            }
+
+            GameObject cameraManager = GameObject.Find("CameraManager");
+            if (cameraManager != null)
+            {
+                cameraManager.GetComponent<CameraManager>().AssignTransformPosition(player.transform, 1);
             }
 
             arrowsJoined = true;
