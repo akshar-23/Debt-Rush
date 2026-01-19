@@ -18,6 +18,24 @@ public class GameplaySceneManager : MonoBehaviour
 
     void Awake()
     {
+        GameObject cManager = GameObject.Find("PlayerInputManager");
+
+        if(cManager != null)
+        {
+            cManager.GetComponent<PlayerInputManager>().SetGameSceneManager(this);
+            //cManager.GetComponent<PlayerInputManager>().InstantiateCharacters();
+            //cManager.GetComponent<PlayerInputManager>().InstantiateCharacter("WASD", 0);
+            //cManager.GetComponent<PlayerInputManager>().InstantiateCharacter("Arrows", 1);
+        }
+
+        GameObject cameraManager = GameObject.Find("CameraManager");
+        if (cameraManager != null)
+        {
+            cameraManager.GetComponent<CameraManager>().AssignTransformPosition(_players[0].transform, 0);
+            cameraManager.GetComponent<CameraManager>().AssignTransformPosition(_players[1].transform, 1);
+        }
+        
+
         if (_players[0] != null)
         {
             _players[0].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(1));
@@ -84,5 +102,15 @@ public class GameplaySceneManager : MonoBehaviour
         player.Reset();
         player.gameObject.SetActive(true);
         OnPlayerRespawn?.Invoke(player.id, player.transform);
+    }
+
+    public void AddPlayer(Character player, int pos)
+    {
+        _players[pos] = player;
+    }
+
+    public void CopyInventory(int playerIndex)
+    {
+        _players[playerIndex].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(playerIndex + 1));
     }
 }

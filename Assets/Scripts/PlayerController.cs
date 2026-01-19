@@ -98,12 +98,13 @@ public class PlayerController : Character
         }
         else
         {
-            Debug.Log("No gamepad detected.");
+            //Debug.Log("No gamepad detected.");
         }
 
         if (canPlayerMove)
         {
             Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
+            //transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
             controller.Move(movement * moveSpeed * Time.deltaTime);
 
             Vector3 direction = new Vector3(directionInput.x, 0, directionInput.y);
@@ -119,15 +120,18 @@ public class PlayerController : Character
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Move! Player: " + playerNumber + " " + ctx.phase);
         moveInput = ctx.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Rotate! Player: " + playerNumber + " " + ctx.phase);
         directionInput = ctx.ReadValue<Vector2>();
     }
     public void OnInteract(InputAction.CallbackContext ctx)
     {
+        Debug.Log("Interact! Player: " + playerNumber + " " +  ctx.phase);
         OnInteract();
     }
 
