@@ -36,6 +36,7 @@ public class PlayerInputManager : MonoBehaviour
             if(spawnPoints.Length > 0)
             {
                 player.transform.position = spawnPoints[0].position;
+            
             }
 
             GameManager.Instance.players[0] = player.gameObject.GetComponent<PlayerController>();
