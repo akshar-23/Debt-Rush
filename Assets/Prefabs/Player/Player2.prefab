@@ -497,11 +497,35 @@ MonoBehaviour:
     m_ActionId: fbaae571-04be-4b31-b4ab-3421a7d909d0
     m_ActionName: 'Player/Interact[/Keyboard/e,/Keyboard/numpad0]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8874772222850655108}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnChangeInventory_L
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 95287db0-7062-483c-b24e-b1d7d9a1a1c9
     m_ActionName: 'Player/ChangeInventory_L[/Keyboard/r,/Keyboard/numpad4]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8874772222850655108}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnChangeInventory_R
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: b537ea7b-58c4-4dff-aeb8-3c51366ce72f
     m_ActionName: 'Player/ChangeInventory_R[/Keyboard/y,/Keyboard/numpad6]'
   m_NeverAutoSwitchControlSchemes: 1

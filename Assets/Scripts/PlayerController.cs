@@ -137,24 +137,19 @@ public class PlayerController : Character
 
     public void OnChangeInventory_L(InputAction.CallbackContext ctx)
     {
-        ChangeInventoryPosition(true);
+        if (ctx.performed)
+        {
+            MoveLeft();
+            Debug.Log("Move Inventory to the left performed");
+        }
     }
 
     public void OnChangeInventory_R(InputAction.CallbackContext ctx)
     {
-        ChangeInventoryPosition(false);
-    }
-
-    private void ChangeInventoryPosition(bool isLeft)
-    {
-        if (inventory.Count == 0)
+        if (ctx.performed)
         {
-            return;
-        }
-        else if (inventoryPos == 0)
-        {
-            inventoryPos = inventory.Count;
-            itemEquipped = inventory[inventoryPos];//. FininventoryPos];
+            MoveRight();
+            Debug.Log("Move Inventory to the right performed");
         }
     }
 
@@ -177,9 +172,18 @@ public class PlayerController : Character
         }
 
         itemEquipped.Execute();
+    }
 
+    public void MoveRight()
+    {
+        inventoryPos = (inventoryPos + 1) % inventory.Count;
+        itemEquipped = inventory[inventoryPos];
+    }
 
-
+    public void MoveLeft()
+    {
+        inventoryPos = (inventoryPos - 1 + inventory.Count) % inventory.Count;
+        itemEquipped = inventory[inventoryPos];
     }
 
     public void SetCanPlayerMove(bool _canPlayerMove)
@@ -201,11 +205,13 @@ public class PlayerController : Character
 
     public void CopyInventory(List<ShopItem> itemsList)
     {
+        inventory.Clear();
+
         foreach (var item in itemsList)
         {
-            GameObject itemObj = Instantiate(item.gameObject, weaponHolder);
-            ShopItem newItem = itemObj.GetComponent<ShopItem>();
-            newItem.isActiveItem = false;
+            //GameObject itemObj = Instantiate(item.gameObject, weaponHolder);
+            ShopItem newItem = item.GetComponent<ShopItem>();
+            //newItem.isActiveItem = false;
             inventory.Add(newItem);
             newItem.gameObject.SetActive(false);
         }

@@ -1819,7 +1819,7 @@
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD",
                     "action": "ChangeInventory_L",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1830,7 +1830,7 @@
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "ChangeInventory_L",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1841,7 +1841,7 @@
                     "path": "<Keyboard>/numpad4",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Arrows",
                     "action": "ChangeInventory_L",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1852,7 +1852,7 @@
                     "path": "<Keyboard>/y",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";WASD",
                     "action": "ChangeInventory_R",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1863,7 +1863,7 @@
                     "path": "<Keyboard>/numpad6",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Arrows",
                     "action": "ChangeInventory_R",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1874,7 +1874,7 @@
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";Gamepad",
                     "action": "ChangeInventory_R",
                     "isComposite": false,
                     "isPartOfComposite": false

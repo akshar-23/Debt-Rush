@@ -13,73 +13,29 @@ public class PlayerInputManager : MonoBehaviour
     private bool arrowsJoined = false;
     private bool gamepadJoined = false;
 
-
+    private const int MaxNumberPlayers = 2;
+    private int currentNumberPlayers;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        currentNumberPlayers = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        //return;
-
-        if (Keyboard.current == null) return;
+        if (Keyboard.current == null || currentNumberPlayers >= 2) return;
 
         if(!wasdJoined && Keyboard.current.spaceKey.wasPressedThisFrame)
         {
-            var player = PlayerInput.Instantiate(player1Prefab, controlScheme: "WASD", pairWithDevice: Keyboard.current);
-        
-            if(spawnPoints.Length > 0)
-            {
-                player.transform.position = spawnPoints[0].position;
-            
-            }
-
-            GameManager.Instance.players[0] = player.gameObject.GetComponent<PlayerController>();
-
-            if (gamesceneManager != null)
-            {
-                gamesceneManager.AddPlayer(player.gameObject.GetComponent<PlayerController>(), 0);
-                gamesceneManager.CopyInventory(0);
-            }
-
-            GameObject cameraManager = GameObject.Find("CameraManager");
-            if (cameraManager != null)
-            {
-                cameraManager.GetComponent<CameraManager>().AssignTransformPosition(player.transform, 0);
-            }
-
+            InstantiateCharacter("WASD");
             wasdJoined = true;
         }
 
         if (!arrowsJoined && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
         {
-            var player = PlayerInput.Instantiate(player2Prefab, controlScheme: "Arrows", pairWithDevice: Keyboard.current);
-
-            if (spawnPoints.Length > 0)
-            {
-                player.transform.position = spawnPoints[1].position;
-            }
-
-            GameManager.Instance.players[1] = player.gameObject.GetComponent<PlayerController>();
-
-            if (gamesceneManager != null)
-            {
-                gamesceneManager.AddPlayer(player.gameObject.GetComponent<PlayerController>(), 1);
-                gamesceneManager.CopyInventory(1);
-
-            }
-
-            GameObject cameraManager = GameObject.Find("CameraManager");
-            if (cameraManager != null)
-            {
-                cameraManager.GetComponent<CameraManager>().AssignTransformPosition(player.transform, 1);
-            }
-
+            InstantiateCharacter("Arrows");
             arrowsJoined = true;
         }
 
@@ -87,28 +43,36 @@ public class PlayerInputManager : MonoBehaviour
         {
             if (gamePad.buttonSouth.wasPressedThisFrame)
             {
-                PlayerInput.Instantiate(player1Prefab, controlScheme: "Gamepad", pairWithDevice: gamePad);
+                InstantiateCharacter("GamePad", gamePad);
+                if (currentNumberPlayers == 2) gamepadJoined = true;
             }
         }
-
     }
 
-    public void InstantiateCharacter(string scheme, int playerIndex)
+    public void InstantiateCharacter(string scheme, Gamepad gamePad = null)
     {
-        if (Keyboard.current == null) return;
-
-        GameObject prefab = playerIndex == 0 ? player1Prefab : player2Prefab ;
-        var player = PlayerInput.Instantiate(prefab, controlScheme: scheme, pairWithDevice: Keyboard.current);
+        var player = PlayerInput.Instantiate(GetPlayerPrefab(currentNumberPlayers), controlScheme: scheme, pairWithDevice: gamePad != null ? gamePad : Keyboard.current);
 
         if (spawnPoints.Length > 0)
         {
-            player.transform.position = spawnPoints[playerIndex].position;
+            player.transform.position = spawnPoints[currentNumberPlayers].position;
         }
+
+        GameManager.Instance.players[currentNumberPlayers] = player.gameObject.GetComponent<PlayerController>();
 
         if (gamesceneManager != null)
         {
-            gamesceneManager.AddPlayer(player.gameObject.GetComponent<PlayerController>(), playerIndex);
+            gamesceneManager.AddPlayer(player.gameObject.GetComponent<PlayerController>(), currentNumberPlayers);
+            gamesceneManager.CopyInventory(currentNumberPlayers);
         }
+
+        GameObject cameraManager = GameObject.Find("CameraManager");
+        if (cameraManager != null)
+        {
+            cameraManager.GetComponent<CameraManager>().AssignTransformPosition(player.transform, currentNumberPlayers);
+        }
+
+        currentNumberPlayers++;
     }
 
     public void InstantiateCharacters()
@@ -153,5 +117,21 @@ public class PlayerInputManager : MonoBehaviour
     public void SetGameSceneManager(GameplaySceneManager _gamesceneManager)
     {
         gamesceneManager = _gamesceneManager;
+    }
+
+    private GameObject GetPlayerPrefab(int playerIndex) 
+    {
+        if(playerIndex == 0) 
+        {
+            return player1Prefab;
+        }
+        else if (playerIndex == 1)
+        {
+            return player2Prefab;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
