@@ -18,6 +18,8 @@ public class GameplaySceneManager : MonoBehaviour
 
     void Awake()
     {
+        // Do we need this block of code? 
+        /*
         GameObject cManager = GameObject.Find("PlayerInputManager");
 
         if(cManager != null)
@@ -27,14 +29,14 @@ public class GameplaySceneManager : MonoBehaviour
             //cManager.GetComponent<PlayerInputManager>().InstantiateCharacter("WASD", 0);
             //cManager.GetComponent<PlayerInputManager>().InstantiateCharacter("Arrows", 1);
         }
-
+        
         GameObject cameraManager = GameObject.Find("CameraManager");
         if (cameraManager != null)
         {
             cameraManager.GetComponent<CameraManager>().AssignTransformPosition(_players[0].transform, 0);
             cameraManager.GetComponent<CameraManager>().AssignTransformPosition(_players[1].transform, 1);
-        }
-        
+        }*/
+
 
         if (_players[0] != null)
         {

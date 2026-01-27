@@ -131,8 +131,11 @@ public class PlayerController : Character
     }
     public void OnInteract(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Interact! Player: " + playerNumber + " " +  ctx.phase);
-        OnInteract();
+        if (ctx.started)
+        {
+            Debug.Log("Interact! Player: " + playerNumber + " " + ctx.phase);
+            OnInteract();
+        }
     }
 
     public void OnChangeInventory_L(InputAction.CallbackContext ctx)
