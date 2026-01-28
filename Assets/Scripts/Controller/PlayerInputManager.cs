@@ -53,7 +53,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         var player = PlayerInput.Instantiate(GetPlayerPrefab(currentNumberPlayers), controlScheme: scheme, pairWithDevice: gamePad != null ? gamePad : Keyboard.current);
 
-        if (spawnPoints.Length > 0)
+        if (spawnPoints != null && currentNumberPlayers < spawnPoints.Length)
         {
             player.transform.position = spawnPoints[currentNumberPlayers].position;
         }
