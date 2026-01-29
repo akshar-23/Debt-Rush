@@ -8,6 +8,8 @@ public class Gun : ShopItem
 
     private float nextFireTime = 0f;
 
+    
+
     private void Start()
     {
         currentCount = maxCount;
@@ -17,7 +19,7 @@ public class Gun : ShopItem
     {
         if (isActiveItem)
         {
-            if (Time.time < nextFireTime) return;
+            
 
             PlayerController pc = GameManager.Instance.players[0].GetComponent<PlayerController>();
 
