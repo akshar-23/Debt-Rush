@@ -1,9 +1,6 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static GameManager;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : Character
@@ -21,7 +18,7 @@ public class PlayerController : Character
     public Transform weaponHolder;
 
     [Header("Inventory")]
-    [SerializeField] private List<ShopItem> inventory = new List<ShopItem>();
+    private List<ShopItem> inventory = new List<ShopItem>();
     private int inventoryPos = -1;
 
     public PlayerInput input;
@@ -49,7 +46,7 @@ public class PlayerController : Character
     public int hiddenStash = 0;
 
     [Space]
-    [Header("I don't like this, not proud of it!")]
+    [Header("References")]
     public HUD hudref;
 
 
@@ -76,35 +73,22 @@ public class PlayerController : Character
 
         foreach (var item in inventory)
         {
-            if (item.itemName.Equals("Shield"))
+            if (item != null && item.itemName.Equals("Shield"))
             {
                 if (childTransform != null)
                 {
                     GameObject childGameObject = childTransform.gameObject;
                     childGameObject.SetActive(true);
-                    Debug.Log("Found child: " + childGameObject.name);
                 }
             }
         }
-
     }
 
     void Update()
     {
-        if (Gamepad.current != null)
-        {
-            Debug.Log("Player " + playerNumber + " " + Gamepad.current.leftStick.ReadValue());
-            Debug.Log("Gamepads detected: " + Gamepad.all.Count);
-        }
-        else
-        {
-            //Debug.Log("No gamepad detected.");
-        }
-
         if (canPlayerMove)
         {
             Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
-            //transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
             controller.Move(movement * moveSpeed * Time.deltaTime);
 
             Vector3 direction = new Vector3(directionInput.x, 0, directionInput.y);
@@ -120,20 +104,18 @@ public class PlayerController : Character
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Move! Player: " + playerNumber + " " + ctx.phase);
         moveInput = ctx.ReadValue<Vector2>();
     }
 
     public void OnLook(InputAction.CallbackContext ctx)
     {
-        Debug.Log("Rotate! Player: " + playerNumber + " " + ctx.phase);
         directionInput = ctx.ReadValue<Vector2>();
     }
+    
     public void OnInteract(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
         {
-            Debug.Log("Interact! Player: " + playerNumber + " " + ctx.phase);
             OnInteract();
         }
     }
@@ -143,7 +125,6 @@ public class PlayerController : Character
         if (ctx.performed)
         {
             MoveLeft();
-            Debug.Log("Move Inventory to the left performed");
         }
     }
 
@@ -152,7 +133,6 @@ public class PlayerController : Character
         if (ctx.performed)
         {
             MoveRight();
-            Debug.Log("Move Inventory to the right performed");
         }
     }
 
@@ -166,12 +146,6 @@ public class PlayerController : Character
         if (itemEquipped.CompareTag("Target"))
         {
             canPlayerMove = false;
-            //itemEquipped.GetComponent<CellphoneService>();
-
-            //GameObject cursor = Instantiate(itemEquipped, spawnPos, new Quaternion(90, 0, 0, 90));
-
-            //cursor.GetComponent<Cursor>().BombPrefab = itemAuxPrefab;
-            //cursor.GetComponent<Cursor>().player = this;
         }
 
         itemEquipped.Execute();
@@ -179,14 +153,30 @@ public class PlayerController : Character
 
     public void MoveRight()
     {
+        if (inventory.Count == 0) return;
+        
+        inventory[inventoryPos].gameObject.SetActive(false);
+        inventory[inventoryPos].isActiveItem = false;
+        
         inventoryPos = (inventoryPos + 1) % inventory.Count;
         itemEquipped = inventory[inventoryPos];
+        
+        itemEquipped.gameObject.SetActive(true);
+        itemEquipped.isActiveItem = true;
     }
 
     public void MoveLeft()
     {
+        if (inventory.Count == 0) return;
+        
+        inventory[inventoryPos].gameObject.SetActive(false);
+        inventory[inventoryPos].isActiveItem = false;
+        
         inventoryPos = (inventoryPos - 1 + inventory.Count) % inventory.Count;
         itemEquipped = inventory[inventoryPos];
+        
+        itemEquipped.gameObject.SetActive(true);
+        itemEquipped.isActiveItem = true;
     }
 
     public void SetCanPlayerMove(bool _canPlayerMove)
@@ -203,21 +193,34 @@ public class PlayerController : Character
     {
         canPlayerMove = true;
         canPlayerAct = true;
-        Debug.Log("My spawned object died.");
     }
 
+    /// <summary>
+    /// Copies inventory from GameManager. Instantiates item prefabs as children of weaponHolder.
+    /// </summary>
     public void CopyInventory(List<ShopItem> itemsList)
     {
         inventory.Clear();
 
         foreach (var item in itemsList)
         {
-            //GameObject itemObj = Instantiate(item.gameObject, weaponHolder);
-            ShopItem newItem = item.GetComponent<ShopItem>();
-            //newItem.isActiveItem = false;
+            if (item == null) continue;
+            
+            GameObject itemObj = Instantiate(item.gameObject, weaponHolder);
+            ShopItem newItem = itemObj.GetComponent<ShopItem>();
+            
+            // Initialize item properties before deactivating
+            if (newItem.maxCount > 0)
+            {
+                newItem.currentCount = newItem.maxCount;
+            }
+            
+            newItem.isActiveItem = false;
             inventory.Add(newItem);
             newItem.gameObject.SetActive(false);
         }
+        
+        InventoryInit();
     }
 
     private void InventoryInit()

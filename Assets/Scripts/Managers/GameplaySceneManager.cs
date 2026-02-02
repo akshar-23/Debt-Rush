@@ -15,37 +15,33 @@ public class GameplaySceneManager : MonoBehaviour
     public static event System.Action<int, Transform> OnPlayerRespawn;
     private Dictionary<Character, Coroutine> _respawnRoutines = new Dictionary<Character, Coroutine>();
 
+    [Header("Inventory")]
+    [SerializeField] private List<ShopItem> inventoryP1 = new List<ShopItem>();
+    [SerializeField] private List<ShopItem> inventoryP2 = new List<ShopItem>();
 
     void Awake()
     {
-        // Do we need this block of code? 
-        /*
-        GameObject cManager = GameObject.Find("PlayerInputManager");
-
-        if(cManager != null)
+        // Add items from inventory lists to GameManager
+        foreach (var item in inventoryP1)
         {
-            cManager.GetComponent<PlayerInputManager>().SetGameSceneManager(this);
-            //cManager.GetComponent<PlayerInputManager>().InstantiateCharacters();
-            //cManager.GetComponent<PlayerInputManager>().InstantiateCharacter("WASD", 0);
-            //cManager.GetComponent<PlayerInputManager>().InstantiateCharacter("Arrows", 1);
+            if (item != null)
+            {
+                GameManager.Instance.AddToInventory(1, item);
+            }
         }
-        
-        GameObject cameraManager = GameObject.Find("CameraManager");
-        if (cameraManager != null)
-        {
-            cameraManager.GetComponent<CameraManager>().AssignTransformPosition(_players[0].transform, 0);
-            cameraManager.GetComponent<CameraManager>().AssignTransformPosition(_players[1].transform, 1);
-        }*/
 
+        foreach (var item in inventoryP2)
+        {
+            if (item != null)
+            {
+                GameManager.Instance.AddToInventory(2, item);
+            }
+        }
 
-        if (_players[0] != null)
-        {
-            _players[0].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(1));
-        }
-        if (_players[1] != null)
-        {
-            _players[1].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(2));
-        }
+        // Update lists to show what GameManager actually has (including shop items)
+        inventoryP1 = new List<ShopItem>(GameManager.Instance.GetInventory(1));
+        inventoryP2 = new List<ShopItem>(GameManager.Instance.GetInventory(2));
+
         GameManager.Instance.gameOverUI = _gameOverUI;
         GameManager.Instance.checkConditions = true;
         GameManager.Instance.players = _players;
@@ -59,12 +55,12 @@ public class GameplaySceneManager : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.OnPlayerDied += HandlePlayerDeath;
+        Character.OnPlayerDied += HandlePlayerDeath;
     }
 
     private void OnDisable()
     {
-        PlayerController.OnPlayerDied -= HandlePlayerDeath;
+        Character.OnPlayerDied -= HandlePlayerDeath;
     }
 
     private void HandlePlayerDeath(int _id)
@@ -77,7 +73,11 @@ public class GameplaySceneManager : MonoBehaviour
         }
         else
         {
-            StopAllCoroutines();
+            foreach (var routine in _respawnRoutines.Values)
+            {
+                if (routine != null)
+                    StopCoroutine(routine);
+            }
             _respawnRoutines.Clear();
         }
     }
@@ -91,11 +91,7 @@ public class GameplaySceneManager : MonoBehaviour
     {
         player.gameObject.GetComponent<CharacterController>().enabled = false;
 
-        Debug.LogWarning("Player Respawning in " + respawnDelay + " seconds...");
-
         yield return new WaitForSeconds(respawnDelay);
-
-        Debug.LogWarning("Respawning player!");
 
         player.transform.position = respawnPoint.position;
         player.transform.rotation = respawnPoint.rotation;
@@ -113,6 +109,8 @@ public class GameplaySceneManager : MonoBehaviour
 
     public void CopyInventory(int playerIndex)
     {
-        _players[playerIndex].GetComponent<PlayerController>().CopyInventory((System.Collections.Generic.List<ShopItem>)GameManager.Instance.GetInventory(playerIndex + 1));
+        _players[playerIndex].GetComponent<PlayerController>().CopyInventory(
+            new List<ShopItem>(GameManager.Instance.GetInventory(playerIndex + 1))
+        );
     }
 }

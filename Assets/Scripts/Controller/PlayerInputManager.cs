@@ -48,12 +48,11 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawns a player character with the specified control scheme.
-    /// Player assignment is based on control scheme rather than join order.
+    /// Spawns a player character with the specified control scheme
     /// </summary>
     public void InstantiateCharacter(string scheme, Gamepad gamePad = null)
     {
-        // Determine player index and prefab based on control scheme
+        // Determine player index based on control scheme
         int playerIndex;
         GameObject prefabToSpawn;
         
@@ -69,7 +68,6 @@ public class PlayerInputManager : MonoBehaviour
         }
         else // Gamepad
         {
-            // Assign gamepad to first available player slot
             if (!wasdJoined)
             {
                 playerIndex = 0;
@@ -89,7 +87,7 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
-        // Retrieve spawn transform for the specified player index
+        // Get spawn position
         Vector3 spawnPosition = Vector3.zero;
         Quaternion spawnRotation = Quaternion.identity;
         
@@ -98,12 +96,8 @@ public class PlayerInputManager : MonoBehaviour
             spawnPosition = spawnPoints[playerIndex].position;
             spawnRotation = spawnPoints[playerIndex].rotation;
         }
-        else
-        {
-            Debug.LogWarning($"Spawn point for player {playerIndex} is missing! Using default position.");
-        }
 
-        // Instantiate player with assigned control scheme
+        // Instantiate player
         var player = PlayerInput.Instantiate(
             prefabToSpawn,
             controlScheme: scheme, 
@@ -113,7 +107,7 @@ public class PlayerInputManager : MonoBehaviour
         player.transform.position = spawnPosition;
         player.transform.rotation = spawnRotation;
 
-        // Temporarily disable CharacterController to ensure position is applied correctly
+        // Disable/enable CharacterController to ensure position sticks
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null)
         {
@@ -122,26 +116,30 @@ public class PlayerInputManager : MonoBehaviour
             cc.enabled = true;
         }
 
-        // Configure player controller
+        // Get PlayerController component
         PlayerController pc = player.gameObject.GetComponent<PlayerController>();
         if (pc != null)
         {
             pc.playerNumber = playerIndex + 1;
         }
 
-        // Register player with game systems
+        // Register with GameManager
         if (GameManager.Instance != null && GameManager.Instance.players != null)
         {
             GameManager.Instance.players[playerIndex] = pc;
         }
 
+        // Copy inventory from GameManager to this player
+        var inventory = new System.Collections.Generic.List<ShopItem>(GameManager.Instance.GetInventory(playerIndex + 1));
+        pc.CopyInventory(inventory);
+
+        // Add to scene manager
         if (gamesceneManager != null)
         {
             gamesceneManager.AddPlayer(pc, playerIndex);
-            gamesceneManager.CopyInventory(playerIndex);
         }
 
-        // Assign camera tracking
+        // Assign camera
         GameObject cameraManager = GameObject.Find("CameraManager");
         if (cameraManager != null)
         {
@@ -149,61 +147,6 @@ public class PlayerInputManager : MonoBehaviour
         }
         
         currentNumberPlayers++;
-    }
-
-    public void InstantiateCharacters()
-    {
-        if (Keyboard.current == null) return;
-
-        if (!wasdJoined)
-        {
-            var player = PlayerInput.Instantiate(player1Prefab, controlScheme: "WASD", pairWithDevice: Keyboard.current);
-            
-            if (spawnPoints.Length > 0)
-            {
-                player.transform.position = spawnPoints[0].position;
-                
-                CharacterController cc = player.GetComponent<CharacterController>();
-                if (cc != null)
-                {
-                    cc.enabled = false;
-                    player.transform.position = spawnPoints[0].position;
-                    cc.enabled = true;
-                }
-            }
-
-            if (gamesceneManager != null)
-            {
-                gamesceneManager.AddPlayer(player.gameObject.GetComponent<PlayerController>(), 0);
-            }
-
-            wasdJoined = true;
-        }
-
-        if (!arrowsJoined)
-        {
-            var player = PlayerInput.Instantiate(player2Prefab, controlScheme: "Arrows", pairWithDevice: Keyboard.current);
-
-            if (spawnPoints.Length > 0)
-            {
-                player.transform.position = spawnPoints[1].position;
-                
-                CharacterController cc = player.GetComponent<CharacterController>();
-                if (cc != null)
-                {
-                    cc.enabled = false;
-                    player.transform.position = spawnPoints[1].position;
-                    cc.enabled = true;
-                }
-            }
-
-            if (gamesceneManager != null)
-            {
-                gamesceneManager.AddPlayer(player.gameObject.GetComponent<PlayerController>(), 1);
-            }
-
-            arrowsJoined = true;
-        }
     }
 
     public void SetGameSceneManager(GameplaySceneManager _gamesceneManager)
