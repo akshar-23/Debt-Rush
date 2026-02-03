@@ -47,9 +47,6 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Spawns a player character with the specified control scheme
-    /// </summary>
     public void InstantiateCharacter(string scheme, Gamepad gamePad = null)
     {
         // Determine player index based on control scheme
@@ -87,7 +84,6 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
-        // Get spawn position
         Vector3 spawnPosition = Vector3.zero;
         Quaternion spawnRotation = Quaternion.identity;
         

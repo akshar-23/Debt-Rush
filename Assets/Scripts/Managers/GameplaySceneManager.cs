@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 public class GameplaySceneManager : MonoBehaviour
@@ -10,8 +11,11 @@ public class GameplaySceneManager : MonoBehaviour
     [SerializeField] private Character[] _players;
     [SerializeField] private Character[] _enemies;
     [SerializeField] private TextMeshProUGUI _enemiesText;
-    private float respawnDelay = 5f;
-    [SerializeField] private Transform respawnPoint;
+    
+    [Header("Respawn Settings")]
+    [SerializeField] private float respawnDelay = 15f;
+    [SerializeField] private Transform[] respawnPoints;
+    
     public static event System.Action<int, Transform> OnPlayerRespawn;
     private Dictionary<Character, Coroutine> _respawnRoutines = new Dictionary<Character, Coroutine>();
 
@@ -89,17 +93,79 @@ public class GameplaySceneManager : MonoBehaviour
 
     private IEnumerator RespawnCoroutine(Character player)
     {
-        player.gameObject.GetComponent<CharacterController>().enabled = false;
+        PlayerController pc = player.GetComponent<PlayerController>();
+        CharacterController cc = player.GetComponent<CharacterController>();
+        Renderer[] renderers = player.GetComponentsInChildren<Renderer>();
+        
+        // Disable movement and rendering, but keep GameObject active
+        if (cc != null)
+        {
+            cc.enabled = false;
+        }
+        
+        if (pc != null)
+        {
+            pc.SetCanPlayerMove(false);
+            pc.SetCanPlayerAct(false);
+        }
+        
+        // Hide player visually instead of deactivating GameObject
+        foreach (var renderer in renderers)
+        {
+            renderer.enabled = false;
+        }
 
         yield return new WaitForSeconds(respawnDelay);
 
-        player.transform.position = respawnPoint.position;
-        player.transform.rotation = respawnPoint.rotation;
+        // Determine respawn position
+        int playerIndex = player.id;
+        Transform respawnTransform = GetRespawnPoint(playerIndex);
 
-        player.gameObject.GetComponent<CharacterController>().enabled = true;
+        if (respawnTransform != null)
+        {
+            player.transform.position = respawnTransform.position;
+            player.transform.rotation = respawnTransform.rotation;
+        }
+
+        // Reset player state
         player.Reset();
-        player.gameObject.SetActive(true);
+        
+        // Re-enable CharacterController with position fix
+        if (cc != null)
+        {
+            cc.enabled = false;
+            player.transform.position = respawnTransform.position;
+            cc.enabled = true;
+        }
+        
+        // Re-enable movement
+        if (pc != null)
+        {
+            pc.SetCanPlayerMove(true);
+            pc.SetCanPlayerAct(true);
+        }
+        
+        // Show player visually
+        foreach (var renderer in renderers)
+        {
+            renderer.enabled = true;
+        }
+        
         OnPlayerRespawn?.Invoke(player.id, player.transform);
+    }
+
+    /// <summary>
+    /// Gets the respawn point for a specific player
+    /// </summary>
+    private Transform GetRespawnPoint(int playerId)
+    {
+        if (respawnPoints != null && playerId < respawnPoints.Length && respawnPoints[playerId] != null)
+        {
+            return respawnPoints[playerId];
+        }
+        
+        Debug.LogWarning($"Respawn point for player {playerId} not found!");
+        return transform;
     }
 
     public void AddPlayer(Character player, int pos)

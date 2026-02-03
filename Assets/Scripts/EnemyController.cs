@@ -48,7 +48,7 @@ public class EnemyController : Character
 
         float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.position);
 
-        Debug.Log(gameObject.name + " | Distance: " + distanceToPlayer.ToString("F2") + " | Attack Range: " + attackRange);
+        //Debug.Log(gameObject.name + " | Distance: " + distanceToPlayer.ToString("F2") + " | Attack Range: " + attackRange);
 
         if (distanceToPlayer > attackRange)
         {

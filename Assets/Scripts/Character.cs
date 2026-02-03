@@ -29,7 +29,6 @@ public class Character : MonoBehaviour
         currentHealth -= receivedDamage;
         Debug.Log(gameObject.name + " took " + receivedDamage + " damage. Current HP: " + currentHealth);
 
-        // Health below 0
         if (currentHealth <= 0f)
         {
             Die(_playerId);
@@ -47,7 +46,8 @@ public class Character : MonoBehaviour
         Debug.Log(gameObject.name + " died!");
         if (archetype == Archetype.Player)
         {
-            gameObject.SetActive(false);
+            // DON'T use SetActive(false) - it breaks PlayerInput device pairing!
+            // GameplaySceneManager will handle hiding the player visually
             isDead = true;
             OnPlayerDied?.Invoke(id);
         }

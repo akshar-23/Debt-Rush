@@ -95,11 +95,18 @@ public class GameManager : MonoBehaviour
 
     public void CheckWinLossConditions()
     {
-        //If Players are both null (dead), or timer reach 0
+        // Don't check if players haven't spawned yet
+        if (players == null || players.Length < 2 || players[0] == null || players[1] == null)
+        {
+            return;
+        }
+
+        // If both players are dead
         if (players[0].isDead && players[1].isDead)
         {
             ShowGameOverScreen("GAME OVER");
         }
+        // If both players reached destination with enough money
         else if (
             !players[0].isDead && players[0].GetComponent<PlayerController>().isAtDestination &&
             !players[1].isDead && players[1].GetComponent<PlayerController>().isAtDestination &&
