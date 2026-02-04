@@ -11,6 +11,9 @@ public class Bomb : MonoBehaviour
 
     private bool hasExploded = false;
 
+    [SerializeField] private AudioClip explosionSFX_1;
+    [SerializeField] private AudioClip explosionSFX_2;
+
     void OnCollisionEnter(Collision collision)
     {
         if (hasExploded) return; // Prevent multiple explosions
@@ -25,6 +28,10 @@ public class Bomb : MonoBehaviour
     void Explode()
     {
         hasExploded = true;
+        if (explosionSFX_1 != null && explosionSFX_2 != null)
+        {
+            AudioManager.Instance.PlayRandomClip(explosionSFX_1, explosionSFX_2);
+        }
 
         // Optional: spawn a particle effect
         if (explosionEffect != null)

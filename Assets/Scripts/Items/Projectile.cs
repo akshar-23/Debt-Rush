@@ -11,6 +11,9 @@ public class Projectile : MonoBehaviour
     Rigidbody rb;
     float spawnTime;
 
+    [SerializeField] private AudioClip bulletSFX_1;
+    [SerializeField] private AudioClip bulletSFX_2;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -53,6 +56,11 @@ public class Projectile : MonoBehaviour
 
         if (other.CompareTag("Shield"))
         {
+            if (bulletSFX_1 != null && bulletSFX_2 != null)
+            {
+                AudioManager.Instance.PlayRandomClip(bulletSFX_1, bulletSFX_2);
+            }
+
             Destroy(gameObject);
             return;
         }

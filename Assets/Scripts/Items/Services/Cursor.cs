@@ -16,6 +16,8 @@ public class Cursor : MonoBehaviour
     
     private bool ignoreFirstInput = true;
 
+    [SerializeField] private AudioClip bombFallingSFX;
+
     void Start()
     {
         canCursorMove = true;
@@ -69,6 +71,11 @@ public class Cursor : MonoBehaviour
         {
             GameObject bomb = Instantiate(BombPrefab, new Vector3(transform.position.x, transform.position.y + height, transform.position.z), transform.rotation);
             bomb.GetComponent<Bomb>().playerId = player.playerNumber;
+            
+            if(bombFallingSFX != null)
+            {
+                AudioManager.Instance.PlaySFX(bombFallingSFX);
+            }
         }
         
         Destroy(gameObject);

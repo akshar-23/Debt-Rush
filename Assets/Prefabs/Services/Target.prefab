@@ -112,6 +112,7 @@ MonoBehaviour:
   height: 10
   canCursorMove: 1
   player: {fileID: 0}
+  bombFallingSFX: {fileID: 8300000, guid: ba9789ffdf39a2b4e95ca1b45adefbd7, type: 3}
 --- !u!143 &8489705787927722693
 CharacterController:
   m_ObjectHideFlags: 0

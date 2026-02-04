@@ -8,7 +8,8 @@ public class Gun : ShopItem
 
     private float nextFireTime = 0f;
 
-    
+    [SerializeField] private AudioClip shootSFX_1;
+    [SerializeField] private AudioClip shootSFX_2;
 
     private void Start()
     {
@@ -19,8 +20,6 @@ public class Gun : ShopItem
     {
         if (isActiveItem)
         {
-            
-
             PlayerController pc = GameManager.Instance.players[0].GetComponent<PlayerController>();
 
             if (currentCount <= 0)
@@ -38,6 +37,10 @@ public class Gun : ShopItem
             if (p != null)
             {
                 p.archetype = Archetype.Player;
+                if(shootSFX_1 != null && shootSFX_2 != null)
+                {
+                    AudioManager.Instance.PlayRandomClip(shootSFX_1, shootSFX_2);
+                }
                 p.Init(pc.transform.forward);
                 p.playerId = 1;
             }
