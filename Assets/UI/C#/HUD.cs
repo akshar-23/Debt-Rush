@@ -96,7 +96,7 @@ public class HUD : MonoBehaviour
 
             if (item.maxCount > 0)
             {
-                var ammo = new Label($"{item.currentCount}/{item.maxCount}");
+                var ammo = new Label($"{item.currentCount}");
                 ammo.AddToClassList("ammo-label");
                 btn.Add(ammo);
             }
