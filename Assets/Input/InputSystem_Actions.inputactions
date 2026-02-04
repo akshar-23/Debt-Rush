@@ -1178,7 +1178,7 @@
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "TFGH",
+                    "name": "WASD",
                     "id": "8cf0cc90-bfc5-4615-b55f-f23a2db681b1",
                     "path": "2DVector",
                     "interactions": "",
@@ -1233,7 +1233,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "2D Vector",
+                    "name": "Arrows",
                     "id": "6065cb3e-a7ef-4814-9b29-f027729de536",
                     "path": "2DVector",
                     "interactions": "",

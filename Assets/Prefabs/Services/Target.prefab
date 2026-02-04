@@ -239,7 +239,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1134893551661500950}
         m_TargetAssemblyTypeName: Cursor, Assembly-CSharp
-        m_MethodName: OnMove
+        m_MethodName: OnLook
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
