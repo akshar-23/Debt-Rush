@@ -5,6 +5,7 @@ public class EnemyController : Character
 {
     [Header("Attack Settings")]
     public float detectionRange = 25f;
+    public float maxChaseDistance = 40f;  // Stop chasing if player gets this far
     public float attackRange = 10f;
     public float attackDamage;
     [Tooltip("The projectile prefab the enemy will shoot.")]
@@ -55,6 +56,14 @@ public class EnemyController : Character
 
         float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.position);
 
+        // Give up chase if player is too far
+        if (distanceToPlayer > maxChaseDistance)
+        {
+            targetPlayer = null;
+            agent.isStopped = true;
+            return;
+        }
+
         if (distanceToPlayer > attackRange)
         {
             // STATE: CHASE
@@ -94,6 +103,13 @@ public class EnemyController : Character
             }
 
             float distance = Vector3.Distance(transform.position, player.transform.position);
+            
+            // Only detect player if within detection range
+            if (distance > detectionRange)
+            {
+                continue;
+            }
+
             if (distance < closestDistance)
             {
                 closestDistance = distance;
@@ -130,6 +146,8 @@ public class EnemyController : Character
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, maxChaseDistance);
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
     }
