@@ -154,8 +154,8 @@
 }
 
 .ammo-label {
-    translate: 18px 37px;
-    font-size: 13px;
+    translate: 25px 34px;
+    font-size: 16px;
 }
 
 .panel-title {

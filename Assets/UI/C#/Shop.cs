@@ -129,7 +129,7 @@ public class Shop_UI : MonoBehaviour
                 // Ammo badge in shop (non-interactive)
                 if (item.maxCount > 0)
                 {
-                    var ammo = new Label($"{item.maxCount}/{item.maxCount}");
+                    var ammo = new Label($"{item.maxCount}");
                     ammo.AddToClassList("ammo-label");
                     btn.Add(ammo);
                 }
@@ -148,7 +148,7 @@ public class Shop_UI : MonoBehaviour
 
         if (item.maxCount > 0)
         {
-            var ammo = new Label($"{item.currentCount}/{item.maxCount}");
+            var ammo = new Label($"{item.currentCount}");
             ammo.AddToClassList("ammo-label");
             invBtn.Add(ammo);
         }
