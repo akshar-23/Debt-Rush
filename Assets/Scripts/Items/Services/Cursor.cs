@@ -1,93 +1,83 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR;
 
 public class Cursor : MonoBehaviour
 {
     public Sprite sprite;
     public GameObject BombPrefab;
 
-    //Hardcoded for player 2 for now
     public int playerNumber = 2;
-
-    // setting these automatically in code
-    private string horizontalInputAxis;
-    private string verticalInputAxis;
-    private string interactButton;
 
     public float moveSpeed = 10f;
     public float height = 10f;
 
-    private CharacterController controller;
     public bool canCursorMove;
-    private Vector3 moveDirection;
-    private Vector2 moveInput;
-
     public PlayerController player;
+    
+    private bool ignoreFirstInput = true;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        //controller = GetComponent<CharacterController>();
-
-        //horizontalInputAxis = "Horizontal_P" + playerNumber;
-        //verticalInputAxis = "Vertical_P" + playerNumber;
-        //interactButton = "Interact_P" + playerNumber;
-
         canCursorMove = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (canCursorMove)
+        if (ignoreFirstInput)
         {
-            Vector3 step = Vector3.zero;
-
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-                step += Vector3.forward;
-
-            if (Input.GetKeyDown(KeyCode.DownArrow))
-                step += Vector3.back;
-
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-                step += Vector3.right;
-
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
-                step += Vector3.left;
-
-            if (Input.GetKeyDown(KeyCode.Keypad0))
-            {
-                OnInteract();
-            }
-
-            transform.position += step * 1f;
-
-            //float moveX = Input.GetAxisRaw(horizontalInputAxis);
-            //float moveZ = Input.GetAxisRaw(verticalInputAxis);
-
-            //moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
-            //controller.Move(moveDirection * moveSpeed * Time.deltaTime);
-
-            //Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
-            //transform.Translate(movement * moveSpeed * Time.deltaTime, Space.World);
+            ignoreFirstInput = false;
         }
-
-        //if (Input.GetKeyDown(interactButton))
-        //{
-        //   OnInteract();
-        //}
     }
 
-    private void OnInteract()
+    public void OnLook(InputAction.CallbackContext ctx)
+    {
+        if (!ignoreFirstInput && canCursorMove)
+        {
+            Vector2 input = ctx.ReadValue<Vector2>();
+            Vector3 step = new Vector3(input.x, 0, input.y);
+            transform.position += step * moveSpeed * Time.deltaTime;
+        }
+    }
+
+    public void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && !ignoreFirstInput && canCursorMove)
+        {
+            DropBomb();
+        }
+    }
+
+    public void OnCancel(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && !ignoreFirstInput && canCursorMove)
+        {
+            CancelBomb();
+        }
+    }
+
+    private void DropBomb()
     {
         canCursorMove = false;
+        
+        // Decrease bomb count only when actually dropped
+        if (player != null && player.itemEquipped != null)
+        {
+            player.itemEquipped.currentCount--;
+        }
+        
         if (BombPrefab != null)
         {
             GameObject bomb = Instantiate(BombPrefab, new Vector3(transform.position.x, transform.position.y + height, transform.position.z), transform.rotation);
             bomb.GetComponent<Bomb>().playerId = player.playerNumber;
         }
+        
+        Destroy(gameObject);
+    }
+
+    private void CancelBomb()
+    {
+        canCursorMove = false;
+        // Don't decrease count when canceling
         Destroy(gameObject);
     }
 

@@ -13,26 +13,28 @@ public class BombPackage : ShopItem
     {
         if (isActiveItem)
         {
+            PlayerController pc = GameManager.Instance.players[1].GetComponent<PlayerController>();
+
             if (currentCount <= 0)
             {
                 Debug.Log("Out of Bomb Packages!");
-                Destroy(gameObject);
+                pc.SetCanPlayerMove(true);
+                pc.SetCanPlayerAct(true);
+                pc.DeleteInventoryItem(this);
                 return;
             }
 
-
-            PlayerController pc = GameManager.Instance.players[1].GetComponent<PlayerController>();
-
             if (cursorObj != null)
             {
-                GameObject cursor = Instantiate(cursorObj, pc.transform.position, new Quaternion(90, 0, 0, 90));
+                Vector3 spawnPos = pc.transform.position + pc.transform.forward * 3f;
+                GameObject cursorGO = Instantiate(cursorObj, spawnPos, new Quaternion(90, 0, 0, 90));
+                Cursor cursor = cursorGO.GetComponent<Cursor>();
 
-                cursor.GetComponent<Cursor>().player = pc;
+                cursor.player = pc;
+                pc.activeCursor = cursor;
                 pc.SetCanPlayerMove(false);
                 pc.SetCanPlayerAct(false);
             }
-
-            currentCount--;
         }
     }
 }

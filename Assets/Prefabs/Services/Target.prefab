@@ -108,7 +108,7 @@ MonoBehaviour:
   sprite: {fileID: 0}
   BombPrefab: {fileID: 3496234742590253038, guid: 8e6ce35ab9eac4547996acbdd9e1c720, type: 3}
   playerNumber: 2
-  moveSpeed: 10
+  moveSpeed: 100
   height: 10
   canCursorMove: 1
   player: {fileID: 0}
@@ -235,46 +235,6 @@ MonoBehaviour:
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 32c5c63c-4462-412d-b162-cfd77fa3e3b4
-    m_ActionName: 'Player1/Move[/DualSenseGamepadHID1/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 95bc4d9e-ac53-4626-b6e1-38ec70673efc
-    m_ActionName: 'Player1/Look[/DualSenseGamepadHID1/rightStick,/Keyboard/t,/Keyboard/g,/Keyboard/f,/Keyboard/h]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 41991a30-f3fd-4637-9cf2-ba0ef39a1e23
-    m_ActionName: 'Player1/Interact[/Keyboard/e,/DualSenseGamepadHID1/buttonWest]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: a0c100cd-d3a0-4b19-850a-131573e2695e
-    m_ActionName: 'Player1/ChangeInventory_L[/Keyboard/r,/DualSenseGamepadHID1/leftShoulder]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: fb33770a-4c64-4ae8-acb1-81d52ecfa486
-    m_ActionName: 'Player1/ChangeInventory_R[/Keyboard/y,/DualSenseGamepadHID1/rightShoulder]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 461bf561-bdd3-46e2-940c-9a68faa5cd2a
-    m_ActionName: 'Player2/Move[/DualSenseGamepadHID1/leftStick,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 56cd9ff0-18e9-417d-a391-86bf61bb1636
-    m_ActionName: 'Player2/Look[/DualSenseGamepadHID1/rightStick,/Keyboard/numpad5,/Keyboard/numpad2,/Keyboard/numpad1,/Keyboard/numpad3]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 25bdeb2b-45d2-4a8c-bdd0-1bb664a0842a
-    m_ActionName: 'Player2/Interact[/Keyboard/numpad0,/DualSenseGamepadHID1/buttonWest]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 267a3c01-7e4b-4914-a089-87fab64a364a
-    m_ActionName: 'Player2/ChangeInventory_L[/Keyboard/numpad4,/DualSenseGamepadHID1/leftShoulder]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 4047056d-835c-4746-93a3-7cbad8c40a3d
-    m_ActionName: 'Player2/ChangeInventory_R[/Keyboard/numpad6,/DualSenseGamepadHID1/rightShoulder]'
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1134893551661500950}
         m_TargetAssemblyTypeName: Cursor, Assembly-CSharp
@@ -306,6 +266,34 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c3a80cf5-ae97-4406-82b6-bd7e0edbfd69
     m_ActionName: 'PlayerCursor/Interact[/Keyboard/numpad0,/DualSenseGamepadHID1/buttonWest]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 258232d6-5599-4950-95e3-09dd06d8ff13
+    m_ActionName: Player/New action
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 96286a00-5b9f-4153-86ef-ad02287ba011
+    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 25b240fd-a0f1-41c0-b990-6d7297627916
+    m_ActionName: 'Player/Look[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fbaae571-04be-4b31-b4ab-3421a7d909d0
+    m_ActionName: 'Player/Interact[/Keyboard/e,/Keyboard/numpad0]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 95287db0-7062-483c-b24e-b1d7d9a1a1c9
+    m_ActionName: 'Player/ChangeInventory_L[/Keyboard/r,/Keyboard/numpad4]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b537ea7b-58c4-4dff-aeb8-3c51366ce72f
+    m_ActionName: 'Player/ChangeInventory_R[/Keyboard/y,/Keyboard/numpad6]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5e0d6bed-df01-41fc-b3e5-08f1b3bfd47b
+    m_ActionName: 'Player/Cancel[/Keyboard/c,/Keyboard/numpadPeriod]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: PlayerCursor

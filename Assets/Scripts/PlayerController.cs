@@ -49,6 +49,9 @@ public class PlayerController : Character
     [Header("References")]
     public HUD hudref;
 
+    // Cursor reference for input forwarding
+    public Cursor activeCursor;
+
 
     protected override void Awake()
     {
@@ -109,14 +112,38 @@ public class PlayerController : Character
 
     public void OnLook(InputAction.CallbackContext ctx)
     {
-        directionInput = ctx.ReadValue<Vector2>();
+        // Forward to cursor if active, otherwise use for player rotation
+        if (activeCursor != null)
+        {
+            activeCursor.OnLook(ctx);
+        }
+        else
+        {
+            directionInput = ctx.ReadValue<Vector2>();
+        }
     }
     
     public void OnInteract(InputAction.CallbackContext ctx)
     {
         if (ctx.started)
         {
-            OnInteract();
+            // Forward to cursor if active
+            if (activeCursor != null)
+            {
+                activeCursor.OnInteract(ctx);
+            }
+            else
+            {
+                OnInteract();
+            }
+        }
+    }
+
+    public void OnCancel(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started && activeCursor != null)
+        {
+            activeCursor.OnCancel(ctx);
         }
     }
 
@@ -193,11 +220,9 @@ public class PlayerController : Character
     {
         canPlayerMove = true;
         canPlayerAct = true;
+        activeCursor = null;
     }
 
-    /// <summary>
-    /// Copies inventory from GameManager. Instantiates item prefabs as children of weaponHolder.
-    /// </summary>
     public void CopyInventory(List<ShopItem> itemsList)
     {
         inventory.Clear();
@@ -209,7 +234,6 @@ public class PlayerController : Character
             GameObject itemObj = Instantiate(item.gameObject, weaponHolder);
             ShopItem newItem = itemObj.GetComponent<ShopItem>();
             
-            // Initialize item properties before deactivating
             if (newItem.maxCount > 0)
             {
                 newItem.currentCount = newItem.maxCount;
