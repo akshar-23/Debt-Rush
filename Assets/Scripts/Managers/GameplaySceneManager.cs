@@ -2,7 +2,6 @@ using System.Linq;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 public class GameplaySceneManager : MonoBehaviour
@@ -97,6 +96,9 @@ public class GameplaySceneManager : MonoBehaviour
         CharacterController cc = player.GetComponent<CharacterController>();
         Renderer[] renderers = player.GetComponentsInChildren<Renderer>();
         
+        // Find and hide health bar
+        Transform healthBarCanvas = player.transform.Find("HealthBarCanvas");
+        
         // Disable movement and rendering, but keep GameObject active
         if (cc != null)
         {
@@ -109,10 +111,16 @@ public class GameplaySceneManager : MonoBehaviour
             pc.SetCanPlayerAct(false);
         }
         
-        // Hide player visually instead of deactivating GameObject
+        // Hide player visually
         foreach (var renderer in renderers)
         {
             renderer.enabled = false;
+        }
+        
+        // Hide health bar
+        if (healthBarCanvas != null)
+        {
+            healthBarCanvas.gameObject.SetActive(false);
         }
 
         yield return new WaitForSeconds(respawnDelay);
@@ -149,6 +157,12 @@ public class GameplaySceneManager : MonoBehaviour
         foreach (var renderer in renderers)
         {
             renderer.enabled = true;
+        }
+        
+        // Show health bar
+        if (healthBarCanvas != null)
+        {
+            healthBarCanvas.gameObject.SetActive(true);
         }
         
         OnPlayerRespawn?.Invoke(player.id, player.transform);

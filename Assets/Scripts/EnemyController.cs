@@ -69,7 +69,6 @@ public class EnemyController : Character
             {
                 nextFireTime = Time.time + 1f / fireRate;
                 Shoot();
-                Debug.Log(gameObject.name + " is SHOOTING!");
             }
         }
     }
@@ -82,6 +81,13 @@ public class EnemyController : Character
 
         foreach (GameObject player in players)
         {
+            // Skip dead players
+            Character character = player.GetComponent<Character>();
+            if (character != null && character.isDead)
+            {
+                continue;
+            }
+
             float distance = Vector3.Distance(transform.position, player.transform.position);
             if (distance < closestDistance)
             {
