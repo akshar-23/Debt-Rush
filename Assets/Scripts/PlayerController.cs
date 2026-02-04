@@ -217,10 +217,27 @@ public class PlayerController : Character
             
             newItem.isActiveItem = false;
             inventory.Add(newItem);
+            
+            // Passive Item should be executed only once.
+            if(newItem.isPassiveItem)
+            {
+                newItem.Init(playerNumber);
+                newItem.Execute();
+            
+            }
             newItem.gameObject.SetActive(false);
         }
         
         InventoryInit();
+    }
+
+    public void EquipItemInTheModel(GameObject objectPrefab, Vector3 addPosition)
+    {
+        objectPrefab.transform.SetParent(transform);
+
+        objectPrefab.transform.localPosition = Vector3.zero + addPosition;
+        objectPrefab.transform.localRotation = Quaternion.identity;
+        objectPrefab.transform.localScale = Vector3.one;
     }
 
     private void InventoryInit()
