@@ -534,7 +534,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: shopItemsP1.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: shopItemsP2.Array.size
@@ -544,6 +544,10 @@ PrefabInstance:
       propertyPath: 'shopItemsP1.Array.data[0]'
       value: 
       objectReference: {fileID: 552158336560925379, guid: 580f49aacf99cff4abf907e1f130bd2f, type: 3}
+    - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
+      propertyPath: 'shopItemsP1.Array.data[1]'
+      value: 
+      objectReference: {fileID: 468470417739270317, guid: f62446ce081293e4c9ba77f3a31ce11f, type: 3}
     - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: 'shopItemsP2.Array.data[0]'
       value: 
