@@ -25,6 +25,21 @@
     width: 70px;
 }
 
+/* State: selected */
+.inventory-button.selected {
+    background-color: #4a90e2;
+}
+
+/* State: not selected (default / normal) */
+.inventory-button.normal {
+    background-color: #BCBCBC;
+}
+
+/* State: passive / disabled */
+.inventory-button.passive {
+    background-color: #7B7B7B;
+}
+
 .ammo-label {
     translate: 16px 25px;
     font-size: 11px;

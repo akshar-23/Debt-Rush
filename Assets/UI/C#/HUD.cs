@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,6 +9,13 @@ public class HUD : MonoBehaviour
 
     private VisualElement bar1;       // left row
     private VisualElement bar2;       // right row
+
+    public static class InventoryButtonStates
+    {
+        public const string Selected = "selected";
+        public const string Normal = "normal";
+        public const string Passive = "passive";
+    }
 
     private void OnEnable()
     {
@@ -78,11 +86,31 @@ public class HUD : MonoBehaviour
                 btn.Add(ammo);
             }
 
+            if (item.isPassiveItem)
+            {
+                SetState(btn, InventoryButtonStates.Passive);
+            }
+
             bar.Add(btn);
         }
     }
 
+    public void SetStateToIndex(int playerIndex, int position, string state)
+    {
+        VisualElement currentInventory = playerIndex == 1 ? bar1 : bar1;
 
+        List<VisualElement> childrenList = currentInventory.Children().ToList();
+        SetState(childrenList[position], state);        
+    }
+
+    private void SetState(VisualElement btn, string state)
+    {
+        btn.RemoveFromClassList(InventoryButtonStates.Selected);
+        btn.RemoveFromClassList(InventoryButtonStates.Normal);
+        btn.RemoveFromClassList(InventoryButtonStates.Passive);
+
+        btn.AddToClassList(state); // "selected" / "normal" / "passive"
+    }
 }
 
 
