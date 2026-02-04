@@ -117,6 +117,7 @@ public class PlayerInputManager : MonoBehaviour
         if (pc != null)
         {
             pc.playerNumber = playerIndex + 1;
+            pc.hudref = gamesceneManager.GetHUD();
         }
 
         // Register with GameManager

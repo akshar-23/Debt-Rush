@@ -7,6 +7,7 @@ using System.Collections.Generic;
 public class GameplaySceneManager : MonoBehaviour
 {
     [SerializeField] private GameObject _gameOverUI;
+    [SerializeField] private HUD _HUD;
     [SerializeField] private Character[] _players;
     [SerializeField] private Character[] _enemies;
     [SerializeField] private TextMeshProUGUI _enemiesText;
@@ -185,6 +186,11 @@ public class GameplaySceneManager : MonoBehaviour
     public void AddPlayer(Character player, int pos)
     {
         _players[pos] = player;
+    }
+
+    public HUD GetHUD()
+    {
+        return _HUD;
     }
 
     public void CopyInventory(int playerIndex)

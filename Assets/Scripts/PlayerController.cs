@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static HUD;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : Character
@@ -181,29 +182,63 @@ public class PlayerController : Character
     public void MoveRight()
     {
         if (inventory.Count == 0) return;
-        
+        int oldInventoryPos = inventoryPos;
+
         inventory[inventoryPos].gameObject.SetActive(false);
         inventory[inventoryPos].isActiveItem = false;
-        
-        inventoryPos = (inventoryPos + 1) % inventory.Count;
-        itemEquipped = inventory[inventoryPos];
-        
-        itemEquipped.gameObject.SetActive(true);
-        itemEquipped.isActiveItem = true;
+
+        for (int i = inventoryPos; i < inventory.Count; i++)
+        {
+            inventoryPos = (inventoryPos + 1) % inventory.Count;
+
+            if(inventoryPos == 0)
+            {
+                i = inventoryPos;
+            }
+            // Skip passive items
+            if (inventory[inventoryPos].isPassiveItem)
+                continue;
+
+            // Found a non-passive item
+            itemEquipped = inventory[inventoryPos];
+            hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
+            itemEquipped.gameObject.SetActive(true);
+            itemEquipped.isActiveItem = true;
+
+            return;
+        }
     }
 
     public void MoveLeft()
     {
         if (inventory.Count == 0) return;
-        
+        int oldInventoryPos = inventoryPos;
+
         inventory[inventoryPos].gameObject.SetActive(false);
         inventory[inventoryPos].isActiveItem = false;
         
-        inventoryPos = (inventoryPos - 1 + inventory.Count) % inventory.Count;
-        itemEquipped = inventory[inventoryPos];
-        
-        itemEquipped.gameObject.SetActive(true);
-        itemEquipped.isActiveItem = true;
+        for (int i = inventoryPos; i < inventory.Count; i--)
+        {
+            inventoryPos = (inventoryPos - 1 + inventory.Count) % inventory.Count;
+
+            if (inventoryPos == inventory.Count)
+            {
+                i = inventoryPos;
+            }
+            // Skip passive items
+            if (inventory[inventoryPos].isPassiveItem)
+                continue;
+
+            // Found a non-passive item
+            itemEquipped = inventory[inventoryPos];
+            hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
+            itemEquipped.gameObject.SetActive(true);
+            itemEquipped.isActiveItem = true;
+
+            return;
+        }
     }
 
     public void SetCanPlayerMove(bool _canPlayerMove)
@@ -241,15 +276,15 @@ public class PlayerController : Character
             
             newItem.isActiveItem = false;
             inventory.Add(newItem);
-            
+            newItem.gameObject.SetActive(false);
+
             // Passive Item should be executed only once.
             if(newItem.isPassiveItem)
             {
                 newItem.Init(playerNumber);
                 newItem.Execute();
-            
+                newItem.gameObject.SetActive(true);
             }
-            newItem.gameObject.SetActive(false);
         }
         
         InventoryInit();
@@ -268,10 +303,7 @@ public class PlayerController : Character
     {
         if (inventory.Count != 0)
         {
-            inventoryPos = 0;
-            itemEquipped = inventory[inventoryPos];
-            itemEquipped.gameObject.SetActive(true);
-            itemEquipped.isActiveItem = true;
+            SelectFirstItem();
         }
     }
 
@@ -289,10 +321,25 @@ public class PlayerController : Character
         }
         else
         {
-            inventoryPos = 0;
+            SelectFirstItem();
+        }
+    }
+
+    public void SelectFirstItem()
+    {
+        for(int i = 0; i < inventory.Count; i++)
+        {
+            ShopItem item = inventory[i];
+
+            if (item.isPassiveItem) { continue; }
+
+            itemEquipped = item;
+            hudref.SetStateToIndex(playerNumber, i, InventoryButtonStates.Selected);
+            inventoryPos = i;
             itemEquipped = inventory[inventoryPos];
             itemEquipped.gameObject.SetActive(true);
             itemEquipped.isActiveItem = true;
+            break;
         }
     }
 }
