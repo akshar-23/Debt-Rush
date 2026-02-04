@@ -160,6 +160,8 @@ MonoBehaviour:
   attackDamage: 20
   projectilePrefab: {fileID: 5828508778685869409, guid: 4277a8c00f61f5b49b5f59e6adbc8bfa, type: 3}
   fireRate: 1
+  shootSFX_1: {fileID: 8300000, guid: 4f8ef0e2e18fc5f4aa723ade304a5150, type: 3}
+  shootSFX_2: {fileID: 8300000, guid: 385a32980094e6e40a3e049f50988b7e, type: 3}
 --- !u!1 &8131041816109682626
 GameObject:
   m_ObjectHideFlags: 0

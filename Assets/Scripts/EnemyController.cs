@@ -16,6 +16,9 @@ public class EnemyController : Character
     private NavMeshAgent agent;
     private float nextFireTime = 1f;
 
+    [SerializeField] private AudioClip shootSFX_1;
+    [SerializeField] private AudioClip shootSFX_2;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -113,6 +116,11 @@ public class EnemyController : Character
         {
             p.archetype = Archetype.Enemy;
             p.Init(transform.forward);
+
+            if (shootSFX_1 != null && shootSFX_2 != null)
+            {
+                AudioManager.Instance.PlayRandomClip(shootSFX_1, shootSFX_2);
+            }
         }
     }
 

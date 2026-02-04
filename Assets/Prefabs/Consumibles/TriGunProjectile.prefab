@@ -158,6 +158,8 @@ MonoBehaviour:
   damage: 40
   lifetime: 2
   playerId: 0
+  bulletSFX_1: {fileID: 8300000, guid: 8197631b2bc49914ca3d16fccf46ed61, type: 3}
+  bulletSFX_2: {fileID: 8300000, guid: 516785ec0102c4741abd209c09c98d03, type: 3}
 --- !u!114 &1930159957953791726
 MonoBehaviour:
   m_ObjectHideFlags: 0

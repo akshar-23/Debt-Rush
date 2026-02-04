@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.U2D.IK;
 
 public class AudioManager : MonoBehaviour
 {
@@ -54,5 +56,16 @@ public class AudioManager : MonoBehaviour
         if (clip == null) return;
 
         sfxSource.PlayOneShot(clip);
+    }
+
+    public void PlayRandomClip(AudioClip clipA, AudioClip clipB)
+    {
+        if (sfxSource == null || clipA == null || clipB == null)
+            return;
+
+        AudioClip chosen = (Random.value < 0.5f) ? clipA : clipB;
+
+        sfxSource.clip = chosen;
+        sfxSource.Play();
     }
 }
