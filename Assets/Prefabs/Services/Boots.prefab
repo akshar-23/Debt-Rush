@@ -51,6 +51,5 @@ MonoBehaviour:
   maxCount: 0
   currentCount: 0
   isActiveItem: 1
-  isUpgradeItem: 1
-  isActive: 0
+  isPassiveItem: 1
   addedMoveSpeed: 5
