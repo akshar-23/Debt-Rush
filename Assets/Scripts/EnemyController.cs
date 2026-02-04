@@ -12,6 +12,10 @@ public class EnemyController : Character
     [Tooltip("How many shots the enemy can fire per second.")]
     [SerializeField] private float fireRate = 1f;
 
+    [Header("Rewards")]
+    [Tooltip("How much money this enemy drops when killed.")]
+    public int moneyReward = 50;
+
     private Transform targetPlayer;
     private NavMeshAgent agent;
     private float nextFireTime = 1f;
@@ -50,8 +54,6 @@ public class EnemyController : Character
         }
 
         float distanceToPlayer = Vector3.Distance(transform.position, targetPlayer.position);
-
-        //Debug.Log(gameObject.name + " | Distance: " + distanceToPlayer.ToString("F2") + " | Attack Range: " + attackRange);
 
         if (distanceToPlayer > attackRange)
         {

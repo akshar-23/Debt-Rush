@@ -27,13 +27,19 @@ public class HUD : MonoBehaviour
         bar1 = root.Q<VisualElement>("Button_Style_Test_1") ?? root.Q<VisualElement>("Inventory_1");
         bar2 = root.Q<VisualElement>("Button_Style_Test_2") ?? root.Q<VisualElement>("Inventory_2");
 
-
-
         // Also guard at root so nothing slips through
         root.RegisterCallback<NavigationMoveEvent>(ev => ev.StopImmediatePropagation(), TrickleDown.TrickleDown);
 
+        // Subscribe to money changes
+        MoneyManager.OnMoneyChanged += UpdateMoneyDisplay;
 
         BuildUI();
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribe when disabled
+        MoneyManager.OnMoneyChanged -= UpdateMoneyDisplay;
     }
 
     /// Call this when money or inventories change.
@@ -43,14 +49,23 @@ public class HUD : MonoBehaviour
 
         var root = ui.rootVisualElement;
 
-        // Money
-        var moneyLabel = root.Q<Label>("MoneyLabel");
-        if (moneyLabel != null && MoneyManager.Instance != null)
-            moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
+        UpdateMoneyDisplay();
 
         // Inventories -> bars (keep fixed number labels, clear only buttons)
         PopulateBar(bar1, GameManager.Instance.GetInventory(1));
         PopulateBar(bar2, GameManager.Instance.GetInventory(2));
+    }
+
+    // Update just the money label
+    private void UpdateMoneyDisplay()
+    {
+        if (ui == null) return;
+        
+        var root = ui.rootVisualElement;
+        var moneyLabel = root.Q<Label>("MoneyLabel");
+        
+        if (moneyLabel != null && MoneyManager.Instance != null)
+            moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
     }
 
     // ---------- Helpers ----------
@@ -112,7 +127,3 @@ public class HUD : MonoBehaviour
         btn.AddToClassList(state); // "selected" / "normal" / "passive"
     }
 }
-
-
-
-

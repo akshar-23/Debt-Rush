@@ -25,19 +25,16 @@
     width: 70px;
 }
 
-/* State: selected */
 .inventory-button.selected {
-    background-color: #49A29A;
+    background-color: rgb(229, 206, 83);
 }
 
-/* State: not selected (default / normal) */
 .inventory-button.normal {
-    background-color: #BCBCBC;
+    background-color: rgb(188, 188, 188);
 }
 
-/* State: passive / disabled */
 .inventory-button.passive {
-    background-color: #7B7B7B;
+    background-color: rgb(123, 123, 123);
 }
 
 .ammo-label {
