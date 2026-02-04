@@ -68,24 +68,6 @@ public class PlayerController : Character
 
     private void Start()
     {
-        Transform childTransform = this.transform.Find("Shield");
-        if (childTransform != null)
-        {
-            GameObject childGameObject = childTransform.gameObject;
-            childGameObject.SetActive(false);
-        }
-
-        foreach (var item in inventory)
-        {
-            if (item != null && item.itemName.Equals("Shield"))
-            {
-                if (childTransform != null)
-                {
-                    GameObject childGameObject = childTransform.gameObject;
-                    childGameObject.SetActive(true);
-                }
-            }
-        }
     }
 
     void Update()

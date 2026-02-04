@@ -563,7 +563,7 @@ PrefabInstance:
     - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: 'shopItemsP2.Array.data[1]'
       value: 
-      objectReference: {fileID: 4221819633106874001, guid: 344ae111534385e468d0ac898e48eb4f, type: 3}
+      objectReference: {fileID: 4829057940073516486, guid: c77813330e3c463448d3329bd17bb082, type: 3}
     - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: 'shopItemsP2.Array.data[2]'
       value: 
