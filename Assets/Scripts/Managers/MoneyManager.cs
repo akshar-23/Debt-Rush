@@ -12,6 +12,8 @@ public class MoneyManager : MonoBehaviour
     private int moneyAmount = 0;
     public int targetMoney = 1000;
 
+    // Event that fires whenever money changes
+    public static event System.Action OnMoneyChanged;
 
     private void Awake()
     {
@@ -51,6 +53,9 @@ public class MoneyManager : MonoBehaviour
         Debug.Log("Money added: " + amount + " - Total: " + moneyAmount);
 
         UpdateMoneyText();
+        
+        // Notify all subscribers that money changed
+        OnMoneyChanged?.Invoke();
     }
 
     public void SubtractMoney(int amount)
@@ -71,6 +76,9 @@ public class MoneyManager : MonoBehaviour
         Debug.Log("Money subtracted: " + amount + " - Total: " + moneyAmount);
 
         UpdateMoneyText();
+        
+        // Notify all subscribers that money changed
+        OnMoneyChanged?.Invoke();
     }
 
     public int GetMoneyAmount() { 

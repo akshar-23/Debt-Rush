@@ -54,6 +54,14 @@ public class Character : MonoBehaviour
         else if (archetype == Archetype.Enemy)
         {
             GameManager.Instance.players[_playerId-1].GetComponent<PlayerController>().killCount += 1;
+            
+            // Get money reward from EnemyController
+            EnemyController enemyController = GetComponent<EnemyController>();
+            if (enemyController != null)
+            {
+                MoneyManager.Instance.AddMoney(enemyController.moneyReward);
+            }
+            
             Debug.LogWarning("Enemy killed by Player " + (_playerId-1) + ". Player's kill count: " + GameManager.Instance.players[_playerId-1].GetComponent<PlayerController>().killCount);
             Destroy(gameObject);
         }
