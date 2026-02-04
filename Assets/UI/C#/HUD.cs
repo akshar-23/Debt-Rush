@@ -97,7 +97,7 @@ public class HUD : MonoBehaviour
 
     public void SetStateToIndex(int playerIndex, int position, string state)
     {
-        VisualElement currentInventory = playerIndex == 1 ? bar1 : bar1;
+        VisualElement currentInventory = playerIndex == 1 ? bar1 : bar2;
 
         List<VisualElement> childrenList = currentInventory.Children().ToList();
         SetState(childrenList[position], state);        

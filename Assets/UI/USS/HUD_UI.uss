@@ -27,7 +27,7 @@
 
 /* State: selected */
 .inventory-button.selected {
-    background-color: #4a90e2;
+    background-color: #49A29A;
 }
 
 /* State: not selected (default / normal) */
