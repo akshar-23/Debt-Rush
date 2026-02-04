@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: InputSystem.inputsettings
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputSettings
   m_SupportedDevices:
-  - DualSenseGamepadHID
+  - Gamepad
   - Keyboard
   - Mouse
+  - DualSenseGamepadHID
   m_UpdateMode: 1
   m_ScrollDeltaBehavior: 0
   m_MaxEventBytesPerUpdate: 5242880
