@@ -4,6 +4,7 @@ public class MoneyGate : MonoBehaviour
 {
     [Header("Settings")]
     public int costToOpen = 500;
+    public bool bTakeAllTheMoney = false;
     public GameObject invisibleWall;
 
     private void OnTriggerEnter(Collider other)
@@ -16,8 +17,13 @@ public class MoneyGate : MonoBehaviour
 
     private void TryToOpenGate(GameObject playerObj)
     {
+        if (bTakeAllTheMoney)
+        {
+            MoneyManager.Instance.ResetMoneyAmount();
+            OpenGate();
+        }
 
-        if (MoneyManager.Instance.GetMoneyAmount() > 0)
+        if (MoneyManager.Instance.GetMoneyAmount() > costToOpen)
         {
             MoneyManager.Instance.SubtractMoney(MoneyManager.Instance.GetMoneyAmount());
             OpenGate();

@@ -84,4 +84,14 @@ public class MoneyManager : MonoBehaviour
     public int GetMoneyAmount() { 
         return moneyAmount; 
     }
+
+    public void ResetMoneyAmount()
+    {
+        moneyAmount = 0;
+        Debug.Log("Money reseted - Total: " + moneyAmount);
+        UpdateMoneyText();
+
+        // Notify all subscribers that money changed
+        OnMoneyChanged?.Invoke();
+    }
 }
