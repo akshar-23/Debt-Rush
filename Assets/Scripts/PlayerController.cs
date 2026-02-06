@@ -32,6 +32,7 @@ public class PlayerController : Character
     public Vector3 moveDirection;
     [SerializeField] private bool canPlayerMove;
     [SerializeField] private bool canPlayerAct;
+    private bool interactPressed = false;
 
     [Header("Items")]
     [SerializeField]
@@ -110,6 +111,7 @@ public class PlayerController : Character
     {
         if (ctx.started)
         {
+            interactPressed = true;
             // Forward to cursor if active
             if (activeCursor != null)
             {
@@ -119,6 +121,10 @@ public class PlayerController : Character
             {
                 OnInteract();
             }
+        }
+        else if (ctx.canceled)
+        {
+            interactPressed = false;
         }
     }
 
@@ -144,6 +150,13 @@ public class PlayerController : Character
         {
             MoveRight();
         }
+    }
+
+    public bool GetInteractPressed()
+    {
+        bool result = interactPressed;
+        interactPressed = false;
+        return result;
     }
 
     private void OnInteract()
