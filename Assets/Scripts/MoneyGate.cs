@@ -17,9 +17,9 @@ public class MoneyGate : MonoBehaviour
     private void TryToOpenGate(GameObject playerObj)
     {
 
-        if (MoneyManager.Instance.GetMoneyAmount() >= costToOpen)
+        if (MoneyManager.Instance.GetMoneyAmount() > 0)
         {
-            MoneyManager.Instance.SubtractMoney(costToOpen);
+            MoneyManager.Instance.SubtractMoney(MoneyManager.Instance.GetMoneyAmount());
             OpenGate();
         }
         else

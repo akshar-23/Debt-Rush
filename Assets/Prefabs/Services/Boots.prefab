@@ -47,7 +47,10 @@ MonoBehaviour:
   id: 543
   itemName: Boots
   itemPrice: 200
-  description: They will make you go faster!
+  description: 'They will make you go faster!
+
+
+    This is a passive item.'
   maxCount: 0
   currentCount: 0
   isActiveItem: 1

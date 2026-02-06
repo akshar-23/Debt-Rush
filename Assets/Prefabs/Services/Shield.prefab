@@ -87,7 +87,10 @@ MonoBehaviour:
   id: 2
   itemName: Shield
   itemPrice: 400
-  description: A shield to protect yourself!
+  description: 'A shield to protect yourself!
+
+
+    This is a passive item.'
   maxCount: 0
   currentCount: 0
   isActiveItem: 1

@@ -107,7 +107,10 @@ MonoBehaviour:
   id: 5656
   itemName: Strawhat
   itemPrice: 200
-  description: This hat will make you brave! +50 HP!
+  description: 'This hat will make you brave! +50 HP!
+
+
+    This is a passive item.'
   maxCount: 0
   currentCount: 0
   isActiveItem: 1
