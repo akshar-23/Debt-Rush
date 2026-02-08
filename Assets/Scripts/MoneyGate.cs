@@ -11,11 +11,12 @@ public class MoneyGate : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            TryToOpenGate(other.gameObject);
+            TryToOpenGate();
         }
     }
 
-    private void TryToOpenGate(GameObject playerObj)
+    //private void TryToOpenGate(GameObject playerObj)
+    public void TryToOpenGate()
     {
         if (bTakeAllTheMoney)
         {

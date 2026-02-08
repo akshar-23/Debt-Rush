@@ -342,4 +342,9 @@ public class PlayerController : Character
             break;
         }
     }
+
+    public int GetPlayerNumber()
+    {
+        return playerNumber;
+    }
 }

@@ -11,6 +11,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private float typingSpeed = 0.04f;
     [SerializeField] public PlayerController playerController1;
     [SerializeField] public PlayerController playerController2;
+    [SerializeField] public GameObject NPCController;
 
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
@@ -31,11 +32,12 @@ public class DialogueManager : MonoBehaviour
 
     private const string SPEAKER_TAG = "speaker";
     private const string PORTRAIT_TAG = "portrait";
-    private const string RADAR_TAG = "radar";
     private const string AUDIO_TAG = "audio";
     private const string MOVEMENT_TAG = "movement";
 
     public bool dialogueIsPlaying { get; private set; }
+    public bool isPlayer1inDialogue { get; private set; }
+    public bool isPlayer2inDialogue { get; private set; }
     public bool canContinueToNextLine = false;
 
     private static DialogueManager instance;
@@ -88,7 +90,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         // handle continuing to the next line in the dialogue when submit is pressed
-        if (canContinueToNextLine && playerController1.GetInteractPressed())
+        if (canContinueToNextLine && ((playerController1 != null &&playerController1.GetInteractPressed()) || (playerController2 != null && playerController2.GetInteractPressed())))
         {
             ContinueStory();
         }
@@ -110,14 +112,37 @@ public class DialogueManager : MonoBehaviour
         ContinueStory();
     }
 
-    public void EnterDialogueMode(TextAsset inkJSON, PlayerController playerController)
+    public void EnterDialogueMode(TextAsset inkJSON, PlayerController playerController, GameObject npcController)
     {
-        playerController1 = playerController;
+        if(playerController.GetPlayerNumber() == 1)
+        {
+            playerController1 = playerController;
+            playerController1.SetCanPlayerMove(false);
+            isPlayer1inDialogue = true;
+
+            if (playerController2 != null)
+            {
+                return;
+            }
+        }
+        else if(playerController.GetPlayerNumber() == 2)
+        {
+            playerController2 = playerController;
+            playerController2.SetCanPlayerMove(false);
+            isPlayer2inDialogue = true;
+
+            if (playerController1 != null)
+            {
+                return;
+            }
+        }
 
         currentStory = new Story(inkJSON.text);
 
+        // Defining functions that we are going to use from the NPC
+        NPCController = npcController;
         currentStory.BindExternalFunction("openGate", () => {
-            //openGate();
+            NPCController.gameObject.GetComponentInParent<MoneyGate>().TryToOpenGate();
         });
 
         dialogueIsPlaying = true;
@@ -126,7 +151,6 @@ public class DialogueManager : MonoBehaviour
         {
             visualPortrait.SetActive(true);
         }
-        playerController1.SetCanPlayerMove(false);
 
         ContinueStory();
     }
@@ -140,7 +164,19 @@ public class DialogueManager : MonoBehaviour
             visualPortrait.SetActive(false);
         }
         dialogueText.text = "";
-        playerController1.SetCanPlayerMove(true);
+        
+        //TODO: WRAP THIS
+        //playerController1.SetCanPlayerMove(true);
+        if (playerController1 != null)
+        {
+            playerController1.SetCanPlayerMove(true);
+            playerController1 = null;
+        }
+        if (playerController2 != null)
+        {
+            playerController2.SetCanPlayerMove(true);
+            playerController2 = null;
+        }
     }
 
     private void ContinueStory()
@@ -152,10 +188,16 @@ public class DialogueManager : MonoBehaviour
                 StopCoroutine(displayLineCoroutine);
             }
 
-            displayLineCoroutine = StartCoroutine(DisplayLine(currentStory.Continue()));
+            string nextLine = currentStory.Continue();
             //dialogueText.text = currentStory.Continue();
 
+            if (nextLine.Equals("") && !currentStory.canContinue)
+            {
+                ExitDialogueMode();
+            }
+
             HandleTags(currentStory.currentTags);
+            displayLineCoroutine = StartCoroutine(DisplayLine(nextLine));
         }
         else
         {
@@ -172,8 +214,9 @@ public class DialogueManager : MonoBehaviour
 
         foreach (char letter in line.ToCharArray())
         {
-            
-            if (playerController1.GetInteractPressed())
+            // Check both controllers, whichever press break
+            if ((playerController1 != null && playerController1.GetInteractPressed()) || 
+                    (playerController2!= null && playerController2.GetInteractPressed()))
             {
                 dialogueText.text = line;
                 break;
@@ -269,13 +312,27 @@ public class DialogueManager : MonoBehaviour
     {
         dialogueChoicesPanel.SetActive(false);
         currentStory.ChooseChoiceIndex(choiceIndex);
-        playerController1.RegisterInteractPressed();
+        
+        if(playerController1 != null)
+        {
+            playerController1.RegisterInteractPressed();
+        }
+        if (playerController2 != null)
+        {
+            playerController2.RegisterInteractPressed();
+        }
+
         ContinueStory();
     }
 
     public bool GetDialogueChoicesActiveStatus()
     {
         return dialogueChoicesPanel.activeInHierarchy;
+    }
+
+    public bool AreBothPlayersInDialogue()
+    {
+        return isPlayer1inDialogue && isPlayer2inDialogue;
     }
 
 }

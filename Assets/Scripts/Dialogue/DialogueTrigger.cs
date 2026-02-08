@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -17,6 +19,11 @@ public class DialogueTrigger : MonoBehaviour
 
     private PlayerController playerController1;
     private PlayerController playerController2;
+    private int counter = 0;
+    private const int CounterMax = 2;
+
+    private bool isPlayer1inDialogue = false;
+    private bool isPlayer2inDialogue = false;
 
     private void Awake()
     {
@@ -26,15 +33,24 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (playerInRange && !DialogueManager.GetInstance().dialogueIsPlaying)
+        if (PlayerInRange())// && !DialogueManager.GetInstance().AreBothPlayersInDialogue())
         {
             visualCue.SetActive(true);
             
             if(playerController1 != null)
             {
-                if (playerController1.GetInteractPressed())
+                if (!isPlayer1inDialogue && playerController1.GetInteractPressed())
                 {
-                    DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1);
+                    isPlayer1inDialogue = true;
+                    DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject);
+                }
+            }
+            if (playerController2 != null)
+            {
+                if (!isPlayer2inDialogue &&  playerController2.GetInteractPressed())
+                {
+                    isPlayer2inDialogue = true;
+                    DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject);
                 }
             }
 
@@ -58,6 +74,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 playerController2 = colliderGO.GetComponent<PlayerController>();
             }
+            counter++;
             playerInRange = true;
         }
     }
@@ -67,15 +84,21 @@ public class DialogueTrigger : MonoBehaviour
         GameObject colliderGO = collider.gameObject;
         if (colliderGO.tag == "Player")
         {
-            if (colliderGO.GetComponent<PlayerController>().playerNumber == 0)
+            if (colliderGO.GetComponent<PlayerController>().playerNumber == 1)
             {
                 playerController1 = null;
             }
-            if (colliderGO.GetComponent<PlayerController>().playerNumber == 1)
+            if (colliderGO.GetComponent<PlayerController>().playerNumber == 2)
             {
                 playerController2 = null;
             }
+            counter--;
             playerInRange = false;
         }
+    }
+
+    private bool PlayerInRange()
+    {
+        return Mathf.Clamp(counter, 0, CounterMax) >=  1 ? true : false;
     }
 }
