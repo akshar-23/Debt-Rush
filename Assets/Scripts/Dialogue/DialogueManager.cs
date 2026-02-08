@@ -16,15 +16,16 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI displayNameText;
+    [SerializeField] private Animator portraitAnimator;
     [SerializeField] private GameObject continueIcon;
 
     [Header("Choices UI")]
+    [SerializeField] private GameObject dialogueChoicesPanel;
     [SerializeField] private GameObject[] choices;
     private TextMeshProUGUI[] choicesText;
 
     [Header("Visual")]
     [SerializeField] private GameObject visualPortrait;
-    [SerializeField] private GameObject visualRadar;
 
     private Story currentStory;
 
@@ -62,17 +63,13 @@ public class DialogueManager : MonoBehaviour
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
 
+        dialogueChoicesPanel.SetActive(false);
         choicesText = new TextMeshProUGUI[choices.Length];
         int index = 0;
 
         if (visualPortrait != null)
         {
             visualPortrait.SetActive(false);
-        }
-
-        if (visualRadar != null)
-        {
-            visualRadar.SetActive(false);
         }
 
         foreach (GameObject choice in choices)
@@ -101,9 +98,10 @@ public class DialogueManager : MonoBehaviour
     {
         currentStory = new Story(inkJSON.text);
 
-        //currentStory.BindExternalFunction("sendFearValue", (int newFearValue) => {
-        //    fearValue = newFearValue;
-        //});
+        currentStory.BindExternalFunction("openGate", () => {
+            //openGate();
+        });
+
 
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
@@ -118,8 +116,16 @@ public class DialogueManager : MonoBehaviour
 
         currentStory = new Story(inkJSON.text);
 
+        currentStory.BindExternalFunction("openGate", () => {
+            //openGate();
+        });
+
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
+        if (visualPortrait != null)
+        {
+            visualPortrait.SetActive(true);
+        }
         playerController1.SetCanPlayerMove(false);
 
         ContinueStory();
@@ -149,8 +155,6 @@ public class DialogueManager : MonoBehaviour
             displayLineCoroutine = StartCoroutine(DisplayLine(currentStory.Continue()));
             //dialogueText.text = currentStory.Continue();
 
-            DisplayChoices();
-
             HandleTags(currentStory.currentTags);
         }
         else
@@ -179,6 +183,7 @@ public class DialogueManager : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
 
+        DisplayChoices();
         continueIcon.SetActive(true);
         canContinueToNextLine = true;
     }
@@ -194,11 +199,13 @@ public class DialogueManager : MonoBehaviour
         }
 
         int index = 0;
+        
 
         foreach (Choice choice in currentChoices)
         {
             choices[index].gameObject.SetActive(true);
             choicesText[index].text = choice.text;
+            dialogueChoicesPanel.SetActive(true);
             index++;
         }
 
@@ -233,33 +240,12 @@ public class DialogueManager : MonoBehaviour
                     displayNameText.text = tagValue;
                     break;
                 case PORTRAIT_TAG:
-                    if (tagValue == "ON")
-                    {
-                        visualPortrait.SetActive(true);
-                    }
-                    else
-                    {
-                        visualPortrait.SetActive(false);
-                    }
-                    break;
-                case RADAR_TAG:
-                    if (tagValue == "ON")
-                    {
-                        visualRadar.SetActive(true);
-                    }
-                    else
-                    {
-                        visualRadar.SetActive(false);
-                    }
+                    portraitAnimator.Play(tagValue);
                     break;
                 case AUDIO_TAG:
                     if (tagValue == "radio")
                     {
                         //audioManagerInstance.PlayInterference();
-                    }
-                    else if (tagValue == "helloelias")
-                    {
-                        //audioManagerInstance.PlayHelloElias();
                     }
                     break;
                 case MOVEMENT_TAG:
@@ -281,7 +267,15 @@ public class DialogueManager : MonoBehaviour
 
     public void MakeChoice(int choiceIndex)
     {
+        dialogueChoicesPanel.SetActive(false);
         currentStory.ChooseChoiceIndex(choiceIndex);
+        playerController1.RegisterInteractPressed();
+        ContinueStory();
+    }
+
+    public bool GetDialogueChoicesActiveStatus()
+    {
+        return dialogueChoicesPanel.activeInHierarchy;
     }
 
 }

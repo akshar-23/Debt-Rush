@@ -159,6 +159,11 @@ public class PlayerController : Character
         return result;
     }
 
+    public void RegisterInteractPressed()
+    {
+        interactPressed = false;
+    }
+
     private void OnInteract()
     {
         if (itemEquipped == null || !canPlayerAct)
