@@ -15,8 +15,8 @@ public class CameraManager : MonoBehaviour
 
     [Header("Cameras")]
     [SerializeField] private Camera mainCamera;
-    [SerializeField] private Camera player1Camera;
-    [SerializeField] private Camera player2Camera;
+    [SerializeField] public Camera player1Camera;
+    [SerializeField] public Camera player2Camera;
 
     [Header("Distance Thresholds")]
     [SerializeField] private float splitDistance = 15f;
@@ -31,7 +31,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private Vector3 splitCamOffset = new Vector3(0, 25, 0);
     [SerializeField] private float splitCamSmoothSpeed = 0.125f;
 
-    private CameraState currentState;
+    public CameraState currentState;
     private Vector3 mainCamVelocity;
     private Vector3 p1CamVelocity;
     private Vector3 p2CamVelocity;

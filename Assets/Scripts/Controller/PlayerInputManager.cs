@@ -134,6 +134,7 @@ public class PlayerInputManager : MonoBehaviour
         if (gamesceneManager != null)
         {
             gamesceneManager.AddPlayer(pc, playerIndex);
+            gamesceneManager.AssignArrows();
         }
 
         // Assign camera

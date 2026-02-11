@@ -11,11 +11,13 @@ public class GameplaySceneManager : MonoBehaviour
     [SerializeField] private Character[] _players;
     [SerializeField] private Character[] _enemies;
     [SerializeField] private TextMeshProUGUI _enemiesText;
-    
+
+    [SerializeField] public OffScreenIndicator[] arrows;
+
     [Header("Respawn Settings")]
     [SerializeField] private float respawnDelay = 15f;
     [SerializeField] private Transform[] respawnPoints;
-    
+
     public static event System.Action<int, Transform> OnPlayerRespawn;
     private Dictionary<Character, Coroutine> _respawnRoutines = new Dictionary<Character, Coroutine>();
 
@@ -70,7 +72,7 @@ public class GameplaySceneManager : MonoBehaviour
     private void HandlePlayerDeath(int _id)
     {
         Character player = _players.FirstOrDefault(p => p.id == _id);
-        
+
         if (player != null && AtleastOnePlayerIsAlive())
         {
             _respawnRoutines[player] = StartCoroutine(RespawnCoroutine(player));
@@ -91,33 +93,52 @@ public class GameplaySceneManager : MonoBehaviour
         return _players.Any(p => !p.isDead);
     }
 
+    private bool AreBothPlayersAlive()
+    {
+        return !_players.Any(p => p == null);
+    }
+
+    public void AssignArrows()
+    {
+        if (AreBothPlayersAlive())
+        {
+            for (int i = 0; i < _players.Length; i++)
+            {
+                if (_players[i] != null)
+                {
+                    arrows[i].target = _players[1 - i].transform; //gets the other player as target
+                }
+            }
+        }
+    }
+
     private IEnumerator RespawnCoroutine(Character player)
     {
         PlayerController pc = player.GetComponent<PlayerController>();
         CharacterController cc = player.GetComponent<CharacterController>();
         Renderer[] renderers = player.GetComponentsInChildren<Renderer>();
-        
+
         // Find and hide health bar
         Transform healthBarCanvas = player.transform.Find("HealthBarCanvas");
-        
+
         // Disable movement and rendering, but keep GameObject active
         if (cc != null)
         {
             cc.enabled = false;
         }
-        
+
         if (pc != null)
         {
             pc.SetCanPlayerMove(false);
             pc.SetCanPlayerAct(false);
         }
-        
+
         // Hide player visually
         foreach (var renderer in renderers)
         {
             renderer.enabled = false;
         }
-        
+
         // Hide health bar
         if (healthBarCanvas != null)
         {
@@ -138,7 +159,7 @@ public class GameplaySceneManager : MonoBehaviour
 
         // Reset player state
         player.Reset();
-        
+
         // Re-enable CharacterController with position fix
         if (cc != null)
         {
@@ -146,26 +167,26 @@ public class GameplaySceneManager : MonoBehaviour
             player.transform.position = respawnTransform.position;
             cc.enabled = true;
         }
-        
+
         // Re-enable movement
         if (pc != null)
         {
             pc.SetCanPlayerMove(true);
             pc.SetCanPlayerAct(true);
         }
-        
+
         // Show player visually
         foreach (var renderer in renderers)
         {
             renderer.enabled = true;
         }
-        
+
         // Show health bar
         if (healthBarCanvas != null)
         {
             healthBarCanvas.gameObject.SetActive(true);
         }
-        
+
         OnPlayerRespawn?.Invoke(player.id, player.transform);
     }
 
@@ -178,7 +199,7 @@ public class GameplaySceneManager : MonoBehaviour
         {
             return respawnPoints[playerId];
         }
-        
+
         Debug.LogWarning($"Respawn point for player {playerId} not found!");
         return transform;
     }
