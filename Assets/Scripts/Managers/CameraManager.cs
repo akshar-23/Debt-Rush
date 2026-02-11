@@ -1,5 +1,6 @@
 using UnityEngine;
 using System; // Required for Action
+using System.Collections; // Required for Coroutine (Fix 3)
 
 public class CameraManager : MonoBehaviour
 {
@@ -36,6 +37,9 @@ public class CameraManager : MonoBehaviour
     private Vector3 p1CamVelocity;
     private Vector3 p2CamVelocity;
 
+    // --- FIX 3 VARS ---
+    private float originalFOV; 
+    private Coroutine fovCoroutine;
 
     private void OnEnable()
     {
@@ -49,9 +53,15 @@ public class CameraManager : MonoBehaviour
         GameplaySceneManager.OnPlayerRespawn -= HandlePlayerRespawn;
     }
 
-
     void Start()
     {
+        // --- FIX 3 SETUP ---
+        // Store the original FOV so we can always return to it reliably
+        if (mainCamera != null)
+        {
+            originalFOV = mainCamera.fieldOfView;
+        }
+
         SwitchToSingleCamera();
     }
 
@@ -92,14 +102,8 @@ public class CameraManager : MonoBehaviour
 
     private void HandlePlayerDeath(int _id)
     {
-        if (_id == 0)
-        {
-            player1 = null;
-        }
-        else if (_id == 1)
-        {
-            player2 = null;
-        }
+        if (_id == 0) player1 = null;
+        else if (_id == 1) player2 = null;
 
         if (player1 != null || player2 != null)
         {
@@ -136,9 +140,33 @@ public class CameraManager : MonoBehaviour
     private void SwitchToSingleCamera()
     {
         currentState = CameraState.Single;
+
+        // --- FIX 1 IMPLEMENTATION (Snap Position) ---
+        // Before enabling the camera, put it exactly where it needs to be.
+        if (player1 != null && player2 != null)
+        {
+            Vector3 centerPoint = (player1.position + player2.position) / 2f;
+            
+            // Reuse your existing logic to find the correct height/distance
+            float requiredDistance = CalculateRequiredDistance();
+            
+            // Calculate the exact target position
+            Vector3 targetPosition = centerPoint + singleCamOffset.normalized * requiredDistance;
+
+            // SNAP the camera instantly
+            mainCamera.transform.position = targetPosition;
+
+            // CRITICAL: Reset velocity so SmoothDamp doesn't carry over old momentum
+            mainCamVelocity = Vector3.zero;
+        }
+
         mainCamera.enabled = true;
         player1Camera.enabled = false;
         player2Camera.enabled = false;
+
+        // --- FIX 3 IMPLEMENTATION (FOV Ease-In) ---
+        if (fovCoroutine != null) StopCoroutine(fovCoroutine);
+        fovCoroutine = StartCoroutine(MergeEffect());
     }
 
     private void SwitchToSplitScreen()
@@ -150,6 +178,32 @@ public class CameraManager : MonoBehaviour
 
         player1Camera.rect = new Rect(0, 0, 0.5f, 1);
         player2Camera.rect = new Rect(0.5f, 0, 0.5f, 1);
+    }
+
+    // --- FIX 3 COROUTINE ---
+    private IEnumerator MergeEffect()
+    {
+        float targetFOV = originalFOV;
+        float startFOV = originalFOV * 1.2f; 
+        
+        mainCamera.fieldOfView = startFOV;
+
+        float duration = 0.5f;
+        float elapsed = 0f;
+
+        while(elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            // Smoothly return to normal FOV
+            float t = elapsed / duration;
+            // Using SmoothStep for a nicer curve than linear Lerp
+            t = t * t * (3f - 2f * t); 
+            
+            mainCamera.fieldOfView = Mathf.Lerp(startFOV, targetFOV, t);
+            yield return null;
+        }
+        
+        mainCamera.fieldOfView = originalFOV;
     }
 
     private void HandleSingleCamera()
@@ -182,7 +236,10 @@ public class CameraManager : MonoBehaviour
 
         float maxBoundsSize = Mathf.Max(bounds.size.x, bounds.size.z);
         
-        float distanceToFit = (maxBoundsSize / 2f) / Mathf.Tan(mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        // Note: We use originalFOV here to ensure calculations stay stable even if FOV is animating
+        float fovToUse = (originalFOV > 0) ? originalFOV : mainCamera.fieldOfView;
+
+        float distanceToFit = (maxBoundsSize / 2f) / Mathf.Tan(fovToUse * 0.5f * Mathf.Deg2Rad);
 
         return Mathf.Max(distanceToFit, defaultDistance);
     }
