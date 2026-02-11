@@ -50,9 +50,7 @@ public class Projectile : MonoBehaviour
 
     void HandleHit(GameObject other)
     {
-        Debug.Log("Enemy should take damage");
-        // We should add more tags (Players) to ignore them for now, still in testing
-        if (other.CompareTag("Projectile")) return;
+        if (other.CompareTag("PassProjectile")) return;
 
         if (other.CompareTag("Shield"))
         {
@@ -66,11 +64,8 @@ public class Projectile : MonoBehaviour
         }
 
         Character character = other.GetComponent<Character>();
-        if (character != null && character.archetype != archetype)
-            character.TakeDamage(damage, playerId);
-
-        // Deactivate/destroy
-        //gameObject.SetActive(false); // better for pooling; otherwise Destroy(gameObject);
+        if (character != null && character.archetype != archetype) character.TakeDamage(damage, playerId);
+        
         Destroy(gameObject);
     }
 }
