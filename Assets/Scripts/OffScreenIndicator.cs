@@ -9,7 +9,7 @@ public class OffScreenIndicator : MonoBehaviour
     public float margin = 50f;
 
     private RectTransform rectTransform;
-    private CanvasGroup canvasGroup; // The fix
+    private CanvasGroup canvasGroup;
 
     void Start()
     {
@@ -19,21 +19,18 @@ public class OffScreenIndicator : MonoBehaviour
 
     void LateUpdate()
     {
-        // 0. Validation
         if (target == null || camManager == null || playerCamera == null)
         {
             SetVisibility(false);
             return;
         }
 
-        // 1. Check Camera State - This will now run every frame because the script stays alive!
         if (camManager.currentState == CameraManager.CameraState.Single)
         {
             SetVisibility(false);
             return;
         }
 
-        // 2. Math for Screen Positions
         Vector3 screenPos = playerCamera.WorldToScreenPoint(target.position);
 
         if (screenPos.z < 0) screenPos *= -1;
@@ -47,17 +44,14 @@ public class OffScreenIndicator : MonoBehaviour
         bool isOffScreen = screenPos.x <= minX || screenPos.x >= maxX ||
                            screenPos.y <= minY || screenPos.y >= maxY;
 
-        // 3. Toggle Visibility based on OffScreen status
         if (isOffScreen)
         {
             SetVisibility(true);
 
-            // Clamp Position
             screenPos.x = Mathf.Clamp(screenPos.x, minX, maxX);
             screenPos.y = Mathf.Clamp(screenPos.y, minY, maxY);
             rectTransform.position = screenPos;
 
-            // Rotation Logic
             Vector3 viewportCenter = new Vector3(
                 (vRect.x + vRect.width / 2f) * Screen.width,
                 (vRect.y + vRect.height / 2f) * Screen.height,
@@ -74,10 +68,9 @@ public class OffScreenIndicator : MonoBehaviour
         }
     }
 
-    // Helper to hide visuals without killing the script
     private void SetVisibility(bool visible)
     {
         canvasGroup.alpha = visible ? 1f : 0f;
-        canvasGroup.blocksRaycasts = visible; // Optional: prevents clicking invisible arrows
+        canvasGroup.blocksRaycasts = visible;
     }
 }
