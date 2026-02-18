@@ -11,17 +11,26 @@ public class GameOverScreen : MonoBehaviour
 
     private void Start()
     {
-        restartButton.onClick.AddListener(RestartGame);    
+        restartButton.onClick.AddListener(RestartGame);
     }
 
     public void RestartGame()
     {
         Time.timeScale = 1f;
+
+        GameManager.Instance.ResetState();
+        
+
         SceneManager.LoadScene("UI_Scene");
     }
 
     public void SetGameOverText(string newGameOverText)
     {
         gameOverText.text = newGameOverText;
+    }
+
+    public void Reset()
+    {
+
     }
 }

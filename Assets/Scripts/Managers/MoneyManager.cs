@@ -28,6 +28,13 @@ public class MoneyManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    public void ResetState()
+    {
+        moneyAmount = 0;
+        targetMoney = 1000;
+        OnMoneyChanged = null; // Clear all subscribers
+    }
+
     private void Start()
     {
         UpdateMoneyText();

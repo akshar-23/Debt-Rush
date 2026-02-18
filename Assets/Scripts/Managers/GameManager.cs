@@ -8,11 +8,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     public GameObject gameOverUI;
-    private bool isGameOver;
+    private bool isGameOver = false;
     public bool checkConditions = false;
 
-    public Character[] players;
-    public Character[] enemies;
+    public Character[] players = new Character[2];
+    public Character[] enemies = new Character[40];
 
     [Header("Shop Data (edit in Inspector)")]
     [SerializeField] private List<ShopItem> shopItemsP1 = new();
@@ -31,6 +31,16 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void ResetState()
+    {
+        isGameOver = false;
+        checkConditions = false;
+        if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
+        ClearInventories();
+        players = new Character[2];
+        enemies = new Character[40];
     }
 
     void Start()
