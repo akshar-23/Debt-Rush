@@ -307,6 +307,18 @@ public class PlayerController : Character
         }
     }
 
+    public void AddInventoryItem(ShopItem _item)
+    {
+        inventory.Add(_item);
+        GameManager.Instance.AddToInventory(playerNumber, _item);
+        hudref.BuildUI();
+
+        if (inventory.Count == 1)
+        {
+            SelectFirstItem();
+        }
+    }
+
     public void DeleteInventoryItem(ShopItem _item)
     {
         Destroy(_item.gameObject);

@@ -59,6 +59,21 @@ public class GameManager : MonoBehaviour
 
     public void AddToInventory(int playerIndex, ShopItem item)
     {
+        if(playerIndex == 1) 
+        { 
+            if(inventoryP1.Count >= 5)
+            {
+                return;
+            }
+        }
+        else if (playerIndex == 2)
+        {
+            if (inventoryP2.Count >= 5)
+            {
+                return;
+            }
+        }
+
         (playerIndex == 1 ? inventoryP1 : inventoryP2).Add(item);
     }
 
