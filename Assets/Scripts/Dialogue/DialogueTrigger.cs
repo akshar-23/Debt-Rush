@@ -15,49 +15,33 @@ public class DialogueTrigger : MonoBehaviour
     [Header("Ink JSON")]
     [SerializeField] private TextAsset inkJSON;
 
-    private bool playerInRange;
-
     private PlayerController playerController1;
     private PlayerController playerController2;
-    private int counter = 0;
-    private const int CounterMax = 2;
 
+    private bool isPlayerinDialogue = false;
     private bool isPlayer1inDialogue = false;
     private bool isPlayer2inDialogue = false;
 
     private void Awake()
     {
-        playerInRange = false;
-        visualCue.SetActive(false);
+        if(visualCue != null)
+        {
+            visualCue.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        if (PlayerInRange())// && !DialogueManager.GetInstance().AreBothPlayersInDialogue())
+        if(!isPlayerinDialogue && playerController1 != null && playerController1.GetInteractPressed())
         {
-            visualCue.SetActive(true);
+            isPlayerinDialogue = true;
+            DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject);
             
-            if(playerController1 != null)
-            {
-                if (!isPlayer1inDialogue && playerController1.GetInteractPressed())
-                {
-                    isPlayer1inDialogue = true;
-                    DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject);
-                }
-            }
-            if (playerController2 != null)
-            {
-                if (!isPlayer2inDialogue &&  playerController2.GetInteractPressed())
-                {
-                    isPlayer2inDialogue = true;
-                    DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject);
-                }
-            }
-
         }
-        else
+        if (!isPlayerinDialogue && playerController2 != null && playerController2.GetInteractPressed())
         {
-            visualCue.SetActive(false);
+            isPlayerinDialogue = true;
+            DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject);
         }
     }
 
@@ -74,8 +58,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 playerController2 = colliderGO.GetComponent<PlayerController>();
             }
-            counter++;
-            playerInRange = true;
+            visualCue.SetActive(true);
         }
     }
 
@@ -92,13 +75,10 @@ public class DialogueTrigger : MonoBehaviour
             {
                 playerController2 = null;
             }
-            counter--;
-            playerInRange = false;
         }
-    }
-
-    private bool PlayerInRange()
-    {
-        return Mathf.Clamp(counter, 0, CounterMax) >=  1 ? true : false;
+        if(playerController1 == null && playerController2 == null && visualCue != null)
+        {
+            visualCue.SetActive(false);
+        }
     }
 }

@@ -74,10 +74,12 @@ public class CameraManager : MonoBehaviour
             if (currentState == CameraState.Single && distance > splitDistance)
             {
                 SwitchToSplitScreen();
+                DialogueManager.GetInstance().SwitchToSplitScreenDialogue();
             }
             else if (currentState == CameraState.Split && distance < mergeDistance)
             {
                 SwitchToSingleCamera();
+                DialogueManager.GetInstance().SwitchToSingleScreenDialogue();
             }
 
             if (currentState == CameraState.Single)
@@ -254,5 +256,10 @@ public class CameraManager : MonoBehaviour
         {
             player2 = position;
         }
+    }
+
+    public CameraState GetCurrentState()
+    {
+        return currentState;
     }
 }
