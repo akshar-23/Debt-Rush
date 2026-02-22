@@ -37,25 +37,9 @@ public class DialogueContext : MonoBehaviour
     public bool isPlayer2inDialogue { get; private set; }
     public bool canContinueToNextLine = false;
 
-    private static DialogueContext instance;
-
     private Coroutine displayLineCoroutine;
 
     public AudioManager audioManagerInstance;
-
-    private void Awake()
-    {
-        if (instance != null)
-        {
-            Debug.LogError("Found more than one Input Manager in the scene.");
-        }
-        instance = this;
-    }
-
-    public static DialogueContext GetInstance()
-    {
-        return instance;
-    }
 
     public void Start()
     {
@@ -82,7 +66,7 @@ public class DialogueContext : MonoBehaviour
         }
 
         // handle continuing to the next line in the dialogue when submit is pressed
-        if (canContinueToNextLine && (currentController != null && currentController.GetInteractPressed()))
+        if (canContinueToNextLine && (currentController != null && currentController.GetSubmitPressed()))
         {
             ContinueStory();
         }
@@ -186,7 +170,7 @@ public class DialogueContext : MonoBehaviour
         foreach (char letter in line.ToCharArray())
         {
             // Check both controllers, whichever press break
-            if ((currentController != null && currentController.GetInteractPressed()))
+            if ((currentController != null && currentController.GetSubmitPressed()))
             {
                 dialogueText.text = line;
                 break;
@@ -285,7 +269,7 @@ public class DialogueContext : MonoBehaviour
         
         if(currentController != null)
         {
-            currentController.RegisterInteractPressed();
+            currentController.RegisterSubmitPressed();
         }
 
         ContinueStory();

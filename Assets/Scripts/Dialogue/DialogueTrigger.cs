@@ -32,13 +32,15 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Update()
     {
-        if(!isPlayerinDialogue && playerController1 != null && playerController1.GetInteractPressed())
+        if (isPlayerinDialogue) return;
+
+        if(playerController1 != null && playerController1.GetSubmitPressed())
         {
             isPlayerinDialogue = true;
             DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject);
             
         }
-        if (!isPlayerinDialogue && playerController2 != null && playerController2.GetInteractPressed())
+        if (playerController2 != null && playerController2.GetSubmitPressed())
         {
             isPlayerinDialogue = true;
             DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject);
@@ -79,6 +81,7 @@ public class DialogueTrigger : MonoBehaviour
         if(playerController1 == null && playerController2 == null && visualCue != null)
         {
             visualCue.SetActive(false);
+            isPlayerinDialogue = false;
         }
     }
 }

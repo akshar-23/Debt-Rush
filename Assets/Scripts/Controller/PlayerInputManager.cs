@@ -97,7 +97,7 @@ public class PlayerInputManager : MonoBehaviour
         var player = PlayerInput.Instantiate(
             prefabToSpawn,
             controlScheme: scheme, 
-            pairWithDevice: gamePad != null ? gamePad : Keyboard.current
+            pairWithDevices: gamePad != null ? gamePad : Keyboard.current
         );
 
         player.transform.position = spawnPosition;

@@ -97,12 +97,14 @@ public class DialogueManager : MonoBehaviour
                 isPlayer1inDialogue = true;
                 playerController1 = playerController;
                 playerController1.SetCanPlayerMove(false);
+                playerController1.input.SwitchCurrentActionMap("UI");
             }
             if (playerController.GetPlayerNumber() == 2)
             {
                 isPlayer2inDialogue = true;
                 playerController2 = playerController;
                 playerController2.SetCanPlayerMove(false);
+                playerController2.input.SwitchCurrentActionMap("UI");
             }
 
             dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
@@ -113,6 +115,7 @@ public class DialogueManager : MonoBehaviour
             {
                 playerController1 = playerController;
                 playerController1.SetCanPlayerMove(false);
+                playerController1.input.SwitchCurrentActionMap("UI");
                 isPlayer1inDialogue = true;
                 dialogueContext.SetActive(false);
                 dialogueContext_P1.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
@@ -122,6 +125,7 @@ public class DialogueManager : MonoBehaviour
             {
                 playerController2 = playerController;
                 playerController2.SetCanPlayerMove(false);
+                playerController2.input.SwitchCurrentActionMap("UI");
                 isPlayer2inDialogue = true;
                 dialogueContext.SetActive(false);
                 dialogueContext_P2.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
@@ -132,6 +136,15 @@ public class DialogueManager : MonoBehaviour
     public void NotifyEndDialogue()
     {
         dialogueIsPlaying = false;
+
+        if (isPlayer1inDialogue)
+        {
+            playerController1.input.SwitchCurrentActionMap("Player");
+        }
+        if (isPlayer2inDialogue)
+        {
+            playerController2.input.SwitchCurrentActionMap("Player");
+        }
     }
 
     private void ExitDialogueMode()
@@ -170,6 +183,7 @@ public class DialogueManager : MonoBehaviour
             dialogueContext_P1.GetComponent<DialogueContext>().UpdateCurrentStory(dc_p1.GetCurrentStory(), dc_p1.GetCurrentController());
             dialogueContext.GetComponent<DialogueContext>().TransitionDialogue();
             playerController1.SetCanPlayerMove(false);
+            playerController1.input.SwitchCurrentActionMap("UI");
         }
         if (isPlayer2inDialogue)
         {
@@ -178,6 +192,7 @@ public class DialogueManager : MonoBehaviour
             dialogueContext_P2.GetComponent<DialogueContext>().UpdateCurrentStory(dc_p2.GetCurrentStory(), dc_p2.GetCurrentController());
             dialogueContext.GetComponent<DialogueContext>().TransitionDialogue();
             playerController2.SetCanPlayerMove(false);
+            playerController2.input.SwitchCurrentActionMap("UI");
         }  
     }
 
@@ -195,6 +210,7 @@ public class DialogueManager : MonoBehaviour
             dialogueContext_P1.SetActive(false);
             dialogueContext_P1.GetComponent<DialogueContext>().TransitionDialogue();
             playerController1.SetCanPlayerMove(false);
+            playerController1.input.SwitchCurrentActionMap("UI");
         }
         if (isPlayer2inDialogue)
         {
@@ -203,6 +219,7 @@ public class DialogueManager : MonoBehaviour
             dialogueContext_P2.SetActive(false);
             dialogueContext_P2.GetComponent<DialogueContext>().TransitionDialogue();
             playerController2.SetCanPlayerMove(false);
+            playerController2.input.SwitchCurrentActionMap("UI");
         }
     }
 }
