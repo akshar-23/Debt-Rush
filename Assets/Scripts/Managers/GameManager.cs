@@ -69,9 +69,9 @@ public class GameManager : MonoBehaviour
 
     public void AddToInventory(int playerIndex, ShopItem item)
     {
-        if(playerIndex == 1) 
-        { 
-            if(inventoryP1.Count >= 5)
+        if (playerIndex == 1)
+        {
+            if (inventoryP1.Count >= 5)
             {
                 return;
             }
@@ -120,26 +120,48 @@ public class GameManager : MonoBehaviour
 
     public void CheckWinLossConditions()
     {
-        // Don't check if players haven't spawned yet
-        if (players == null || players.Length < 2 || players[0] == null || players[1] == null)
+        int totalActivePlayers = 0;
+        int deadPlayers = 0;
+        int playersAtDestination = 0;
+
+        foreach (var player in players)
         {
+            if (player == null) continue;
+
+            totalActivePlayers++;
+
+            if (player.isDead)
+            {
+                deadPlayers++;
+            }
+            else
+            {
+                var controller = player.GetComponent<PlayerController>();
+                if (controller != null && controller.isAtDestination)
+                {
+                    playersAtDestination++;
+                }
+            }
+        }
+
+        if (totalActivePlayers == 0) return;
+
+        if (deadPlayers >= totalActivePlayers)
+        {
+            ShowGameOverScreen("GAME OVER");
             return;
         }
 
-        // If both players are dead
-        if (players[0].isDead && players[1].isDead)
+        int aliveCount = totalActivePlayers - deadPlayers;
+
+        if (playersAtDestination >= aliveCount && aliveCount > 0)
         {
-            ShowGameOverScreen("GAME OVER");
-        }
-        // If both players reached destination with enough money
-        else if (
-            !players[0].isDead && players[0].GetComponent<PlayerController>().isAtDestination &&
-            !players[1].isDead && players[1].GetComponent<PlayerController>().isAtDestination &&
-            MoneyManager.Instance.GetMoneyAmount() >= MoneyManager.Instance.targetMoney
-        )
-        {
-            MoneyManager.Instance.SubtractMoney(MoneyManager.Instance.targetMoney);
-            ShowGameOverScreen("YOU WON");
+            var mm = MoneyManager.Instance;
+            if (mm.GetMoneyAmount() >= mm.targetMoney)
+            {
+                mm.SubtractMoney(mm.targetMoney);
+                ShowGameOverScreen("YOU WON");
+            }
         }
     }
 }
