@@ -1,9 +1,10 @@
+using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using Ink.Runtime;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] public PlayerController playerController1;
     [SerializeField] public PlayerController playerController2;
     [SerializeField] public GameObject NPCController;
+
+    [SerializeField]  public Canvas sharedCanvas;
+    [SerializeField]  public GameObject sharedFirstButton;
+    [SerializeField] public MultiplayerEventSystem sharedEventSystem;
+    [SerializeField] public InputSystemUIInputModule sharedUIModule;
 
     [SerializeField] private CameraManager cameraManager;
     [SerializeField] private GameObject dialogueContext;
@@ -92,12 +98,15 @@ public class DialogueManager : MonoBehaviour
 
         if (cameraManager.GetCurrentState() == CameraManager.CameraState.Single)
         {
+            PlayerController currentController = null;
+
             if (playerController.GetPlayerNumber() == 1)
             {
                 isPlayer1inDialogue = true;
                 playerController1 = playerController;
                 playerController1.SetCanPlayerMove(false);
                 playerController1.input.SwitchCurrentActionMap("UI");
+                currentController = playerController1;
             }
             if (playerController.GetPlayerNumber() == 2)
             {
@@ -105,7 +114,19 @@ public class DialogueManager : MonoBehaviour
                 playerController2 = playerController;
                 playerController2.SetCanPlayerMove(false);
                 playerController2.input.SwitchCurrentActionMap("UI");
+                currentController = playerController2;
             }
+
+            UIBinder.BindToPlayer(
+                sharedEventSystem,
+                sharedUIModule,
+                currentController.input,
+                sharedCanvas.gameObject,
+                sharedFirstButton
+            );
+
+            sharedEventSystem.enabled = true;
+            sharedUIModule.enabled = true;
 
             dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
         }
@@ -145,6 +166,10 @@ public class DialogueManager : MonoBehaviour
         {
             playerController2.input.SwitchCurrentActionMap("Player");
         }
+
+        sharedCanvas.enabled = false;
+        sharedEventSystem.enabled = false;
+        sharedUIModule.enabled = false;
     }
 
     private void ExitDialogueMode()
