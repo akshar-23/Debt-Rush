@@ -665,7 +665,7 @@
                 {
                     "name": "",
                     "id": "ca66547b-a992-40a2-8324-94cdc19bde05",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": ";WASD",
@@ -676,7 +676,7 @@
                 {
                     "name": "",
                     "id": "f83ed992-1d45-42f4-bd42-06ab8f1f091c",
-                    "path": "<Keyboard>/numpad1",
+                    "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": ";Arrows",
@@ -1037,6 +1037,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "North",
+                    "type": "Button",
+                    "id": "d7f7d099-39b8-410b-b1d9-bb541ac7fd00",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "Hold",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ChangeInventory_L",
                     "type": "Button",
                     "id": "95287db0-7062-483c-b24e-b1d7d9a1a1c9",
@@ -1059,7 +1068,7 @@
                 {
                     "name": "",
                     "id": "4b3195a6-3ab8-4f52-846b-b8bcbcdf50dc",
-                    "path": "<Keyboard>/q",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "WASD;Keyboard&Mouse",
@@ -1070,7 +1079,7 @@
                 {
                     "name": "",
                     "id": "e965d69c-7460-4f9e-ad38-eedf266ee1ca",
-                    "path": "<Keyboard>/numpad1",
+                    "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "Arrows;Keyboard&Mouse",
@@ -1394,6 +1403,39 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e10dca1-59c5-4df3-b685-f0f2d4a60b91",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "WASD;Keyboard&Mouse",
+                    "action": "North",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5c50e6f2-947e-4050-9b6f-ade490ec9870",
+                    "path": "<Keyboard>/numpad1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Arrows;Keyboard&Mouse",
+                    "action": "North",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e896028-f64a-4916-ab8a-59a6f68103b2",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "North",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

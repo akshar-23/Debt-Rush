@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,13 @@ public class GameManager : MonoBehaviour
 
     public Character[] players = new Character[2];
     public Character[] enemies = new Character[40];
+
+    [Header("Player Join Data (set at runtime)")]
+    public string[] playerSchemes = new string[2];   // "WASD", "Arrows", "GamePad"
+    public Gamepad[] playerGamepads = new Gamepad[2]; // null if keyboard
+
+    [Header("Inventory Settings")]
+    public int inventoryLimit = 6;
 
     [Header("Shop Data (edit in Inspector)")]
     [SerializeField] private List<ShopItem> shopItemsP1 = new();
@@ -41,6 +49,8 @@ public class GameManager : MonoBehaviour
         ClearInventories();
         players = new Character[2];
         enemies = new Character[40];
+        playerSchemes = new string[2];
+        playerGamepads = new Gamepad[2];
     }
 
     void Start()
@@ -71,17 +81,11 @@ public class GameManager : MonoBehaviour
     {
         if (playerIndex == 1)
         {
-            if (inventoryP1.Count >= 5)
-            {
-                return;
-            }
+            if (inventoryP1.Count >= inventoryLimit) return;
         }
         else if (playerIndex == 2)
         {
-            if (inventoryP2.Count >= 5)
-            {
-                return;
-            }
+            if (inventoryP2.Count >= inventoryLimit) return;
         }
 
         (playerIndex == 1 ? inventoryP1 : inventoryP2).Add(item);

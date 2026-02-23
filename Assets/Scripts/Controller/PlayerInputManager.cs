@@ -35,26 +35,33 @@ public class PlayerInputManager : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current == null || currentNumberPlayers >= 2) return;
+        if (currentNumberPlayers >= 2) return;
 
-        if(!wasdJoined && Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current != null)
         {
-            InstantiateCharacter("WASD");
-            wasdJoined = true;
-        }
-
-        if (!arrowsJoined && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
-        {
-            InstantiateCharacter("Arrows");
-            arrowsJoined = true;
-        }
-
-        foreach(var gamePad in Gamepad.all)
-        {
-            if (gamePad.buttonSouth.wasPressedThisFrame)
+            // Space = WASD player join (matches Submit binding in action map)
+            if (!wasdJoined && Keyboard.current.spaceKey.wasPressedThisFrame)
             {
+                wasdJoined = true;
+                InstantiateCharacter("WASD");
+            }
+
+            // RightCtrl = Arrows player join (matches Submit binding in action map)
+            if (!arrowsJoined && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+            {
+                arrowsJoined = true;
+                InstantiateCharacter("Arrows");
+            }
+        }
+
+        // Gamepad: first unclaimed south press joins
+        foreach (var gamePad in Gamepad.all)
+        {
+            if (gamePad.buttonSouth.wasPressedThisFrame && !gamepadJoined)
+            {
+                gamepadJoined = true;
                 InstantiateCharacter("GamePad", gamePad);
-                if (currentNumberPlayers == 2) gamepadJoined = true;
+                break; // only one gamepad join per frame
             }
         }
     }
@@ -105,7 +112,14 @@ public class PlayerInputManager : MonoBehaviour
             pairWithDevices: gamePad != null ? gamePad : Keyboard.current
         );
 
-        int idx = playerIndex;//player.playerIndex;  // authoritative index
+        int idx = playerIndex; // authoritative index
+
+        // Store join data in GameManager so shop scene can read it without players existing
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.playerSchemes[idx] = scheme;
+            GameManager.Instance.playerGamepads[idx] = gamePad;
+        }
 
         // Use idx for spawn, cameras, arrays, HUD, etc.
         Vector3 spawnPosition = (spawnPoints != null && idx < spawnPoints.Length && spawnPoints[idx] != null)

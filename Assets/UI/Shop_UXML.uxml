@@ -1,10 +1,98 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/USS/Shop_UI.uss?fileID=7433441132597879392&amp;guid=fd87481d2fdf1614dafd9aa0be49b7dc&amp;type=3" />
+    <Style src="project://database/Assets/UI/USS/Shop_UI.uss?fileID=7433441132597879392&amp;guid=fd87481d2fdf1614dafd9aa0be49b7dc&amp;type=3#Shop_UI" />
     <ui:VisualElement name="Canvas" style="flex-grow: 0; justify-content: center; align-items: center; width: 100%; background-color: rgba(0, 0, 0, 0); align-content: auto; align-self: auto; height: 100%; background-position-x: left 0; background-position-y: top 0; top: auto; left: auto; flex-direction: column; flex-wrap: nowrap; position: relative;">
-        <ui:VisualElement name="MoneyPanel" style="flex-grow: 0; height: 79px; width: 281px; background-color: rgb(183, 195, 194); align-self: center; align-items: center; justify-content: center; align-content: center; flex-direction: column; translate: 0 -40px; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgb(202, 202, 202); border-right-color: rgb(202, 202, 202); border-top-color: rgb(202, 202, 202); border-bottom-color: rgb(202, 202, 202); border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; display: none;">
-            <ui:Label text="1500 $" name="MoneyLabel" style="width: 100%; height: 100%; -unity-text-align: middle-center; font-size: 33px; align-self: center; justify-content: center; align-items: center; align-content: center; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+        <ui:VisualElement name="PlayerJoinPanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: flex; align-self: center; align-content: center;">
+            <ui:Label text="Ready to Join?" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 34px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+            <ui:VisualElement name="Panel" style="flex-grow: 1; flex-direction: row; translate: 0 53px;">
+                <ui:VisualElement name="Player1_Panel">
+                    <ui:VisualElement name="Indie_Contain_1" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
+                        <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="join-player-title" />
+                        <ui:Label text="Press Ⓐ to Join" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="join-text" />
+                        <ui:VisualElement name="Button_Container" style="flex-grow: 0; flex-shrink: 0; height: 120px;">
+                            <ui:Button text="Ⓧ Continue" class="joined-continue-button" style="display: flex;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="Player2_Panel">
+                    <ui:VisualElement name="Indie_Contain_2" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
+                        <ui:Label text="Player 2" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="join-player-title" />
+                        <ui:Label text="Press Ⓐ to Join" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="join-text" />
+                        <ui:VisualElement style="flex-grow: 0; flex-shrink: 0; height: 120px;">
+                            <ui:Button text="Ⓧ Continue" name="Button_Container" class="joined-continue-button" style="display: flex;" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="PlayerPanels" style="flex-direction: row; display: flex;">
+        <ui:VisualElement name="ModePanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none;">
+            <ui:Label text="What Mode You Want To Play?" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 -24px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+            <ui:Button text="No Secrets" name="ModeButton_1" class="mode-button">
+                <ui:Label text="Work together with shared goals and shared money." class="mode-desc" />
+            </ui:Button>
+            <ui:Button text="Some Secrets" name="ModeButton_2" class="mode-button">
+                <ui:Label text="Work together, but each player also has hidden goals and their own rewards." class="mode-desc" />
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="IndieObjPanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none; align-self: center; align-content: center;">
+            <ui:Label text="Choose your hidden goals" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 34px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
+            <ui:VisualElement name="Panel" style="flex-grow: 1; flex-direction: row; translate: 0 53px;">
+                <ui:VisualElement name="Player1_Panel">
+                    <ui:VisualElement name="Indie_Contain_1" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
+                        <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title indie-player-title" />
+                        <ui:VisualElement name="ObjectivesContainer_1" class="obj-container">
+                            <ui:Button text="Hidden Objective" name="obj_1_1" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="N" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                            <ui:Button text="Hidden Objective" name="obj_1_2" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="S" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                            <ui:Button text="Hidden Objective" name="obj_1_3" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="W" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                            <ui:Button text="Hidden Objective" name="obj_1_4" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="E" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:VisualElement name="Player2_Panel">
+                    <ui:VisualElement name="Indie_Contain_2" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
+                        <ui:Label text="Player 2" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title indie-player-title" style="display: flex;" />
+                        <ui:VisualElement name="ObjectivesContainer_2" class="obj-container" style="flex-grow: 1; justify-content: center;">
+                            <ui:Button text="Hidden Objective" name="obj_2_1" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="N" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                            <ui:Button text="Hidden Objective" name="obj_2_2" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="S" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                            <ui:Button text="Hidden Objective" name="obj_2_3" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="W" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                            <ui:Button text="Hidden Objective" name="obj_2_4" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box">
+                                    <ui:Label text="E" class="hint-text" />
+                                </ui:VisualElement>
+                            </ui:Button>
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="PlayerPanels" style="flex-direction: row; display: none;">
             <ui:VisualElement name="Player_1" style="flex-grow: 1; display: flex; align-content: stretch;">
                 <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title" style="display: flex; translate: 52px 21px;" />
                 <ui:VisualElement name="Panel_1" style="flex-grow: 1; flex-direction: row;">
@@ -85,93 +173,13 @@
                 </ui:Button>
             </ui:VisualElement>
         </ui:VisualElement>
+        <ui:VisualElement name="MoneyPanel" style="flex-grow: 0; height: 79px; width: 281px; background-color: rgb(183, 195, 194); align-self: center; align-items: center; justify-content: center; align-content: center; flex-direction: column; translate: 0 -40px; border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-left-color: rgb(202, 202, 202); border-right-color: rgb(202, 202, 202); border-top-color: rgb(202, 202, 202); border-bottom-color: rgb(202, 202, 202); border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px; display: none;">
+            <ui:Label text="1500 $" name="MoneyLabel" style="width: 100%; height: 100%; -unity-text-align: middle-center; font-size: 33px; align-self: center; justify-content: center; align-items: center; align-content: center; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+        </ui:VisualElement>
         <ui:VisualElement name="EndPanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none;">
             <ui:Label text="Are You Done?" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 -24px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
             <ui:Button text="Continue" name="ContinueButton" style="width: 204px; height: 63px; font-size: 35px; translate: 0 -25px;" />
             <ui:Button text="Return" name="ReturnButton" style="width: 204px; height: 63px; font-size: 35px; translate: 0 -19px;" />
-        </ui:VisualElement>
-        <ui:VisualElement name="ModePanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none;">
-            <ui:Label text="What Mode You Want To Play?" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 -24px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
-            <ui:Button text="No Secrets" name="ModeButton_1" class="mode-button">
-                <ui:Label text="Work together with shared goals and shared money." class="mode-desc" />
-            </ui:Button>
-            <ui:Button text="Some Secrets" name="ModeButton_2" class="mode-button">
-                <ui:Label text="Work together, but each player also has hidden goals and their own rewards." class="mode-desc" />
-            </ui:Button>
-        </ui:VisualElement>
-        <ui:VisualElement name="IndieObjPanel" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none; align-self: center; align-content: center;">
-            <ui:Label text="Choose your hidden goals" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 34px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
-            <ui:VisualElement name="Panel" style="flex-grow: 1; flex-direction: row; translate: 0 53px;">
-                <ui:VisualElement name="Player1_Panel">
-                    <ui:VisualElement name="Indie_Contain_1" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
-                        <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title indie-player-title" />
-                        <ui:VisualElement name="ObjectivesContainer_1" class="obj-container">
-                            <ui:Button text="Hidden Objective" name="obj_1_1" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="N" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                            <ui:Button text="Hidden Objective" name="obj_1_2" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="S" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                            <ui:Button text="Hidden Objective" name="obj_1_3" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="W" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                            <ui:Button text="Hidden Objective" name="obj_1_4" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="E" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-                <ui:VisualElement name="Player2_Panel">
-                    <ui:VisualElement name="Indie_Contain_2" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
-                        <ui:Label text="Player 2" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title indie-player-title" style="display: flex;" />
-                        <ui:VisualElement name="ObjectivesContainer_2" class="obj-container" style="flex-grow: 1; justify-content: center;">
-                            <ui:Button text="Hidden Objective" name="obj_2_1" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="N" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                            <ui:Button text="Hidden Objective" name="obj_2_2" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="S" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                            <ui:Button text="Hidden Objective" name="obj_2_3" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="W" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                            <ui:Button text="Hidden Objective" name="obj_2_4" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="E" class="hint-text" />
-                                </ui:VisualElement>
-                            </ui:Button>
-                        </ui:VisualElement>
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:VisualElement>
-        </ui:VisualElement>
-        <ui:VisualElement name="Start" style="flex-grow: 0; background-color: rgba(255, 255, 255, 0.68); width: 90%; height: 90%; align-items: center; justify-content: center; border-top-left-radius: 52px; border-top-right-radius: 52px; border-bottom-right-radius: 52px; border-bottom-left-radius: 52px; display: none; align-self: center; align-content: center;">
-            <ui:Label text="Press A to Join" style="-unity-text-align: upper-center; font-size: 56px; align-self: center; translate: 0 34px; margin-top: 25px; margin-right: 25px; margin-bottom: 25px; margin-left: 25px;" />
-            <ui:VisualElement name="Panel" style="flex-grow: 1; flex-direction: row; translate: 0 53px;">
-                <ui:VisualElement name="Player1_Panel">
-                    <ui:VisualElement name="Indie_Contain_1" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
-                        <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="indie-player-title" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-                <ui:VisualElement name="Player2_Panel">
-                    <ui:VisualElement name="Indie_Contain_2" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
-                        <ui:Label text="Player 2" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="indie-player-title" style="display: flex;" />
-                    </ui:VisualElement>
-                </ui:VisualElement>
-            </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

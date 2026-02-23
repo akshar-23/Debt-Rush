@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Shop_UI : MonoBehaviour
 {
-    [SerializeField] int inventoryLimit = 12;
+    int inventoryLimit => GameManager.Instance.inventoryLimit;
     [SerializeField] int initialMoney = 1500;
     [SerializeField] UIDocument ui;
 
@@ -231,11 +231,8 @@ public class Shop_UI : MonoBehaviour
         int count1 = GameManager.Instance.GetInventory(1).Count;
         int count2 = GameManager.Instance.GetInventory(2).Count;
 
-        int remaining1 = Mathf.Max(0, inventoryLimit - count1);
-        int remaining2 = Mathf.Max(0, inventoryLimit - count2);
-
-        if (capacityLabel1 != null) capacityLabel1.text = $"{remaining1}/{inventoryLimit}";
-        if (capacityLabel2 != null) capacityLabel2.text = $"{remaining2}/{inventoryLimit}";
+        if (capacityLabel1 != null) capacityLabel1.text = $"{count1}/{inventoryLimit}";
+        if (capacityLabel2 != null) capacityLabel2.text = $"{count2}/{inventoryLimit}";
     }
 
     void UpdateEndState()

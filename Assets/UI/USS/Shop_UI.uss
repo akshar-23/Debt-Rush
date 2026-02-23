@@ -300,3 +300,28 @@
     justify-content: center;
     align-content: center;
 }
+
+.join-player-title {
+    display: flex;
+    font-size: 59px;
+}
+
+.join-text {
+    font-size: 35px;
+    padding-top: 0;
+    margin-top: 39px;
+}
+
+.joined-continue-button {
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+    border-bottom-right-radius: 11px;
+    border-bottom-left-radius: 11px;
+    width: 236px;
+    margin-top: 37px;
+    font-size: 31px;
+    margin-right: 27px;
+    margin-bottom: 27px;
+    margin-left: 27px;
+    height: 67px;
+}
