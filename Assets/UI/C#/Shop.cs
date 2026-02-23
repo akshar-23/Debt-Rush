@@ -11,80 +11,121 @@ public class Shop_UI : MonoBehaviour
 
     Toggle done1, done2;
     Label moneyLabel;
-    VisualElement endPanel, playerPanels, moneyPanel;
-    Button returnButton, continueButton;
+    VisualElement endPanel, playerPanels, moneyPanel, modePanel, indieObjPanel;
+    Button returnButton, continueButton, noSecretsButton, someSecretsButton;
 
-    // The capacity labels that live as the FIRST child of the inventory panels
     Label capacityLabel1, capacityLabel2;
 
     void OnEnable()
     {
         var root = ui.rootVisualElement;
 
-        // Build both sides from GameManager data
+        modePanel     = root.Q<VisualElement>("ModePanel");
+        indieObjPanel = root.Q<VisualElement>("IndieObjPanel");
+        noSecretsButton   = root.Q<Button>("ModeButton_1");
+        someSecretsButton = root.Q<Button>("ModeButton_2");
+
+        if (noSecretsButton != null)   noSecretsButton.clicked   += OnNoSecrets;
+        if (someSecretsButton != null) someSecretsButton.clicked += OnSomeSecrets;
+
         SetupSide(root, 1, "ShopList_1", "Inventory_1");
         SetupSide(root, 2, "ShopList_2", "Inventory_2");
 
-        // Money
         moneyLabel = root.Q<Label>("MoneyLabel");
         MoneyManager.Instance.AddMoney(initialMoney);
         UpdateMoneyLabel();
 
-        // Toggles & panels
         done1 = root.Q<Toggle>("DoneToggle_1");
         done2 = root.Q<Toggle>("DoneToggle_2");
 
-        endPanel = root.Q<VisualElement>("EndPanel");
+        endPanel     = root.Q<VisualElement>("EndPanel");
         playerPanels = root.Q<VisualElement>("PlayerPanels");
-        moneyPanel = root.Q<VisualElement>("MoneyPanel");
+        moneyPanel   = root.Q<VisualElement>("MoneyPanel");
 
         if (endPanel != null)
         {
-            returnButton = endPanel.Q<Button>("ReturnButton");
+            returnButton   = endPanel.Q<Button>("ReturnButton");
             continueButton = endPanel.Q<Button>("ContinueButton");
         }
 
         if (done1 != null) done1.RegisterValueChangedCallback(_ => UpdateEndState());
         if (done2 != null) done2.RegisterValueChangedCallback(_ => UpdateEndState());
-        if (returnButton != null) returnButton.clicked += ResetToNormal;
+        if (returnButton != null)   returnButton.clicked   += ResetToNormal;
         if (continueButton != null) continueButton.clicked += LoadPrototypeScene;
 
-        UpdateCapacityLabels();   // make sure text is correct on first frame
-        UpdateEndState();
+        UpdateCapacityLabels();
+        ShowModeSelection();
     }
 
     void OnDisable()
     {
-        if (returnButton != null) returnButton.clicked -= ResetToNormal;
-        if (continueButton != null) continueButton.clicked -= LoadPrototypeScene;
+        if (returnButton != null)      returnButton.clicked      -= ResetToNormal;
+        if (continueButton != null)    continueButton.clicked    -= LoadPrototypeScene;
+        if (noSecretsButton != null)   noSecretsButton.clicked   -= OnNoSecrets;
+        if (someSecretsButton != null) someSecretsButton.clicked -= OnSomeSecrets;
     }
 
-    // ---------- UI BUILD PER PLAYER ----------
+    void ShowModeSelection()
+    {
+        if (modePanel != null)     modePanel.style.display     = DisplayStyle.Flex;
+        if (indieObjPanel != null) indieObjPanel.style.display = DisplayStyle.None;
+        if (playerPanels != null)  playerPanels.style.display  = DisplayStyle.None;
+        if (moneyPanel != null)    moneyPanel.style.display    = DisplayStyle.None;
+    }
+
+    void OnNoSecrets()
+    {
+        if (modePanel != null)     modePanel.style.display     = DisplayStyle.None;
+        if (indieObjPanel != null) indieObjPanel.style.display = DisplayStyle.None;
+        ShowShop();
+    }
+
+    void OnSomeSecrets()
+    {
+        if (modePanel != null)     modePanel.style.display     = DisplayStyle.None;
+        if (indieObjPanel != null) indieObjPanel.style.display = DisplayStyle.Flex;
+        if (playerPanels != null)  playerPanels.style.display  = DisplayStyle.None;
+        if (moneyPanel != null)    moneyPanel.style.display    = DisplayStyle.None;
+
+        foreach (var btn in indieObjPanel.Query<Button>().ToList())
+            btn.clicked += OnDoneChoosingGoals;
+    }
+
+    void OnDoneChoosingGoals()
+    {
+        foreach (var btn in indieObjPanel.Query<Button>().ToList())
+            btn.clicked -= OnDoneChoosingGoals;
+
+        if (indieObjPanel != null) indieObjPanel.style.display = DisplayStyle.None;
+        ShowShop();
+    }
+
+    void ShowShop()
+    {
+        if (playerPanels != null) playerPanels.style.display = DisplayStyle.Flex;
+        if (moneyPanel != null)   moneyPanel.style.display   = DisplayStyle.Flex;
+        UpdateEndState();
+    }
+
     void SetupSide(VisualElement root, int playerIndex, string shopPanelName, string invPanelName)
     {
         var shopPanel = root.Q<VisualElement>(shopPanelName);
-        var invPanel = root.Q<VisualElement>(invPanelName);
+        var invPanel  = root.Q<VisualElement>(invPanelName);
 
         shopPanel?.Clear();
         invPanel?.Clear();
 
-        // --- create the capacity label FIRST inside the inventory panel ---
-     
-
         var capLabel = new Label();
-        capLabel.AddToClassList("capacity-labels"); 
-        if (invPanel != null)
-            invPanel.Insert(0, capLabel);
+        capLabel.AddToClassList("capacity-labels");
+        if (invPanel != null) invPanel.Add(capLabel);
         if (playerIndex == 1) capacityLabel1 = capLabel;
         else capacityLabel2 = capLabel;
 
-        // Info labels for this player column
         var playerRoot = shopPanel?.parent?.parent ?? shopPanel?.parent;
         var titleLabel = playerRoot?.Q<Label>(className: "description-title");
         var priceLabel = playerRoot?.Q<Label>(className: "price-text");
-        var descLabel = playerRoot?.Q<Label>(className: "description-text");
+        var descLabel  = playerRoot?.Q<Label>(className: "description-text");
 
-        // Preload inventory (from GameManager) AFTER the capacity label
         var invList = GameManager.Instance.GetInventory(playerIndex);
         if (invPanel != null && invList != null)
         {
@@ -92,7 +133,6 @@ public class Shop_UI : MonoBehaviour
                 AddInventoryButton(itm, invPanel, removable: true, titleLabel, priceLabel, descLabel, playerIndex);
         }
 
-        // Build shop buttons (buy)
         var shopList = GameManager.Instance.GetShop(playerIndex);
         if (shopPanel != null && shopList != null)
         {
@@ -101,20 +141,17 @@ public class Shop_UI : MonoBehaviour
                 var btn = new Button { text = item.itemName, focusable = true };
                 btn.AddToClassList("button");
 
-                // Preview info
                 AttachInfoHandlers(btn, item, titleLabel, priceLabel, descLabel, isBuy: true);
 
-                // Buy click
                 btn.clicked += () =>
                 {
                     if (invPanel == null) return;
-                    if (invPanel.childCount - 1 >= inventoryLimit) return; // -1 because capacity label occupies index 0
+                    if (invPanel.childCount - 1 >= inventoryLimit) return;
                     if (MoneyManager.Instance.GetMoneyAmount() < item.itemPrice) return;
 
                     MoneyManager.Instance.SubtractMoney(item.itemPrice);
                     UpdateMoneyLabel();
 
-                    // Add a fresh instance to inventory (set Current to full Limit if applicable)
                     var toAdd = item;
                     if (toAdd.maxCount > 0) toAdd.currentCount = toAdd.maxCount;
 
@@ -126,7 +163,6 @@ public class Shop_UI : MonoBehaviour
 
                 shopPanel.Add(btn);
 
-                // Ammo badge in shop (non-interactive)
                 if (item.maxCount > 0)
                 {
                     var ammo = new Label($"{item.maxCount}");
@@ -137,7 +173,6 @@ public class Shop_UI : MonoBehaviour
         }
     }
 
-    // Create one inventory button with optional ammo label and sell behavior
     void AddInventoryButton(ShopItem item, VisualElement invPanel, bool removable,
                             Label titleLabel, Label priceLabel, Label descLabel, int playerIndex)
     {
@@ -167,10 +202,9 @@ public class Shop_UI : MonoBehaviour
             };
         }
 
-        invPanel.Add(invBtn); // will be after the capacity label because that was inserted first
+        invPanel.Add(invBtn);
     }
 
-    // ---------- Shared helpers ----------
     void AttachInfoHandlers(VisualElement ve, ShopItem item,
                             Label titleLabel, Label priceLabel, Label descLabel, bool isBuy)
     {
@@ -192,7 +226,6 @@ public class Shop_UI : MonoBehaviour
             moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
     }
 
-    // shows remaining/limit for both players; NOTE: inventory count excludes the capacity label (already handled above)
     void UpdateCapacityLabels()
     {
         int count1 = GameManager.Instance.GetInventory(1).Count;
@@ -209,9 +242,9 @@ public class Shop_UI : MonoBehaviour
     {
         bool bothDone = (done1 != null && done1.value) && (done2 != null && done2.value);
 
-        if (endPanel != null) endPanel.style.display = bothDone ? DisplayStyle.Flex : DisplayStyle.None;
+        if (endPanel != null)     endPanel.style.display     = bothDone ? DisplayStyle.Flex : DisplayStyle.None;
         if (playerPanels != null) playerPanels.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
-        if (moneyPanel != null) moneyPanel.style.display = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
+        if (moneyPanel != null)   moneyPanel.style.display   = bothDone ? DisplayStyle.None : DisplayStyle.Flex;
     }
 
     void ResetToNormal()

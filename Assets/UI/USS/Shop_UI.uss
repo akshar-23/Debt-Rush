@@ -10,10 +10,10 @@
     translate: 0 16px;
     justify-content: center;
     align-self: center;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
+    border-top-left-radius: 101px;
+    border-top-right-radius: 101px;
+    border-bottom-right-radius: 101px;
+    border-bottom-left-radius: 101px;
 }
 
 .frame {
@@ -22,14 +22,14 @@
     height: 31%;
     flex-direction: row;
     translate: 0 0;
-    border-top-width: 2px;
-    border-right-width: 2px;
-    border-bottom-width: 2px;
-    border-left-width: 2px;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-    border-bottom-left-radius: 8px;
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-left-width: 8px;
+    border-top-left-radius: 74px;
+    border-top-right-radius: 74px;
+    border-bottom-right-radius: 74px;
+    border-bottom-left-radius: 74px;
     border-left-color: rgb(112, 149, 147);
     border-right-color: rgb(112, 149, 147);
     border-top-color: rgb(112, 149, 147);
@@ -49,10 +49,14 @@
     font-size: 15px;
     -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=8aed8cd85b271f542a574c85c519397f&type=3#NotInter-Regular");
     -unity-font-style: bold;
-    margin-top: 15px;
-    margin-right: 15px;
-    margin-bottom: 15px;
-    margin-left: 15px;
+    margin-top: 19px;
+    margin-right: 4px;
+    margin-bottom: -2px;
+    margin-left: 34px;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+    border-bottom-right-radius: 22px;
+    border-bottom-left-radius: 22px;
 }
 
 .player-title {
@@ -81,6 +85,7 @@
     align-content: flex-end;
     translate: 12px 6px;
     font-size: 23px;
+    margin-right: -29px;
 }
 
 .price-text {
@@ -137,8 +142,8 @@
     border-top-right-radius: 14px;
     border-bottom-right-radius: 14px;
     border-bottom-left-radius: 14px;
-    margin-top: -7px;
-    margin-right: -7px;
+    margin-top: -13px;
+    margin-right: 12px;
     margin-bottom: -7px;
     margin-left: -7px;
     height: 58px;
@@ -154,7 +159,7 @@
 }
 
 .ammo-label {
-    translate: 25px 34px;
+    translate: 20px 29px;
     font-size: 16px;
 }
 
@@ -176,10 +181,122 @@
 }
 
 .capacity-labels {
-    align-self: flex-end;
-    -unity-text-align: middle-right;
-    align-items: flex-end;
+    align-self: flex-start;
+    -unity-text-align: middle-left;
+    align-items: flex-start;
     white-space: pre;
-    translate: 731px 0;
     font-size: 25px;
+    width: 100%;
+    margin-left: 684px;
+    margin-top: 35px;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin-bottom: -11px;
+}
+
+.unity-button {
+}
+
+.mode-button {
+    width: 928px;
+    height: 259px;
+    font-size: 38px;
+    translate: 0 -25px;
+    -unity-text-align: middle-center;
+    margin-top: 13px;
+    margin-right: 13px;
+    margin-bottom: 13px;
+    margin-left: 13px;
+    border-top-left-radius: 54px;
+}
+
+.mode-desc {
+    -unity-text-align: lower-center;
+    font-size: 21px;
+    align-self: center;
+    translate: 0 121px;
+    margin-top: 25px;
+    margin-right: 25px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+    white-space: pre-wrap;
+    text-overflow: ellipsis;
+}
+
+.indie-container {
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    width: 589px;
+    height: 685px;
+    margin-top: 27px;
+    margin-right: 27px;
+    margin-bottom: 27px;
+    margin-left: 27px;
+    border-top-left-radius: 117px;
+    border-top-right-radius: 117px;
+    border-bottom-right-radius: 117px;
+    border-bottom-left-radius: 117px;
+}
+
+.indie-player-title {
+    display: flex;
+    translate: 0 -40px;
+    font-size: 35px;
+    margin-top: -14px;
+    margin-right: -14px;
+    margin-bottom: -14px;
+    margin-left: -14px;
+}
+
+.obj-button {
+    width: 533px;
+    align-self: center;
+    margin-top: 13px;
+    margin-right: 13px;
+    margin-bottom: 13px;
+    margin-left: 13px;
+    flex-basis: 0;
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+.obj-container {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: auto;
+    align-content: auto;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+}
+
+.hint-box {
+    flex-grow: 0;
+    width: 89px;
+    display: flex;
+    background-color: rgb(233, 233, 233);
+    align-self: center;
+    height: 68%;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    align-content: center;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    margin-right: 0;
+    margin-left: 12px;
+    justify-content: center;
+    font-size: 43px;
+}
+
+.hint-text {
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    align-content: center;
 }
