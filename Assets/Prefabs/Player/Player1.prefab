@@ -21,7 +21,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2054407530307326303
 Transform:
   m_ObjectHideFlags: 0
@@ -515,6 +515,10 @@ PrefabInstance:
       propertyPath: playerController
       value: 
       objectReference: {fileID: 3615056753484478996}
+    - target: {fileID: 2914560958389791987, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+      propertyPath: healthBarContainer
+      value: 
+      objectReference: {fileID: 1577738895523853498}
     - target: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -616,6 +620,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+--- !u!224 &1577738895523853498 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8696740135993866809, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}
+  m_PrefabInstance: {fileID: 7877998859305078403}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &6466510326995412124 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3812841174200953375, guid: cdd0e527d21d23542aaf077a5a04de66, type: 3}

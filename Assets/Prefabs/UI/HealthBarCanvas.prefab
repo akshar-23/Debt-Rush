@@ -32,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 8696740135993866809}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: 0}
-  m_SizeDelta: {x: 108, y: 8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 8, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6958395519645473286
 CanvasRenderer:
@@ -159,7 +159,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 1
+  m_PresetInfoIsWorld: 0
 --- !u!114 &1990758072986985937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -268,3 +268,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 0}
   fillImg: {fileID: 4808975774240278052}
+  healthBarContainer: {fileID: 8696740135993866809}
