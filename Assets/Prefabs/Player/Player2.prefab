@@ -535,10 +535,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6056816366845164160}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 50, y: 0}
-  m_SizeDelta: {x: 108, y: 8}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 8, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5489336733981694655
 CanvasRenderer:
@@ -669,6 +669,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   character: {fileID: 680230080078724537}
   fillImg: {fileID: 7927404664181819037}
+  healthBarContainer: {fileID: 6056816366845164160}
 --- !u!1 &8852744154551494633
 GameObject:
   m_ObjectHideFlags: 0
