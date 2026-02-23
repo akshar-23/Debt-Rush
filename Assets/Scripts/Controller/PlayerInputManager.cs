@@ -1,11 +1,23 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class PlayerInputManager : MonoBehaviour
 {
     [SerializeField] private GameObject player1Prefab;
     [SerializeField] private GameObject player2Prefab;
     [SerializeField] private Transform[] spawnPoints;
+
+    [Header ("UI")]
+    [SerializeField] public MultiplayerEventSystem eventSystemP1;
+    [SerializeField] public Canvas canvasP1;
+    [SerializeField] public GameObject p1FirstButton;
+
+    [SerializeField] public MultiplayerEventSystem eventSystemP2;
+    [SerializeField] public Canvas canvasP2;
+    [SerializeField] public GameObject p2FirstButton;
 
     [SerializeField] private GameplaySceneManager gamesceneManager;
 
@@ -49,10 +61,13 @@ public class PlayerInputManager : MonoBehaviour
 
     public void InstantiateCharacter(string scheme, Gamepad gamePad = null)
     {
+        // Pick prefab only, don't decide index here
+        //GameObject prefabToSpawn = scheme == "WASD" ? player1Prefab : player2Prefab;
+
         // Determine player index based on control scheme
         int playerIndex;
         GameObject prefabToSpawn;
-        
+
         if (scheme == "WASD")
         {
             playerIndex = 0;
@@ -84,26 +99,24 @@ public class PlayerInputManager : MonoBehaviour
             }
         }
 
-        Vector3 spawnPosition = Vector3.zero;
-        Quaternion spawnRotation = Quaternion.identity;
-        
-        if (spawnPoints != null && playerIndex < spawnPoints.Length && spawnPoints[playerIndex] != null)
-        {
-            spawnPosition = spawnPoints[playerIndex].position;
-            spawnRotation = spawnPoints[playerIndex].rotation;
-        }
-
-        // Instantiate player
         var player = PlayerInput.Instantiate(
             prefabToSpawn,
-            controlScheme: scheme, 
-            pairWithDevice: gamePad != null ? gamePad : Keyboard.current
+            controlScheme: scheme,
+            pairWithDevices: gamePad != null ? gamePad : Keyboard.current
         );
 
-        player.transform.position = spawnPosition;
-        player.transform.rotation = spawnRotation;
+        int idx = playerIndex;//player.playerIndex;  // authoritative index
 
-        // Disable/enable CharacterController to ensure position sticks
+        // Use idx for spawn, cameras, arrays, HUD, etc.
+        Vector3 spawnPosition = (spawnPoints != null && idx < spawnPoints.Length && spawnPoints[idx] != null)
+            ? spawnPoints[idx].position
+            : Vector3.zero;
+        Quaternion spawnRotation = (spawnPoints != null && idx < spawnPoints.Length && spawnPoints[idx] != null)
+            ? spawnPoints[idx].rotation
+            : Quaternion.identity;
+
+        player.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+
         CharacterController cc = player.GetComponent<CharacterController>();
         if (cc != null)
         {
@@ -112,38 +125,49 @@ public class PlayerInputManager : MonoBehaviour
             cc.enabled = true;
         }
 
-        // Get PlayerController component
-        PlayerController pc = player.gameObject.GetComponent<PlayerController>();
+        var pc = player.GetComponent<PlayerController>();
         if (pc != null)
         {
-            pc.playerNumber = playerIndex + 1;
+            pc.playerNumber = idx + 1;
             pc.hudref = gamesceneManager.GetHUD();
         }
 
-        // Register with GameManager
         if (GameManager.Instance != null && GameManager.Instance.players != null)
-        {
-            GameManager.Instance.players[playerIndex] = pc;
-        }
+            GameManager.Instance.players[idx] = pc;
 
-        // Copy inventory from GameManager to this player
-        var inventory = new System.Collections.Generic.List<ShopItem>(GameManager.Instance.GetInventory(playerIndex + 1));
+        var inventory = new List<ShopItem>(GameManager.Instance.GetInventory(idx + 1));
         pc.CopyInventory(inventory);
 
-        // Add to scene manager
         if (gamesceneManager != null)
         {
-            gamesceneManager.AddPlayer(pc, playerIndex);
+            gamesceneManager.AddPlayer(pc, idx);
             gamesceneManager.AssignArrows();
         }
 
-        // Assign camera
-        GameObject cameraManager = GameObject.Find("CameraManager");
+        var cameraManager = GameObject.Find("CameraManager");
         if (cameraManager != null)
+            cameraManager.GetComponent<CameraManager>().AssignTransformPosition(player.transform, idx);
+
+        var binder = player.GetComponent<PlayerUIBinder>();
+        if (binder != null)
         {
-            cameraManager.GetComponent<CameraManager>().AssignTransformPosition(player.transform, playerIndex);
+            // Decide which UI stack this PlayerInput uses (by playerIndex or by scheme)
+            if (idx == 0)
+            {
+                binder.eventSystem = eventSystemP1;
+                binder.playerCanvas = canvasP1;
+                binder.firstSelected = p1FirstButton;
+            }
+            else if (idx == 1)
+            {
+                binder.eventSystem = eventSystemP2;
+                binder.playerCanvas = canvasP2;
+                binder.firstSelected = p2FirstButton;
+            }
+
+            binder.Bind();
         }
-        
+
         currentNumberPlayers++;
     }
 

@@ -1,33 +1,41 @@
+using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using Ink.Runtime;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    public enum DialogueState
+    {
+        Single,
+        Split
+    }
+
     [Header("Params")]
     [SerializeField] private float typingSpeed = 0.04f;
     [SerializeField] public PlayerController playerController1;
     [SerializeField] public PlayerController playerController2;
     [SerializeField] public GameObject NPCController;
 
-    [Header("Dialogue UI")]
-    [SerializeField] private GameObject dialoguePanel;
-    [SerializeField] private TextMeshProUGUI dialogueText;
-    [SerializeField] private TextMeshProUGUI displayNameText;
-    [SerializeField] private Animator portraitAnimator;
-    [SerializeField] private GameObject continueIcon;
+    [SerializeField]  public Canvas sharedCanvas;
+    [SerializeField]  public GameObject sharedFirstButton;
+    [SerializeField] public MultiplayerEventSystem sharedEventSystem;
+    [SerializeField] public InputSystemUIInputModule sharedUIModule;
+
+    [SerializeField] private CameraManager cameraManager;
+    [SerializeField] private GameObject dialogueContext;
+    [SerializeField] private GameObject dialogueContext_P1;
+    [SerializeField] private GameObject dialogueContext_P2;
 
     [Header("Choices UI")]
     [SerializeField] private GameObject dialogueChoicesPanel;
     [SerializeField] private GameObject[] choices;
     private TextMeshProUGUI[] choicesText;
 
-    [Header("Visual")]
-    [SerializeField] private GameObject visualPortrait;
-
+    public DialogueState currentState;
     private Story currentStory;
 
     private const string SPEAKER_TAG = "speaker";
@@ -63,16 +71,10 @@ public class DialogueManager : MonoBehaviour
     public void Start()
     {
         dialogueIsPlaying = false;
-        dialoguePanel.SetActive(false);
 
         dialogueChoicesPanel.SetActive(false);
         choicesText = new TextMeshProUGUI[choices.Length];
         int index = 0;
-
-        if (visualPortrait != null)
-        {
-            visualPortrait.SetActive(false);
-        }
 
         foreach (GameObject choice in choices)
         {
@@ -88,82 +90,92 @@ public class DialogueManager : MonoBehaviour
         {
             return;
         }
-
-        // handle continuing to the next line in the dialogue when submit is pressed
-        if (canContinueToNextLine && ((playerController1 != null &&playerController1.GetInteractPressed()) || (playerController2 != null && playerController2.GetInteractPressed())))
-        {
-            ContinueStory();
-        }
-    }
-
-    public void EnterDialogueMode(TextAsset inkJSON)
-    {
-        currentStory = new Story(inkJSON.text);
-
-        currentStory.BindExternalFunction("openGate", () => {
-            //openGate();
-        });
-
-
-        dialogueIsPlaying = true;
-        dialoguePanel.SetActive(true);
-        //playerController.canMove = false;
-
-        ContinueStory();
     }
 
     public void EnterDialogueMode(TextAsset inkJSON, PlayerController playerController, GameObject npcController)
     {
-        if(playerController.GetPlayerNumber() == 1)
-        {
-            playerController1 = playerController;
-            playerController1.SetCanPlayerMove(false);
-            isPlayer1inDialogue = true;
-
-            if (playerController2 != null)
-            {
-                return;
-            }
-        }
-        else if(playerController.GetPlayerNumber() == 2)
-        {
-            playerController2 = playerController;
-            playerController2.SetCanPlayerMove(false);
-            isPlayer2inDialogue = true;
-
-            if (playerController1 != null)
-            {
-                return;
-            }
-        }
-
-        currentStory = new Story(inkJSON.text);
-
-        // Defining functions that we are going to use from the NPC
-        NPCController = npcController;
-        currentStory.BindExternalFunction("openGate", () => {
-            NPCController.gameObject.GetComponentInParent<MoneyGate>().TryToOpenGate();
-        });
-
         dialogueIsPlaying = true;
-        dialoguePanel.SetActive(true);
-        if (visualPortrait != null)
+
+        if (cameraManager.GetCurrentState() == CameraManager.CameraState.Single)
         {
-            visualPortrait.SetActive(true);
+            PlayerController currentController = null;
+
+            if (playerController.GetPlayerNumber() == 1)
+            {
+                isPlayer1inDialogue = true;
+                playerController1 = playerController;
+                playerController1.SetCanPlayerMove(false);
+                playerController1.input.SwitchCurrentActionMap("UI");
+                currentController = playerController1;
+            }
+            if (playerController.GetPlayerNumber() == 2)
+            {
+                isPlayer2inDialogue = true;
+                playerController2 = playerController;
+                playerController2.SetCanPlayerMove(false);
+                playerController2.input.SwitchCurrentActionMap("UI");
+                currentController = playerController2;
+            }
+
+            UIBinder.BindToPlayer(
+                sharedEventSystem,
+                sharedUIModule,
+                currentController.input,
+                sharedCanvas.gameObject,
+                sharedFirstButton
+            );
+
+            sharedEventSystem.enabled = true;
+            sharedUIModule.enabled = true;
+
+            dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
+        }
+        if (cameraManager.GetCurrentState() == CameraManager.CameraState.Split)
+        {
+            if (playerController.GetPlayerNumber() == 1)
+            {
+                playerController1 = playerController;
+                playerController1.SetCanPlayerMove(false);
+                playerController1.input.SwitchCurrentActionMap("UI");
+                isPlayer1inDialogue = true;
+                dialogueContext.SetActive(false);
+                dialogueContext_P1.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
+            }
+
+            if (playerController.GetPlayerNumber() == 2)
+            {
+                playerController2 = playerController;
+                playerController2.SetCanPlayerMove(false);
+                playerController2.input.SwitchCurrentActionMap("UI");
+                isPlayer2inDialogue = true;
+                dialogueContext.SetActive(false);
+                dialogueContext_P2.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
+            }
+        }
+    }
+
+    public void NotifyEndDialogue()
+    {
+        dialogueIsPlaying = false;
+
+        if (isPlayer1inDialogue)
+        {
+            playerController1.input.SwitchCurrentActionMap("Player");
+        }
+        if (isPlayer2inDialogue)
+        {
+            playerController2.input.SwitchCurrentActionMap("Player");
         }
 
-        ContinueStory();
+        sharedCanvas.enabled = false;
+        sharedEventSystem.enabled = false;
+        sharedUIModule.enabled = false;
     }
 
     private void ExitDialogueMode()
     {
         dialogueIsPlaying = false;
-        dialoguePanel.SetActive(false);
-        if (visualPortrait != null)
-        {
-            visualPortrait.SetActive(false);
-        }
-        dialogueText.text = "";
+
         
         //TODO: WRAP THIS
         //playerController1.SetCanPlayerMove(true);
@@ -179,160 +191,60 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void ContinueStory()
-    {
-        if (currentStory.canContinue)
-        {
-            if (displayLineCoroutine != null)
-            {
-                StopCoroutine(displayLineCoroutine);
-            }
-
-            string nextLine = currentStory.Continue();
-            //dialogueText.text = currentStory.Continue();
-
-            if (nextLine.Equals("") && !currentStory.canContinue)
-            {
-                ExitDialogueMode();
-            }
-
-            HandleTags(currentStory.currentTags);
-            displayLineCoroutine = StartCoroutine(DisplayLine(nextLine));
-        }
-        else
-        {
-            ExitDialogueMode();
-        }
-    }
-
-    private IEnumerator DisplayLine(string line)
-    {
-        dialogueText.text = "";
-
-        continueIcon.SetActive(false);
-        canContinueToNextLine = false;
-
-        foreach (char letter in line.ToCharArray())
-        {
-            // Check both controllers, whichever press break
-            if ((playerController1 != null && playerController1.GetInteractPressed()) || 
-                    (playerController2!= null && playerController2.GetInteractPressed()))
-            {
-                dialogueText.text = line;
-                break;
-            }
-
-            dialogueText.text += letter;
-            yield return new WaitForSeconds(typingSpeed);
-        }
-
-        DisplayChoices();
-        continueIcon.SetActive(true);
-        canContinueToNextLine = true;
-    }
-
-
-    private void DisplayChoices()
-    {
-        List<Choice> currentChoices = currentStory.currentChoices;
-
-        if (currentChoices.Count > choices.Length)
-        {
-            Debug.LogError("More choices were given that the UI can support. Number of choices given: " + currentChoices.Count);
-        }
-
-        int index = 0;
-        
-
-        foreach (Choice choice in currentChoices)
-        {
-            choices[index].gameObject.SetActive(true);
-            choicesText[index].text = choice.text;
-            dialogueChoicesPanel.SetActive(true);
-            index++;
-        }
-
-        for (int i = index; i < choices.Length; i++)
-        {
-            choices[i].gameObject.SetActive(false);
-        }
-        if (currentChoices.Capacity > 0)
-        {
-            StartCoroutine(SelectFirstChoice());
-        }
-    }
-
-    private void HandleTags(List<string> currentTags)
-    {
-        // Loop through each tag and handle it accordingly
-        foreach (string tag in currentTags)
-        {
-            // Parse the tag
-            string[] splitTag = tag.Split(':');
-            if (splitTag.Length != 2)
-            {
-                Debug.LogError("Tag could not be appropriately parsed: " + tag);
-            }
-            string tagKey = splitTag[0].Trim();
-            string tagValue = splitTag[1].Trim();
-
-            // Handle the tag
-            switch (tagKey)
-            {
-                case SPEAKER_TAG:
-                    displayNameText.text = tagValue;
-                    break;
-                case PORTRAIT_TAG:
-                    portraitAnimator.Play(tagValue);
-                    break;
-                case AUDIO_TAG:
-                    if (tagValue == "radio")
-                    {
-                        //audioManagerInstance.PlayInterference();
-                    }
-                    break;
-                case MOVEMENT_TAG:
-                    //playerController.canMove = true;
-                    break;
-                default:
-                    Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
-                    break;
-            }
-        }
-    }
-
-    private IEnumerator SelectFirstChoice()
-    {
-        EventSystem.current.SetSelectedGameObject(null);
-        yield return new WaitForEndOfFrame();
-        EventSystem.current.SetSelectedGameObject(choices[0].gameObject);
-    }
-
-    public void MakeChoice(int choiceIndex)
-    {
-        dialogueChoicesPanel.SetActive(false);
-        currentStory.ChooseChoiceIndex(choiceIndex);
-        
-        if(playerController1 != null)
-        {
-            playerController1.RegisterInteractPressed();
-        }
-        if (playerController2 != null)
-        {
-            playerController2.RegisterInteractPressed();
-        }
-
-        ContinueStory();
-    }
-
     public bool GetDialogueChoicesActiveStatus()
     {
         return dialogueChoicesPanel.activeInHierarchy;
     }
 
-    public bool AreBothPlayersInDialogue()
+    public void SwitchToSplitScreenDialogue()
     {
-        return isPlayer1inDialogue && isPlayer2inDialogue;
+        if (!dialogueIsPlaying) return;
+
+        dialogueContext.SetActive(false);
+        if (isPlayer1inDialogue)
+        {
+            DialogueContext dc_p1 = dialogueContext.GetComponent<DialogueContext>();
+            dialogueContext_P1.SetActive(true);
+            dialogueContext_P1.GetComponent<DialogueContext>().UpdateCurrentStory(dc_p1.GetCurrentStory(), dc_p1.GetCurrentController());
+            dialogueContext.GetComponent<DialogueContext>().TransitionDialogue();
+            playerController1.SetCanPlayerMove(false);
+            playerController1.input.SwitchCurrentActionMap("UI");
+        }
+        if (isPlayer2inDialogue)
+        {
+            DialogueContext dc_p2 = dialogueContext.GetComponent<DialogueContext>();
+            dialogueContext_P2.SetActive(true);
+            dialogueContext_P2.GetComponent<DialogueContext>().UpdateCurrentStory(dc_p2.GetCurrentStory(), dc_p2.GetCurrentController());
+            dialogueContext.GetComponent<DialogueContext>().TransitionDialogue();
+            playerController2.SetCanPlayerMove(false);
+            playerController2.input.SwitchCurrentActionMap("UI");
+        }  
     }
 
+    public void SwitchToSingleScreenDialogue()
+    {
+        if (!dialogueIsPlaying) return;
+
+        DialogueContext dc_cp = null;
+        dialogueContext.SetActive(true);
+
+        if (isPlayer1inDialogue)
+        {
+            dc_cp = dialogueContext_P1.GetComponent<DialogueContext>();
+            dialogueContext.GetComponent<DialogueContext>().UpdateCurrentStory(dc_cp.GetCurrentStory(), dc_cp.GetCurrentController());
+            dialogueContext_P1.SetActive(false);
+            dialogueContext_P1.GetComponent<DialogueContext>().TransitionDialogue();
+            playerController1.SetCanPlayerMove(false);
+            playerController1.input.SwitchCurrentActionMap("UI");
+        }
+        if (isPlayer2inDialogue)
+        {
+            dc_cp = dialogueContext_P2.GetComponent<DialogueContext>();
+            dialogueContext.GetComponent<DialogueContext>().UpdateCurrentStory(dc_cp.GetCurrentStory(), dc_cp.GetCurrentController());
+            dialogueContext_P2.SetActive(false);
+            dialogueContext_P2.GetComponent<DialogueContext>().TransitionDialogue();
+            playerController2.SetCanPlayerMove(false);
+            playerController2.input.SwitchCurrentActionMap("UI");
+        }
+    }
 }

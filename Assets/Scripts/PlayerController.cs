@@ -37,6 +37,7 @@ public class PlayerController : Character
     [SerializeField] private bool canPlayerMove;
     [SerializeField] private bool canPlayerAct;
     private bool interactPressed = false;
+    private bool submitPressed = false;
 
     [Header("Items")]
     [SerializeField]
@@ -145,6 +146,19 @@ public class PlayerController : Character
         }
     }
 
+    public void OnSubmit(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            submitPressed = true;
+            //OnSubmit();
+        }
+        else if (ctx.canceled)
+        {
+            //submitPressed = false;
+        }
+    }
+
     public void OnCancel(InputAction.CallbackContext ctx)
     {
         if (ctx.started && activeCursor != null)
@@ -176,9 +190,21 @@ public class PlayerController : Character
         return result;
     }
 
+    public bool GetSubmitPressed()
+    {
+        bool result = submitPressed;
+        submitPressed = false;
+        return result;
+    }
+
     public void RegisterInteractPressed()
     {
         interactPressed = false;
+    }
+
+    public void RegisterSubmitPressed()
+    {
+        submitPressed = false;
     }
 
     private void OnInteract()
