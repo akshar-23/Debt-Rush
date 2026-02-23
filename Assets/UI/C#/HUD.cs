@@ -7,8 +7,8 @@ public class HUD : MonoBehaviour
 {
     [SerializeField] private UIDocument ui;
 
-    private VisualElement bar1;       // left row
-    private VisualElement bar2;       // right row
+    public VisualElement bar1;       // left row
+    public VisualElement bar2;       // right row
 
     public static class InventoryButtonStates
     {
@@ -56,14 +56,28 @@ public class HUD : MonoBehaviour
         PopulateBar(bar2, GameManager.Instance.GetInventory(2));
     }
 
+    public void UpdateItemCount(int _id, ShopItem itemEquipped)
+    {
+        VisualElement bar = _id == 0 ? bar1 : bar2;
+        
+        if (bar == null || itemEquipped == null) return;
+
+        var ammoLabel = bar.Q<Button>(itemEquipped.itemName)?.Q<Label>(className: "ammo-label");
+
+        if (ammoLabel != null)
+        {
+            ammoLabel.text = $"{itemEquipped.currentCount}";
+        }
+    }
+
     // Update just the money label
     private void UpdateMoneyDisplay()
     {
         if (ui == null) return;
-        
+
         var root = ui.rootVisualElement;
         var moneyLabel = root.Q<Label>("MoneyLabel");
-        
+
         if (moneyLabel != null && MoneyManager.Instance != null)
             moneyLabel.text = $"{MoneyManager.Instance.GetMoneyAmount()} $";
     }
@@ -91,6 +105,7 @@ public class HUD : MonoBehaviour
         foreach (var item in items)
         {
             var btn = new Button { text = item.itemName, focusable = true };
+            btn.name = item.itemName;
             btn.tabIndex = -1;                       // keep it out of Tab focus order
             btn.AddToClassList("inventory-button");  // your HUD button style
 
@@ -115,7 +130,7 @@ public class HUD : MonoBehaviour
         VisualElement currentInventory = playerIndex == 1 ? bar1 : bar2;
 
         List<VisualElement> childrenList = currentInventory.Children().ToList();
-        SetState(childrenList[position], state);        
+        SetState(childrenList[position], state);
     }
 
     private void SetState(VisualElement btn, string state)

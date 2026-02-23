@@ -15,6 +15,10 @@ public class PlayerController : Character
     public float moveSpeed = 7f;
     [Tooltip("The speed at which the player rotates to face the movement direction.")]
     public float rotationSpeed = 10f;
+    [Tooltip("How strong the gravity is.")]
+    public float gravity = -9.81f;
+
+    private float verticalVelocity;
 
     public Transform weaponHolder;
 
@@ -77,7 +81,20 @@ public class PlayerController : Character
         if (canPlayerMove)
         {
             Vector3 movement = new Vector3(moveInput.x, 0, moveInput.y);
-            controller.Move(movement * moveSpeed * Time.deltaTime);
+            Vector3 velocity = movement * moveSpeed;
+            
+            if (!controller.isGrounded)
+            {
+                verticalVelocity = -0.5f;
+            }
+            else
+            {
+                verticalVelocity += gravity * Time.deltaTime;
+            }
+
+            velocity.y = verticalVelocity;
+
+            controller.Move(velocity * Time.deltaTime);
 
             Vector3 direction = new Vector3(directionInput.x, 0, directionInput.y);
             moveDirection = direction.normalized;

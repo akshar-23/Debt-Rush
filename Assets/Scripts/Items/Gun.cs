@@ -22,13 +22,6 @@ public class Gun : ShopItem
         {
             PlayerController pc = GameManager.Instance.players[0].GetComponent<PlayerController>();
 
-            if (currentCount <= 0)
-            {
-                Debug.Log("Out of Ammo!");
-                pc.DeleteInventoryItem(this);
-                return;
-            }
-
             Vector3 spawnPos = pc.transform.position + pc.transform.forward * 2f;
 
             GameObject proj = Instantiate(projectile, spawnPos, transform.rotation);
@@ -37,7 +30,7 @@ public class Gun : ShopItem
             if (p != null)
             {
                 p.archetype = Archetype.Player;
-                if(shootSFX_1 != null && shootSFX_2 != null)
+                if (shootSFX_1 != null && shootSFX_2 != null)
                 {
                     AudioManager.Instance.PlayRandomClip(shootSFX_1, shootSFX_2);
                 }
@@ -47,6 +40,15 @@ public class Gun : ShopItem
 
             nextFireTime = Time.time + fireRate;
             currentCount--;
+
+            if (currentCount <= 0)
+            {
+                Debug.Log("Out of Ammo!");
+                pc.DeleteInventoryItem(this);
+                return;
+            }
+
+            pc.hudref.UpdateItemCount(pc.id, this);
         }
     }
 }
