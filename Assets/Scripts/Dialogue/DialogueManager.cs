@@ -167,7 +167,7 @@ public class DialogueManager : MonoBehaviour
             playerController2.input.SwitchCurrentActionMap("Player");
         }
 
-        sharedCanvas.enabled = false;
+        //sharedCanvas.enabled = false;
         sharedEventSystem.enabled = false;
         sharedUIModule.enabled = false;
     }
