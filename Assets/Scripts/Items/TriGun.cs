@@ -25,21 +25,13 @@ public class TriGun : ShopItem
         {
             PlayerController pc = GameManager.Instance.players[0].GetComponent<PlayerController>();
 
-            if (currentCount <= 0)
-            {
-                Debug.Log("Out of Ammo!");
-                pc.DeleteInventoryItem(this);
-                return;
-            }
-
-
             if (ShotgunSFX != null)
             {
                 AudioManager.Instance.PlaySFX(ShotgunSFX);
             }
 
             Vector3 spawnPos = pc.transform.position + pc.transform.forward * 2f;
-            
+
             Vector3 leftPos = spawnPos - transform.right * sideOffset;
             Vector3 midPos = spawnPos;
             Vector3 rightPos = spawnPos + transform.right * sideOffset;
@@ -76,6 +68,15 @@ public class TriGun : ShopItem
 
             nextFireTime = Time.time + fireRate;
             currentCount--;
+
+            if (currentCount <= 0)
+            {
+                Debug.Log("Out of Ammo!");
+                pc.DeleteInventoryItem(this);
+                return;
+            }
+
+            pc.hudref.UpdateItemCount(pc.id, this);
         }
     }
 }
