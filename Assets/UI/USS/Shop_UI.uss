@@ -127,6 +127,7 @@
     border-right-color: rgba(224, 141, 5, 0.6);
     border-top-color: rgba(224, 141, 5, 0.6);
     border-bottom-color: rgba(224, 141, 5, 0.6);
+    -unity-font-style: normal;
 }
 
 .done-button {
@@ -239,6 +240,7 @@
     border-top-right-radius: 117px;
     border-bottom-right-radius: 117px;
     border-bottom-left-radius: 117px;
+    background-color: rgb(221, 186, 39);
 }
 
 .indie-player-title {
@@ -261,6 +263,13 @@
     flex-basis: 0;
     flex-grow: 1;
     flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: rgb(253, 186, 139);
+    border-top-left-radius: 97px;
+    border-top-right-radius: 97px;
+    border-bottom-right-radius: 97px;
+    border-bottom-left-radius: 97px;
 }
 
 .obj-container {
@@ -271,7 +280,7 @@
     margin-top: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
-    margin-left: 20px;
+    margin-left: 25px;
 }
 
 .hint-box {
@@ -290,10 +299,14 @@
     padding-right: 20px;
     padding-bottom: 20px;
     padding-left: 20px;
-    margin-right: 0;
-    margin-left: 12px;
+    margin-right: 37px;
+    margin-left: 36px;
     justify-content: center;
     font-size: 43px;
+    border-top-left-radius: 34px;
+    border-top-right-radius: 34px;
+    border-bottom-right-radius: 34px;
+    border-bottom-left-radius: 34px;
 }
 
 .hint-text {
@@ -329,6 +342,7 @@
 }
 
 .player-join-panel {
+    height: 645px;
 }
 
 .personal-money-title {
