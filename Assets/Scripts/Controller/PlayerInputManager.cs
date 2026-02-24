@@ -31,30 +31,67 @@ public class PlayerInputManager : MonoBehaviour
     void Start()
     {
         currentNumberPlayers = 0;
+
+        // If players already joined in the shop scene, auto-instantiate both
+        if (GameManager.Instance != null &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[0]) &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[1]))
+        {
+            AutoInstantiateFromShop();
+        }
+    }
+
+    void AutoInstantiateFromShop()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            string scheme = GameManager.Instance.playerSchemes[i];
+            Gamepad gp    = GameManager.Instance.playerGamepads[i];
+
+            if (scheme == "WASD")   wasdJoined   = true;
+            if (scheme == "Arrows") arrowsJoined = true;
+            if (scheme == "GamePad" && i == 0) { wasdJoined   = true; gamepadJoined = true; }
+            if (scheme == "GamePad" && i == 1) { arrowsJoined = true; }
+
+            InstantiateCharacter(scheme, gp);
+        }
     }
 
     void Update()
     {
-        if (Keyboard.current == null || currentNumberPlayers >= 2) return;
+        // Skip join detection if both players already joined in shop
+        if (GameManager.Instance != null &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[0]) &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[1]))
+            return;
 
-        if(!wasdJoined && Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            InstantiateCharacter("WASD");
-            wasdJoined = true;
-        }
+        if (currentNumberPlayers >= 2) return;
 
-        if (!arrowsJoined && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+        if (Keyboard.current != null)
         {
-            InstantiateCharacter("Arrows");
-            arrowsJoined = true;
-        }
-
-        foreach(var gamePad in Gamepad.all)
-        {
-            if (gamePad.buttonSouth.wasPressedThisFrame)
+            // Space = WASD player join (matches Submit binding in action map)
+            if (!wasdJoined && Keyboard.current.spaceKey.wasPressedThisFrame)
             {
+                wasdJoined = true;
+                InstantiateCharacter("WASD");
+            }
+
+            // RightCtrl = Arrows player join (matches Submit binding in action map)
+            if (!arrowsJoined && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+            {
+                arrowsJoined = true;
+                InstantiateCharacter("Arrows");
+            }
+        }
+
+        // Gamepad: first unclaimed south press joins
+        foreach (var gamePad in Gamepad.all)
+        {
+            if (gamePad.buttonSouth.wasPressedThisFrame && !gamepadJoined)
+            {
+                gamepadJoined = true;
                 InstantiateCharacter("GamePad", gamePad);
-                if (currentNumberPlayers == 2) gamepadJoined = true;
+                break;
             }
         }
     }
@@ -105,7 +142,14 @@ public class PlayerInputManager : MonoBehaviour
             pairWithDevices: gamePad != null ? gamePad : Keyboard.current
         );
 
-        int idx = playerIndex;//player.playerIndex;  // authoritative index
+        int idx = playerIndex; // authoritative index
+
+        // Store join data in GameManager so shop scene can read it without players existing
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.playerSchemes[idx] = scheme;
+            GameManager.Instance.playerGamepads[idx] = gamePad;
+        }
 
         // Use idx for spawn, cameras, arrays, HUD, etc.
         Vector3 spawnPosition = (spawnPoints != null && idx < spawnPoints.Length && spawnPoints[idx] != null)
@@ -167,6 +211,9 @@ public class PlayerInputManager : MonoBehaviour
 
             binder.Bind();
         }
+
+        // Clear any stale submit press from the join button
+        if (pc != null) pc.RegisterSubmitPressed();
 
         currentNumberPlayers++;
     }
