@@ -47,13 +47,7 @@ public class PlayerInputManager : MonoBehaviour
         {
             string scheme = GameManager.Instance.playerSchemes[i];
             Gamepad gp    = GameManager.Instance.playerGamepads[i];
-
-            if (scheme == "WASD")   wasdJoined   = true;
-            if (scheme == "Arrows") arrowsJoined = true;
-            if (scheme == "GamePad" && i == 0) { wasdJoined   = true; gamepadJoined = true; }
-            if (scheme == "GamePad" && i == 1) { arrowsJoined = true; }
-
-            InstantiateCharacter(scheme, gp);
+            InstantiateCharacter(scheme, gp, forcedPlayerIndex: i);
         }
     }
 
@@ -96,16 +90,19 @@ public class PlayerInputManager : MonoBehaviour
         }
     }
 
-    public void InstantiateCharacter(string scheme, Gamepad gamePad = null)
+    public void InstantiateCharacter(string scheme, Gamepad gamePad = null, int forcedPlayerIndex = -1)
     {
-        // Pick prefab only, don't decide index here
-        //GameObject prefabToSpawn = scheme == "WASD" ? player1Prefab : player2Prefab;
-
         // Determine player index based on control scheme
         int playerIndex;
         GameObject prefabToSpawn;
 
-        if (scheme == "WASD")
+        if (forcedPlayerIndex >= 0)
+        {
+            // Index was determined at join time (e.g. from shop scene)
+            playerIndex = forcedPlayerIndex;
+            prefabToSpawn = playerIndex == 0 ? player1Prefab : player2Prefab;
+        }
+        else if (scheme == "WASD")
         {
             playerIndex = 0;
             prefabToSpawn = player1Prefab;
@@ -115,7 +112,7 @@ public class PlayerInputManager : MonoBehaviour
             playerIndex = 1;
             prefabToSpawn = player2Prefab;
         }
-        else // Gamepad
+        else // Gamepad - live join, determine by available slot
         {
             if (!wasdJoined)
             {
