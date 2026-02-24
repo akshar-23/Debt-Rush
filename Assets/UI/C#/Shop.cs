@@ -17,6 +17,14 @@ public class Shop_UI : MonoBehaviour
 
     Label capacityLabel1, capacityLabel2;
 
+    [SerializeField] IndividualObjective objectiveData;
+
+    // Indie obj panel elements
+    VisualElement receivedText1, receivedText2;
+    Button indieContinueButton;
+    string p1ChosenObjective, p2ChosenObjective;
+    bool p1Chose, p2Chose;
+
     // Join panel elements
     VisualElement playerJoinPanel;
     Label joinText1, joinText2;
@@ -40,6 +48,14 @@ public class Shop_UI : MonoBehaviour
 
         modePanel     = root.Q<VisualElement>("ModePanel");
         indieObjPanel = root.Q<VisualElement>("IndieObjPanel");
+        receivedText1      = root.Q<VisualElement>("Received_Text_1");
+        receivedText2      = root.Q<VisualElement>("Received_Text_2");
+        indieContinueButton = root.Q<Button>("Continue_Button");
+        if (indieContinueButton != null)
+        {
+            indieContinueButton.style.display = DisplayStyle.None;
+            indieContinueButton.clicked += OnDoneChoosingGoals;
+        }
         noSecretsButton   = root.Q<Button>("ModeButton_1");
         someSecretsButton = root.Q<Button>("ModeButton_2");
 
@@ -90,7 +106,8 @@ public class Shop_UI : MonoBehaviour
         if (continueButton != null)    continueButton.clicked    -= LoadPrototypeScene;
         if (noSecretsButton != null)   noSecretsButton.clicked   -= OnNoSecrets;
         if (someSecretsButton != null) someSecretsButton.clicked -= OnSomeSecrets;
-        if (joinContinueButton != null) joinContinueButton.clicked -= OnJoinContinue;
+        if (joinContinueButton != null)   joinContinueButton.clicked   -= OnJoinContinue;
+        if (indieContinueButton != null)  indieContinueButton.clicked  -= OnDoneChoosingGoals;
 
         if (ShopJoinManager.Instance != null)
         {
@@ -126,6 +143,48 @@ public class Shop_UI : MonoBehaviour
         ShowShop();
     }
 
+    void SetObjectiveTexts()
+    {
+        var root = ui.rootVisualElement;
+        var source = objectiveData != null
+            ? objectiveData.objectives
+            : new System.Collections.Generic.List<string>();
+
+        string[] p1Names = { "obj_1_1", "obj_1_2", "obj_1_3", "obj_1_4" };
+        string[] p2Names = { "obj_2_1", "obj_2_2", "obj_2_3", "obj_2_4" };
+
+        var p1 = PickRandom4(source);
+        var p2 = PickRandom4(source);
+
+        for (int i = 0; i < 4; i++)
+        {
+            SetObjText(root, p1Names[i], p1[i]);
+            SetObjText(root, p2Names[i], p2[i]);
+        }
+    }
+
+    string[] PickRandom4(System.Collections.Generic.List<string> source)
+    {
+        var shuffled = new System.Collections.Generic.List<string>(source);
+        for (int i = shuffled.Count - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (shuffled[i], shuffled[j]) = (shuffled[j], shuffled[i]);
+        }
+        string[] result = new string[4];
+        for (int i = 0; i < 4; i++)
+            result[i] = i < shuffled.Count ? shuffled[i] : "";
+        return result;
+    }
+
+    void SetObjText(VisualElement root, string objName, string text)
+    {
+        var obj = root.Q<VisualElement>(objName);
+        var labels = obj?.Query<Label>().ToList();
+        // Index 1 is the objective label (index 0 is the hint letter inside HintBox)
+        if (labels != null && labels.Count > 1) labels[1].text = text;
+    }
+
     void OnSomeSecrets()
     {
         if (modePanel != null)     modePanel.style.display     = DisplayStyle.None;
@@ -133,17 +192,34 @@ public class Shop_UI : MonoBehaviour
         if (playerPanels != null)  playerPanels.style.display  = DisplayStyle.None;
         if (moneyPanel != null)    moneyPanel.style.display    = DisplayStyle.None;
 
-        foreach (var btn in indieObjPanel.Query<Button>().ToList())
-            btn.clicked += OnDoneChoosingGoals;
+        // Reset state
+        p1Chose = false;
+        p2Chose = false;
+        p1ChosenObjective = "";
+        p2ChosenObjective = "";
+        if (receivedText1 != null) receivedText1.style.display = DisplayStyle.None;
+        if (receivedText2 != null) receivedText2.style.display = DisplayStyle.None;
+        if (indieContinueButton != null) indieContinueButton.style.display = DisplayStyle.None;
+        var oc1 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_1");
+        var oc2 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_2");
+        if (oc1 != null) oc1.style.display = DisplayStyle.Flex;
+        if (oc2 != null) oc2.style.display = DisplayStyle.Flex;
+
+        SetObjectiveTexts();
     }
 
     void OnDoneChoosingGoals()
     {
-        foreach (var btn in indieObjPanel.Query<Button>().ToList())
-            btn.clicked -= OnDoneChoosingGoals;
-
         if (indieObjPanel != null) indieObjPanel.style.display = DisplayStyle.None;
         ShowShop();
+    }
+
+    void CheckBothChose()
+    {
+        if (!p1Chose || !p2Chose) return;
+        Debug.Log($"Player 1 chose: {p1ChosenObjective}");
+        Debug.Log($"Player 2 chose: {p2ChosenObjective}");
+        if (indieContinueButton != null) indieContinueButton.style.display = DisplayStyle.Flex;
     }
 
     void ShowShop()
@@ -354,8 +430,94 @@ public class Shop_UI : MonoBehaviour
 
     void LoadPrototypeScene() => SceneManager.LoadScene("Prototype");
 
+    void HandleIndieObjInput()
+    {
+        // Get which button each player pressed: A/B/X/Y = Submit/Cancel/Interact/North
+        // and map to the corresponding objective slot index (0=A, 1=B, 2=X, 3=Y)
+
+        // P1 buttons: Space=A(0), C=B(1), E=X(2), Q=Y(3)
+        // P2 buttons: RightCtrl=A(0), NumpadPeriod=B(1), Numpad0=X(2), Numpad1=Y(3)
+        // Gamepad P1: ButtonSouth=A, ButtonEast=B, ButtonWest=X, ButtonNorth=Y
+        // Gamepad P2: same
+
+        if (!p1Chose)
+        {
+            int p1Slot = -1;
+            if (Keyboard.current != null)
+            {
+                if (Keyboard.current.spaceKey.wasPressedThisFrame)      p1Slot = 0;
+                else if (Keyboard.current.cKey.wasPressedThisFrame)     p1Slot = 1;
+                else if (Keyboard.current.eKey.wasPressedThisFrame)     p1Slot = 2;
+                else if (Keyboard.current.qKey.wasPressedThisFrame)     p1Slot = 3;
+            }
+            var gp1 = GameManager.Instance.playerGamepads[0];
+            if (p1Slot < 0 && gp1 != null)
+            {
+                if (gp1.buttonSouth.wasPressedThisFrame)  p1Slot = 0;
+                else if (gp1.buttonEast.wasPressedThisFrame)  p1Slot = 1;
+                else if (gp1.buttonWest.wasPressedThisFrame)  p1Slot = 2;
+                else if (gp1.buttonNorth.wasPressedThisFrame) p1Slot = 3;
+            }
+            if (p1Slot >= 0)
+            {
+                p1ChosenObjective = GetObjText(ui.rootVisualElement, p1Slot, 1);
+                p1Chose = true;
+                var objContainer1 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_1");
+                if (objContainer1 != null) objContainer1.style.display = DisplayStyle.None;
+                if (receivedText1 != null) receivedText1.style.display = DisplayStyle.Flex;
+                CheckBothChose();
+            }
+        }
+
+        if (!p2Chose)
+        {
+            int p2Slot = -1;
+            if (Keyboard.current != null)
+            {
+                if (Keyboard.current.rightCtrlKey.wasPressedThisFrame)      p2Slot = 0;
+                else if (Keyboard.current.numpadPeriodKey.wasPressedThisFrame) p2Slot = 1;
+                else if (Keyboard.current.numpad0Key.wasPressedThisFrame)   p2Slot = 2;
+                else if (Keyboard.current.numpad1Key.wasPressedThisFrame)   p2Slot = 3;
+            }
+            var gp2 = GameManager.Instance.playerGamepads[1];
+            if (p2Slot < 0 && gp2 != null)
+            {
+                if (gp2.buttonSouth.wasPressedThisFrame)  p2Slot = 0;
+                else if (gp2.buttonEast.wasPressedThisFrame)  p2Slot = 1;
+                else if (gp2.buttonWest.wasPressedThisFrame)  p2Slot = 2;
+                else if (gp2.buttonNorth.wasPressedThisFrame) p2Slot = 3;
+            }
+            if (p2Slot >= 0)
+            {
+                p2ChosenObjective = GetObjText(ui.rootVisualElement, p2Slot, 2);
+                p2Chose = true;
+                var objContainer2 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_2");
+                if (objContainer2 != null) objContainer2.style.display = DisplayStyle.None;
+                if (receivedText2 != null) receivedText2.style.display = DisplayStyle.Flex;
+                CheckBothChose();
+            }
+        }
+    }
+
+    string GetObjText(VisualElement root, int slot, int playerIndex)
+    {
+        string[] p1Names = { "obj_1_1", "obj_1_2", "obj_1_3", "obj_1_4" };
+        string[] p2Names = { "obj_2_1", "obj_2_2", "obj_2_3", "obj_2_4" };
+        string objName = playerIndex == 1 ? p1Names[slot] : p2Names[slot];
+        var obj = root.Q<VisualElement>(objName);
+        var labels = obj?.Query<Label>().ToList();
+        return (labels != null && labels.Count > 1) ? labels[1].text : "";
+    }
+
     void Update()
     {
+        // Handle indie objective selection
+        if (indieObjPanel != null && indieObjPanel.style.display == DisplayStyle.Flex)
+        {
+            HandleIndieObjInput();
+            return;
+        }
+
         // Only active when shop panel is visible
         if (playerPanels == null || playerPanels.style.display == DisplayStyle.None) return;
 
