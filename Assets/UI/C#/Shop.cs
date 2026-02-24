@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 public class Shop_UI : MonoBehaviour
 {
@@ -16,9 +17,26 @@ public class Shop_UI : MonoBehaviour
 
     Label capacityLabel1, capacityLabel2;
 
+    // Join panel elements
+    VisualElement playerJoinPanel;
+    Label joinText1, joinText2;
+    Button joinContinueButton;
+
     void OnEnable()
     {
         var root = ui.rootVisualElement;
+
+        // Setup join panel
+        playerJoinPanel   = root.Q<VisualElement>("PlayerJoinPanel");
+        joinText1         = root.Q<Label>("Join_Text_1");
+        joinText2         = root.Q<Label>("Join_Text_2");
+        joinContinueButton = root.Q<VisualElement>("Button_Container")?.Q<Button>();
+
+        if (joinContinueButton != null)
+        {
+            joinContinueButton.style.display = DisplayStyle.None;
+            joinContinueButton.clicked += OnJoinContinue;
+        }
 
         modePanel     = root.Q<VisualElement>("ModePanel");
         indieObjPanel = root.Q<VisualElement>("IndieObjPanel");
@@ -54,7 +72,16 @@ public class Shop_UI : MonoBehaviour
         if (continueButton != null) continueButton.clicked += LoadPrototypeScene;
 
         UpdateCapacityLabels();
-        ShowModeSelection();
+
+        // Hook into ShopJoinManager events
+        if (ShopJoinManager.Instance != null)
+        {
+            ShopJoinManager.Instance.OnPlayer1Joined += OnP1Joined;
+            ShopJoinManager.Instance.OnPlayer2Joined += OnP2Joined;
+        }
+
+        // Show join panel first, hide everything else
+        ShowJoinPanel();
     }
 
     void OnDisable()
@@ -63,11 +90,30 @@ public class Shop_UI : MonoBehaviour
         if (continueButton != null)    continueButton.clicked    -= LoadPrototypeScene;
         if (noSecretsButton != null)   noSecretsButton.clicked   -= OnNoSecrets;
         if (someSecretsButton != null) someSecretsButton.clicked -= OnSomeSecrets;
+        if (joinContinueButton != null) joinContinueButton.clicked -= OnJoinContinue;
+
+        if (ShopJoinManager.Instance != null)
+        {
+            ShopJoinManager.Instance.OnPlayer1Joined -= OnP1Joined;
+            ShopJoinManager.Instance.OnPlayer2Joined -= OnP2Joined;
+        }
     }
 
     void ShowModeSelection()
     {
         if (modePanel != null)     modePanel.style.display     = DisplayStyle.Flex;
+        // Re-register callbacks every time panel is shown
+        // because UI Toolkit drops clicked listeners when display:none is set
+        if (noSecretsButton != null)
+        {
+            noSecretsButton.clicked -= OnNoSecrets;
+            noSecretsButton.clicked += OnNoSecrets;
+        }
+        if (someSecretsButton != null)
+        {
+            someSecretsButton.clicked -= OnSomeSecrets;
+            someSecretsButton.clicked += OnSomeSecrets;
+        }
         if (indieObjPanel != null) indieObjPanel.style.display = DisplayStyle.None;
         if (playerPanels != null)  playerPanels.style.display  = DisplayStyle.None;
         if (moneyPanel != null)    moneyPanel.style.display    = DisplayStyle.None;
@@ -194,10 +240,26 @@ public class Shop_UI : MonoBehaviour
             {
                 if (GameManager.Instance.TryRemoveFromInventory(playerIndex, item.itemName, out var removed))
                 {
+                    // Focus adjacent button before removing so selection doesn't get lost
+                    var siblings = invPanel.Query<Button>().ToList();
+                    int idx = siblings.IndexOf(invBtn);
+                    Button nextFocus = null;
+                    if (idx + 1 < siblings.Count) nextFocus = siblings[idx + 1];
+                    else if (idx - 1 >= 0)         nextFocus = siblings[idx - 1];
+
                     invPanel.Remove(invBtn);
                     MoneyManager.Instance.AddMoney(removed.itemPrice);
                     UpdateMoneyLabel();
                     UpdateCapacityLabels();
+
+                    // If inventory is now empty, focus first shop item instead
+                    if (nextFocus == null)
+                    {
+                        var shopPanel = invPanel.parent?.Q<VisualElement>(
+                            playerIndex == 1 ? "ShopList_1" : "ShopList_2");
+                        nextFocus = shopPanel?.Q<Button>();
+                    }
+                    nextFocus?.Focus();
                 }
             };
         }
@@ -251,5 +313,63 @@ public class Shop_UI : MonoBehaviour
         UpdateEndState();
     }
 
+    void ShowJoinPanel()
+    {
+        if (playerJoinPanel != null) playerJoinPanel.style.display = DisplayStyle.Flex;
+        if (modePanel != null)       modePanel.style.display       = DisplayStyle.None;
+        if (indieObjPanel != null)   indieObjPanel.style.display   = DisplayStyle.None;
+        if (playerPanels != null)    playerPanels.style.display    = DisplayStyle.None;
+        if (moneyPanel != null)      moneyPanel.style.display      = DisplayStyle.None;
+        if (endPanel != null)        endPanel.style.display        = DisplayStyle.None;
+    }
+
+    void OnP1Joined()
+    {
+        if (joinText1 != null) joinText1.text = "Joined!";
+        CheckBothJoined();
+    }
+
+    void OnP2Joined()
+    {
+        if (joinText2 != null) joinText2.text = "Joined!";
+        CheckBothJoined();
+    }
+
+    void CheckBothJoined()
+    {
+        if (ShopJoinManager.Instance != null &&
+            ShopJoinManager.Instance.player1Joined &&
+            ShopJoinManager.Instance.player2Joined)
+        {
+            if (joinContinueButton != null)
+                joinContinueButton.style.display = DisplayStyle.Flex;
+        }
+    }
+
+    void OnJoinContinue()
+    {
+        if (playerJoinPanel != null) playerJoinPanel.style.display = DisplayStyle.None;
+        ShowModeSelection();
+    }
+
     void LoadPrototypeScene() => SceneManager.LoadScene("Prototype");
+
+    void Update()
+    {
+        // Only active when shop panel is visible
+        if (playerPanels == null || playerPanels.style.display == DisplayStyle.None) return;
+
+        // P1: E key or gamepad 0 ButtonWest
+        bool p1Interact = Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
+        if (!p1Interact && GameManager.Instance.playerGamepads[0] != null)
+            p1Interact = GameManager.Instance.playerGamepads[0].buttonWest.wasPressedThisFrame;
+
+        // P2: Numpad0 or gamepad 1 ButtonWest
+        bool p2Interact = Keyboard.current != null && Keyboard.current.numpad0Key.wasPressedThisFrame;
+        if (!p2Interact && GameManager.Instance.playerGamepads[1] != null)
+            p2Interact = GameManager.Instance.playerGamepads[1].buttonWest.wasPressedThisFrame;
+
+        if (p1Interact && done1 != null) done1.value = !done1.value;
+        if (p2Interact && done2 != null) done2.value = !done2.value;
+    }
 }

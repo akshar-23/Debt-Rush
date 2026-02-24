@@ -31,10 +31,40 @@ public class PlayerInputManager : MonoBehaviour
     void Start()
     {
         currentNumberPlayers = 0;
+
+        // If players already joined in the shop scene, auto-instantiate both
+        if (GameManager.Instance != null &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[0]) &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[1]))
+        {
+            AutoInstantiateFromShop();
+        }
+    }
+
+    void AutoInstantiateFromShop()
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            string scheme = GameManager.Instance.playerSchemes[i];
+            Gamepad gp    = GameManager.Instance.playerGamepads[i];
+
+            if (scheme == "WASD")   wasdJoined   = true;
+            if (scheme == "Arrows") arrowsJoined = true;
+            if (scheme == "GamePad" && i == 0) { wasdJoined   = true; gamepadJoined = true; }
+            if (scheme == "GamePad" && i == 1) { arrowsJoined = true; }
+
+            InstantiateCharacter(scheme, gp);
+        }
     }
 
     void Update()
     {
+        // Skip join detection if both players already joined in shop
+        if (GameManager.Instance != null &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[0]) &&
+            !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[1]))
+            return;
+
         if (currentNumberPlayers >= 2) return;
 
         if (Keyboard.current != null)
@@ -61,7 +91,7 @@ public class PlayerInputManager : MonoBehaviour
             {
                 gamepadJoined = true;
                 InstantiateCharacter("GamePad", gamePad);
-                break; // only one gamepad join per frame
+                break;
             }
         }
     }
@@ -181,6 +211,9 @@ public class PlayerInputManager : MonoBehaviour
 
             binder.Bind();
         }
+
+        // Clear any stale submit press from the join button
+        if (pc != null) pc.RegisterSubmitPressed();
 
         currentNumberPlayers++;
     }
