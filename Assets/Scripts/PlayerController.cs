@@ -26,10 +26,14 @@ public class PlayerController : Character
     private List<ShopItem> inventory = new List<ShopItem>();
     private int inventoryPos = -1;
 
+
+    [Header("Player Input")]
     public PlayerInput input;
     private Vector2 moveInput;
     private Vector2 directionInput;
 
+    [Header("Winning Condition")]
+    // We should move this to the destinationPoint object.
     public bool isAtDestination = false;
 
     private CharacterController controller;
@@ -359,7 +363,14 @@ public class PlayerController : Character
         GameManager.Instance.AddToInventory(playerNumber, _item);
         hudref.BuildUI();
 
-        if (inventory.Count == 1)
+        int totalPassiveItems = 0;
+
+        for(int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].isPassiveItem) { totalPassiveItems++; }
+        }
+
+        if (inventory.Count - 1 == totalPassiveItems)
         {
             SelectFirstItem();
         }
