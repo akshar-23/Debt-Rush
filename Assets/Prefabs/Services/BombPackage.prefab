@@ -49,6 +49,7 @@ MonoBehaviour:
   itemPrice: 400
   description: 
   maxCount: 4
-  currentCount: 0
-  isActiveItem: 0
+  currentCount: 4
+  isActiveItem: 1
+  isPassiveItem: 0
   cursorObj: {fileID: 1087458065748392346, guid: 999410dc66ba5034f84d10897e127b36, type: 3}

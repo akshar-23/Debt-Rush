@@ -20,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] public PlayerController playerController2;
     [SerializeField] public GameObject NPCController;
 
+    [Header("Shared UI")]
     [SerializeField]  public Canvas sharedCanvas;
     [SerializeField]  public GameObject sharedFirstButton;
     [SerializeField] public MultiplayerEventSystem sharedEventSystem;
@@ -38,15 +39,9 @@ public class DialogueManager : MonoBehaviour
     public DialogueState currentState;
     private Story currentStory;
 
-    private const string SPEAKER_TAG = "speaker";
-    private const string PORTRAIT_TAG = "portrait";
-    private const string AUDIO_TAG = "audio";
-    private const string MOVEMENT_TAG = "movement";
-
     public bool dialogueIsPlaying { get; private set; }
     public bool isPlayer1inDialogue { get; private set; }
     public bool isPlayer2inDialogue { get; private set; }
-    public bool canContinueToNextLine = false;
 
     private static DialogueManager instance;
 
@@ -99,6 +94,7 @@ public class DialogueManager : MonoBehaviour
         if (cameraManager.GetCurrentState() == CameraManager.CameraState.Single)
         {
             PlayerController currentController = null;
+            dialogueContext.SetActive(true);
 
             if (playerController.GetPlayerNumber() == 1)
             {
