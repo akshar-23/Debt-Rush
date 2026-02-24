@@ -155,7 +155,7 @@ public class PlayerController : Character
         }
         else if (ctx.canceled)
         {
-            //submitPressed = false;
+            submitPressed = false;
         }
     }
 
@@ -244,7 +244,10 @@ public class PlayerController : Character
 
             // Found a non-passive item
             itemEquipped = inventory[inventoryPos];
-            hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            if (!inventory[oldInventoryPos].isPassiveItem)
+            {
+                hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            }
             hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
             itemEquipped.gameObject.SetActive(true);
             itemEquipped.isActiveItem = true;
@@ -396,6 +399,8 @@ public class PlayerController : Character
             itemEquipped.isActiveItem = true;
             break;
         }
+
+        if (itemEquipped == null) { inventoryPos = 0; }
     }
 
     public int GetPlayerNumber()
