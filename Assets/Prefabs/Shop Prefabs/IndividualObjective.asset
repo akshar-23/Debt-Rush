@@ -12,4 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e44fb44fd01f56419b68f838450a618, type: 3}
   m_Name: IndividualObjective
   m_EditorClassIdentifier: Assembly-CSharp::IndividualObjective
-  objectives: []
+  objectives:
+  - 'Don''t kill any more than 5 enemies. '
+  - 'Never open any money chest. '
+  - 'Open and collect 20 money chests. '
+  - 'Don''t interact with strangers. '
+  - 'Don''t die more than 3 times. '
+  - 'Die more than 20 times. '
+  - 'Never collide with your partner. '
+  - Kill more enemies than your partner.
+  - Kill less enemies than your partner.
+  - 'Be the first to reach the port. '
