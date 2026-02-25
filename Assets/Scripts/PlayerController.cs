@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using static HUD;
 
 [RequireComponent(typeof(CharacterController))]
@@ -299,6 +301,19 @@ public class PlayerController : Character
     public void SetCanPlayerAct(bool _canPlayerAct)
     {
         canPlayerAct = _canPlayerAct;
+    }
+
+    public void BindUI(MultiplayerEventSystem eventSystem, Canvas canvas, GameObject firstButton)
+    {
+        var binder = GetComponent<PlayerUIBinder>();
+        if (binder != null)
+        {
+            binder.eventSystem = eventSystem;
+            binder.playerCanvas = canvas;
+            binder.firstSelected = firstButton;
+
+            binder.Bind();
+        }
     }
 
     public void OnSpawnedObjectDestroyed()
