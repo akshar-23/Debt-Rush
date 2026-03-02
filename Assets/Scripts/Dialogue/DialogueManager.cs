@@ -1,6 +1,7 @@
 using Ink.Runtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,33 +21,31 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] public PlayerController playerController2;
     [SerializeField] public GameObject NPCController;
 
-    [SerializeField]  public Canvas sharedCanvas;
-    [SerializeField]  public GameObject sharedFirstButton;
+    [Header("Shared UI")]
+    [SerializeField] public Canvas sharedCanvas;
+    [SerializeField] public GameObject sharedFirstButton;
     [SerializeField] public MultiplayerEventSystem sharedEventSystem;
     [SerializeField] public InputSystemUIInputModule sharedUIModule;
+
+    [Header("Split UI")]
+    [SerializeField] public Canvas canvas_P1;
+    [SerializeField] public GameObject firstButton_P1;
+    [SerializeField] public MultiplayerEventSystem eventSystem_P1;
+    [SerializeField] public Canvas canvas_P2;
+    [SerializeField] public GameObject firstButton_P2;
+    [SerializeField] public MultiplayerEventSystem eventSystem_P2;
 
     [SerializeField] private CameraManager cameraManager;
     [SerializeField] private GameObject dialogueContext;
     [SerializeField] private GameObject dialogueContext_P1;
     [SerializeField] private GameObject dialogueContext_P2;
 
-    [Header("Choices UI")]
-    [SerializeField] private GameObject dialogueChoicesPanel;
-    [SerializeField] private GameObject[] choices;
-    private TextMeshProUGUI[] choicesText;
-
     public DialogueState currentState;
     private Story currentStory;
-
-    private const string SPEAKER_TAG = "speaker";
-    private const string PORTRAIT_TAG = "portrait";
-    private const string AUDIO_TAG = "audio";
-    private const string MOVEMENT_TAG = "movement";
 
     public bool dialogueIsPlaying { get; private set; }
     public bool isPlayer1inDialogue { get; private set; }
     public bool isPlayer2inDialogue { get; private set; }
-    public bool canContinueToNextLine = false;
 
     private static DialogueManager instance;
 
@@ -71,16 +70,6 @@ public class DialogueManager : MonoBehaviour
     public void Start()
     {
         dialogueIsPlaying = false;
-
-        dialogueChoicesPanel.SetActive(false);
-        choicesText = new TextMeshProUGUI[choices.Length];
-        int index = 0;
-
-        foreach (GameObject choice in choices)
-        {
-            choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
-            index++;
-        }
     }
 
     private void Update()
@@ -99,6 +88,7 @@ public class DialogueManager : MonoBehaviour
         if (cameraManager.GetCurrentState() == CameraManager.CameraState.Single)
         {
             PlayerController currentController = null;
+            dialogueContext.SetActive(true);
 
             if (playerController.GetPlayerNumber() == 1)
             {
@@ -107,6 +97,8 @@ public class DialogueManager : MonoBehaviour
                 playerController1.SetCanPlayerMove(false);
                 playerController1.input.SwitchCurrentActionMap("UI");
                 currentController = playerController1;
+                playerController1.BindUI(eventSystem_P1, sharedCanvas, sharedFirstButton);
+                dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController1, npcController);
             }
             if (playerController.GetPlayerNumber() == 2)
             {
@@ -115,85 +107,61 @@ public class DialogueManager : MonoBehaviour
                 playerController2.SetCanPlayerMove(false);
                 playerController2.input.SwitchCurrentActionMap("UI");
                 currentController = playerController2;
+                playerController2.BindUI(eventSystem_P2, sharedCanvas, sharedFirstButton);
+                dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController2, npcController);
             }
 
-            UIBinder.BindToPlayer(
-                sharedEventSystem,
-                sharedUIModule,
-                currentController.input,
-                sharedCanvas.gameObject,
-                sharedFirstButton
-            );
-
-            sharedEventSystem.enabled = true;
-            sharedUIModule.enabled = true;
-
-            dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
         }
         if (cameraManager.GetCurrentState() == CameraManager.CameraState.Split)
         {
             if (playerController.GetPlayerNumber() == 1)
             {
+                canvas_P1.enabled = true;
+                dialogueContext_P1.SetActive(true);
                 playerController1 = playerController;
                 playerController1.SetCanPlayerMove(false);
                 playerController1.input.SwitchCurrentActionMap("UI");
                 isPlayer1inDialogue = true;
                 dialogueContext.SetActive(false);
-                dialogueContext_P1.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
+                playerController1.BindUI(eventSystem_P1, canvas_P1, firstButton_P1);
+                dialogueContext_P1.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController1, npcController);
             }
 
             if (playerController.GetPlayerNumber() == 2)
             {
+                canvas_P2.enabled = true;
+                dialogueContext_P2.SetActive(true);
                 playerController2 = playerController;
                 playerController2.SetCanPlayerMove(false);
                 playerController2.input.SwitchCurrentActionMap("UI");
                 isPlayer2inDialogue = true;
                 dialogueContext.SetActive(false);
-                dialogueContext_P2.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController, npcController);
+                playerController2.BindUI(eventSystem_P2, canvas_P2, firstButton_P2);
+                dialogueContext_P2.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController2, npcController);
             }
         }
     }
 
-    public void NotifyEndDialogue()
+    public void NotifyEndDialogue(PlayerController player)
     {
         dialogueIsPlaying = false;
 
-        if (isPlayer1inDialogue)
+        if (player.playerNumber == 1)
         {
             playerController1.input.SwitchCurrentActionMap("Player");
+            playerController1.BindUI(eventSystem_P1, canvas_P1, firstButton_P1);
+            isPlayer1inDialogue = false;
         }
-        if (isPlayer2inDialogue)
+        if (player.playerNumber == 2)
         {
             playerController2.input.SwitchCurrentActionMap("Player");
+            playerController2.BindUI(eventSystem_P2, canvas_P2, firstButton_P2);
+            isPlayer2inDialogue = false;
         }
 
         //sharedCanvas.enabled = false;
-        sharedEventSystem.enabled = false;
-        sharedUIModule.enabled = false;
-    }
-
-    private void ExitDialogueMode()
-    {
-        dialogueIsPlaying = false;
-
-        
-        //TODO: WRAP THIS
-        //playerController1.SetCanPlayerMove(true);
-        if (playerController1 != null)
-        {
-            playerController1.SetCanPlayerMove(true);
-            playerController1 = null;
-        }
-        if (playerController2 != null)
-        {
-            playerController2.SetCanPlayerMove(true);
-            playerController2 = null;
-        }
-    }
-
-    public bool GetDialogueChoicesActiveStatus()
-    {
-        return dialogueChoicesPanel.activeInHierarchy;
+        //sharedEventSystem.enabled = false;
+        //sharedUIModule.enabled = false;
     }
 
     public void SwitchToSplitScreenDialogue()
@@ -209,16 +177,19 @@ public class DialogueManager : MonoBehaviour
             dialogueContext.GetComponent<DialogueContext>().TransitionDialogue();
             playerController1.SetCanPlayerMove(false);
             playerController1.input.SwitchCurrentActionMap("UI");
+            playerController1.BindUI(eventSystem_P1, canvas_P1, firstButton_P1);
         }
         if (isPlayer2inDialogue)
         {
             DialogueContext dc_p2 = dialogueContext.GetComponent<DialogueContext>();
+            canvas_P2.enabled = true;
             dialogueContext_P2.SetActive(true);
             dialogueContext_P2.GetComponent<DialogueContext>().UpdateCurrentStory(dc_p2.GetCurrentStory(), dc_p2.GetCurrentController());
             dialogueContext.GetComponent<DialogueContext>().TransitionDialogue();
             playerController2.SetCanPlayerMove(false);
             playerController2.input.SwitchCurrentActionMap("UI");
-        }  
+            playerController2.BindUI(eventSystem_P2, canvas_P2, firstButton_P2);
+        }
     }
 
     public void SwitchToSingleScreenDialogue()
@@ -236,6 +207,7 @@ public class DialogueManager : MonoBehaviour
             dialogueContext_P1.GetComponent<DialogueContext>().TransitionDialogue();
             playerController1.SetCanPlayerMove(false);
             playerController1.input.SwitchCurrentActionMap("UI");
+            playerController1.BindUI(eventSystem_P1, sharedCanvas, sharedFirstButton);
         }
         if (isPlayer2inDialogue)
         {
@@ -245,6 +217,7 @@ public class DialogueManager : MonoBehaviour
             dialogueContext_P2.GetComponent<DialogueContext>().TransitionDialogue();
             playerController2.SetCanPlayerMove(false);
             playerController2.input.SwitchCurrentActionMap("UI");
+            playerController2.BindUI(eventSystem_P2, sharedCanvas, sharedFirstButton);
         }
     }
 }

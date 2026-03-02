@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using static HUD;
 
 [RequireComponent(typeof(CharacterController))]
@@ -26,10 +28,14 @@ public class PlayerController : Character
     private List<ShopItem> inventory = new List<ShopItem>();
     private int inventoryPos = -1;
 
+
+    [Header("Player Input")]
     public PlayerInput input;
     private Vector2 moveInput;
     private Vector2 directionInput;
 
+    [Header("Winning Condition")]
+    // We should move this to the destinationPoint object.
     public bool isAtDestination = false;
 
     private CharacterController controller;
@@ -155,7 +161,7 @@ public class PlayerController : Character
         }
         else if (ctx.canceled)
         {
-            //submitPressed = false;
+            submitPressed = false;
         }
     }
 
@@ -244,7 +250,10 @@ public class PlayerController : Character
 
             // Found a non-passive item
             itemEquipped = inventory[inventoryPos];
-            hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            if (!inventory[oldInventoryPos].isPassiveItem)
+            {
+                hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            }
             hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
             itemEquipped.gameObject.SetActive(true);
             itemEquipped.isActiveItem = true;
@@ -292,6 +301,19 @@ public class PlayerController : Character
     public void SetCanPlayerAct(bool _canPlayerAct)
     {
         canPlayerAct = _canPlayerAct;
+    }
+
+    public void BindUI(MultiplayerEventSystem eventSystem, Canvas canvas, GameObject firstButton)
+    {
+        var binder = GetComponent<PlayerUIBinder>();
+        if (binder != null)
+        {
+            binder.eventSystem = eventSystem;
+            binder.playerCanvas = canvas;
+            binder.firstSelected = firstButton;
+
+            binder.Bind();
+        }
     }
 
     public void OnSpawnedObjectDestroyed()
@@ -356,7 +378,14 @@ public class PlayerController : Character
         GameManager.Instance.AddToInventory(playerNumber, _item);
         hudref.BuildUI();
 
-        if (inventory.Count == 1)
+        int totalPassiveItems = 0;
+
+        for(int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].isPassiveItem) { totalPassiveItems++; }
+        }
+
+        if (inventory.Count - 1 == totalPassiveItems)
         {
             SelectFirstItem();
         }
@@ -396,6 +425,8 @@ public class PlayerController : Character
             itemEquipped.isActiveItem = true;
             break;
         }
+
+        if (itemEquipped == null) { inventoryPos = 0; }
     }
 
     public int GetPlayerNumber()

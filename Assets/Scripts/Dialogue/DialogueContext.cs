@@ -123,15 +123,16 @@ public class DialogueContext : MonoBehaviour
     {
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
+        dialogueChoicesPanel.SetActive(false);
         dialogueText.text = "";
+
+        if(!isTransition) DialogueManager.GetInstance().NotifyEndDialogue(currentController);
 
         if (currentController != null)
         {
             currentController.SetCanPlayerMove(true);
             currentController = null;
         }
-
-        if(!isTransition) DialogueManager.GetInstance().NotifyEndDialogue();
     }
 
     private void ContinueStory()
