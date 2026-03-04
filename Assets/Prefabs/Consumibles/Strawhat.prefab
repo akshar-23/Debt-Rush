@@ -115,4 +115,5 @@ MonoBehaviour:
   currentCount: 0
   isActiveItem: 1
   isPassiveItem: 1
+  icon: {fileID: 6481903470281986747, guid: a03ca5df3bf46bb4e8f903f76806368c, type: 3}
   addedHP: 50
