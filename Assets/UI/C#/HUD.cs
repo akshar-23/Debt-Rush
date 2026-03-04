@@ -102,7 +102,8 @@ public class HUD : MonoBehaviour
 
         ClearButtonsOnly(bar);
 
-        foreach (var item in items)
+        var sorted = items.OrderBy(i => i.isPassiveItem ? 0 : 1).ToList();
+        foreach (var item in sorted)
         {
             var btn = new Button { focusable = true };
             btn.name = item.itemName;
@@ -127,21 +128,25 @@ public class HUD : MonoBehaviour
                 btn.Add(ammo);
             }
 
+            bar.Add(btn);
+
             if (item.isPassiveItem)
             {
                 SetState(btn, InventoryButtonStates.Passive);
             }
-
-            bar.Add(btn);
         }
     }
 
     public void SetStateToIndex(int playerIndex, int position, string state)
     {
         VisualElement currentInventory = playerIndex == 1 ? bar1 : bar2;
+        var inventory = GameManager.Instance.GetInventory(playerIndex);
 
-        List<VisualElement> childrenList = currentInventory.Children().ToList();
-        SetState(childrenList[position], state);
+        if (position < 0 || position >= inventory.Count) return;
+
+        string itemName = inventory[position].itemName;
+        var btn = currentInventory.Q<Button>(itemName);
+        if (btn != null) SetState(btn, state);
     }
 
     private void SetState(VisualElement btn, string state)
