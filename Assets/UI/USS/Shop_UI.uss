@@ -43,6 +43,7 @@
 }
 
 .button {
+     -unity-background-scale-mode: scale-to-fit;
     height: 32%;
     width: 77px;
     translate: 15px 17px;
@@ -403,4 +404,14 @@
 .obj-text {
     font-size: 18px;
     -unity-font-style: normal;
+}
+
+.item-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -unity-background-scale-mode: scale-to-fit;
+ --unity-image-tint-color: rgba(253, 229, 85, 0.85);
 }

@@ -1,28 +1,40 @@
 .inventory {
-    background-color: rgb(221, 233, 228);
+    background-color: rgb(250, 233, 145);
     width: 545px;
     align-self: auto;
-    align-items: center;
+    align-items: flex-end;
     justify-content: flex-start;
     align-content: auto;
     translate: -425px -523px;
     height: 98px;
-    border-top-left-radius: 17px;
-    border-top-right-radius: 17px;
-    border-bottom-right-radius: 17px;
-    border-bottom-left-radius: 17px;
+    border-top-left-radius: 29px;
+    border-top-right-radius: 29px;
+    border-bottom-right-radius: 29px;
+    border-bottom-left-radius: 29px;
     flex-direction: row;
+    border-left-color: rgb(137, 112, 30);
+    border-right-color: rgb(137, 112, 30);
+    border-top-color: rgb(137, 112, 30);
+    border-bottom-color: rgb(137, 112, 30);
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
 }
 
 .inventory-button {
-    height: 61px;
+    height: 77px;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     border-bottom-right-radius: 16px;
     border-bottom-left-radius: 16px;
     translate: 13px -2px;
-    margin-right: 14px;
-    width: 70px;
+    margin-right: 4px;
+    width: 77px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    background-color: rgb(255, 238, 170);
 }
 
 .inventory-button.selected {
@@ -38,8 +50,8 @@
 }
 
 .ammo-label {
-    translate: 16px 25px;
-    font-size: 11px;
+    translate: 19px 28px;
+    font-size: 20px;
 }
 
 .num-Labels {

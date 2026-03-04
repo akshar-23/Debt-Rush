@@ -52,6 +52,7 @@ MonoBehaviour:
   currentCount: 25
   isActiveItem: 1
   isPassiveItem: 0
+  icon: {fileID: -8128018368595608653, guid: fad8b034ed44f564185739c5f6823a7f, type: 3}
   fireRate: 0.1
   projectile: {fileID: 5828508778685869409, guid: 4277a8c00f61f5b49b5f59e6adbc8bfa, type: 3}
   shootSFX_1: {fileID: 0}

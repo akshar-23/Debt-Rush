@@ -260,7 +260,17 @@ public class Shop_UI : MonoBehaviour
         {
             foreach (var item in shopList)
             {
-                var btn = new Button { text = item.itemName, focusable = true };
+                var btn = new Button { focusable = true };
+                if (item.icon != null)
+                {
+                    var img = new Image { sprite = item.icon };
+                    img.AddToClassList("item-icon");
+                    btn.Add(img);
+                }
+                else
+                {
+                    btn.text = item.itemName;
+                }
                 btn.AddToClassList("button");
 
                 AttachInfoHandlers(btn, item, titleLabel, priceLabel, descLabel, isBuy: true);
@@ -298,7 +308,17 @@ public class Shop_UI : MonoBehaviour
     void AddInventoryButton(ShopItem item, VisualElement invPanel, bool removable,
                             Label titleLabel, Label priceLabel, Label descLabel, int playerIndex)
     {
-        var invBtn = new Button { text = item.itemName, focusable = true };
+        var invBtn = new Button { focusable = true };
+        if (item.icon != null)
+        {
+            var img = new Image { sprite = item.icon };
+            img.AddToClassList("item-icon");
+            invBtn.Add(img);
+        }
+        else
+        {
+            invBtn.text = item.itemName;
+        }
         invBtn.AddToClassList("button");
 
         AttachInfoHandlers(invBtn, item, titleLabel, priceLabel, descLabel, isBuy: false);

@@ -10,6 +10,7 @@ public abstract class ShopItem : MonoBehaviour
     [SerializeField, HideInInspector] public int currentCount;
     public bool isActiveItem = false;
     public bool isPassiveItem = false;
+    public Sprite icon;
 
     public abstract void Execute();
     public virtual void Init(int playerNumber) { }
