@@ -2,7 +2,7 @@
     background-color: rgb(250, 233, 145);
     width: 545px;
     align-self: auto;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-start;
     align-content: auto;
     translate: -425px -523px;
@@ -16,10 +16,10 @@
     border-right-color: rgb(200, 169, 12);
     border-top-color: rgb(200, 169, 12);
     border-bottom-color: rgb(200, 169, 12);
-    border-top-width: 4px;
-    border-right-width: 4px;
-    border-bottom-width: 4px;
-    border-left-width: 4px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
 }
 
 .inventory-button {
@@ -34,7 +34,7 @@
     margin-top: 4px;
     margin-bottom: 4px;
     margin-left: 4px;
-    background-color: rgba(255, 238, 170, 0.6);
+    background-color: rgba(250, 200, 0, 0.6);
     -unity-background-scale-mode: scale-to-fit;
     border-top-width: 0;
     border-right-width: 0;
