@@ -55,4 +55,5 @@ MonoBehaviour:
   currentCount: 0
   isActiveItem: 1
   isPassiveItem: 1
+  icon: {fileID: -3485874681644739039, guid: 9ddb47bcf63a9c94fb7eda010f3b6258, type: 3}
   addedMoveSpeed: 5

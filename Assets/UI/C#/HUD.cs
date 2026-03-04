@@ -104,10 +104,21 @@ public class HUD : MonoBehaviour
 
         foreach (var item in items)
         {
-            var btn = new Button { text = item.itemName, focusable = true };
+            var btn = new Button { focusable = true };
             btn.name = item.itemName;
             btn.tabIndex = -1;                       // keep it out of Tab focus order
             btn.AddToClassList("inventory-button");  // your HUD button style
+
+            if (item.icon != null)
+            {
+                var img = new Image { sprite = item.icon };
+                img.AddToClassList("item-icon");
+                btn.Add(img);
+            }
+            else
+            {
+                btn.text = item.itemName;
+            }
 
             if (item.maxCount > 0)
             {

@@ -12,10 +12,10 @@
     border-bottom-right-radius: 29px;
     border-bottom-left-radius: 29px;
     flex-direction: row;
-    border-left-color: rgb(137, 112, 30);
-    border-right-color: rgb(137, 112, 30);
-    border-top-color: rgb(137, 112, 30);
-    border-bottom-color: rgb(137, 112, 30);
+    border-left-color: rgb(200, 169, 12);
+    border-right-color: rgb(200, 169, 12);
+    border-top-color: rgb(200, 169, 12);
+    border-bottom-color: rgb(200, 169, 12);
     border-top-width: 4px;
     border-right-width: 4px;
     border-bottom-width: 4px;
@@ -34,19 +34,52 @@
     margin-top: 4px;
     margin-bottom: 4px;
     margin-left: 4px;
-    background-color: rgb(255, 238, 170);
+    background-color: rgba(255, 238, 170, 0.6);
+    -unity-background-scale-mode: scale-to-fit;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
 }
 
 .inventory-button.selected {
-    background-color: rgb(229, 206, 83);
+    border-top-width: 4px;
+    border-right-width: 4px;
+    border-bottom-width: 4px;
+    border-left-width: 4px;
+    border-left-color: rgba(197, 23, 0, 0.6);
+    border-right-color: rgba(197, 23, 0, 0.6);
+    border-top-color: rgba(197, 23, 0, 0.6);
+    border-bottom-color: rgba(197, 23, 0, 0.6);
 }
 
 .inventory-button.normal {
-    background-color: rgb(188, 188, 188);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
 }
 
 .inventory-button.passive {
-    background-color: rgb(123, 123, 123);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(255, 238, 170, 0.6);
+}
+
+.item-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    --unity-image-tint-color: rgba(255, 220, 100, 0.95);
+}
+
+.inventory-button.passive > .item-icon {
+    --unity-image-tint-color: rgb(255, 255, 255);
 }
 
 .ammo-label {

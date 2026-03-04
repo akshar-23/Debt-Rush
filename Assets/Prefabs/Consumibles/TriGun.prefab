@@ -51,6 +51,8 @@ MonoBehaviour:
   maxCount: 6
   currentCount: 6
   isActiveItem: 1
+  isPassiveItem: 0
+  icon: {fileID: 3095840943718857290, guid: df741732e9bd1504e98bdbcb06292b67, type: 3}
   fireRate: 0.1
   triGunProjectile: {fileID: 5828508778685869409, guid: c0acc68ebb20c2c49a1f9ce85982dddd, type: 3}
   angleOffset: 20

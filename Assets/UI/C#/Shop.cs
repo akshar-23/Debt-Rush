@@ -248,6 +248,10 @@ public class Shop_UI : MonoBehaviour
         var priceLabel = playerRoot?.Q<Label>(className: "price-text");
         var descLabel  = playerRoot?.Q<Label>(className: "description-text");
 
+        if (titleLabel != null) titleLabel.text = "";
+        if (priceLabel != null) priceLabel.text = "";
+        if (descLabel != null)  descLabel.text  = "";
+
         var invList = GameManager.Instance.GetInventory(playerIndex);
         if (invPanel != null && invList != null)
         {
@@ -370,7 +374,7 @@ public class Shop_UI : MonoBehaviour
         {
             if (titleLabel != null) titleLabel.text = item.itemName;
             if (priceLabel != null)
-                priceLabel.text = isBuy ? $"Buy For -${item.itemPrice}" : $"Sell For +${item.itemPrice}";
+                priceLabel.text = isBuy ? $"Buy For ${item.itemPrice}" : $"Sell For ${item.itemPrice}";
             if (descLabel != null) descLabel.text = item.description;
         };
 
