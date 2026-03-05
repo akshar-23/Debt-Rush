@@ -32,6 +32,9 @@ public class Shop_UI : MonoBehaviour
 
     void OnEnable()
     {
+        GameManager.Instance.ResetState();
+        MoneyManager.Instance.ResetState();
+
         var root = ui.rootVisualElement;
 
         // Setup join panel
