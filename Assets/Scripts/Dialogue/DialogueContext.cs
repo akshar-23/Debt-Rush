@@ -66,7 +66,10 @@ public class DialogueContext : MonoBehaviour
     {
         if (!dialogueIsPlaying) return;
 
-        if (canContinueToNextLine && currentController != null && currentController.GetSubmitPressed())
+        if (canContinueToNextLine 
+            && currentController != null 
+            && currentController.GetSubmitPressed()
+            && !dialogueChoicesPanel.activeInHierarchy)
         {
             ContinueStory();
         }
@@ -113,7 +116,10 @@ public class DialogueContext : MonoBehaviour
 
         NPCController = npcController;
         currentStory.BindExternalFunction("openGate", () => {
-            NPCController.gameObject.GetComponentInParent<MoneyGate>().TryToOpenGate();
+            Debug.Log("openGate called, NPCController: " + NPCController);
+            var moneyGate = NPCController.gameObject.GetComponentInParent<MoneyGate>();
+            Debug.Log("MoneyGate found: " + moneyGate);
+            moneyGate.TryToOpenGate();
         });
 
         dialogueIsPlaying = true;
@@ -145,6 +151,7 @@ public class DialogueContext : MonoBehaviour
 
     private void ContinueStory()
     {
+        Debug.Log("ContinueStory called, canContinue: " + currentStory.canContinue + ", choices: " + currentStory.currentChoices.Count);
         if (currentStory.canContinue)
         {
             if (displayLineCoroutine != null)
@@ -314,11 +321,9 @@ public class DialogueContext : MonoBehaviour
     {
         dialogueChoicesPanel.SetActive(false);
         currentStory.ChooseChoiceIndex(choiceIndex);
-
+        ContinueStory();
         if (currentController != null)
             currentController.RegisterSubmitPressed();
-
-        ContinueStory();
     }
 
     public bool GetDialogueChoicesActiveStatus() => dialogueChoicesPanel.activeInHierarchy;

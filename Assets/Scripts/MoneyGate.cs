@@ -15,18 +15,19 @@ public class MoneyGate : MonoBehaviour
         }
     }
 
-    //private void TryToOpenGate(GameObject playerObj)
     public void TryToOpenGate()
     {
+        Debug.Log("TryToOpenGate called on: " + gameObject.name);
         if (bTakeAllTheMoney)
         {
             MoneyManager.Instance.ResetMoneyAmount();
             OpenGate();
+            return;
         }
 
-        if (MoneyManager.Instance.GetMoneyAmount() > costToOpen)
+        if (MoneyManager.Instance.GetMoneyAmount() >= costToOpen)
         {
-            MoneyManager.Instance.SubtractMoney(MoneyManager.Instance.GetMoneyAmount());
+            MoneyManager.Instance.SubtractMoney(costToOpen);
             OpenGate();
         }
         else

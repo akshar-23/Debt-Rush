@@ -108,6 +108,7 @@ public class DialogueManager : MonoBehaviour
                 playerController2.input.SwitchCurrentActionMap("UI");
                 currentController = playerController2;
                 playerController2.BindUI(eventSystem_P2, sharedCanvas, sharedFirstButton);
+                Debug.Log(npcController);
                 dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController2, npcController, portrait);
             }
 
