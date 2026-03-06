@@ -81,7 +81,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void EnterDialogueMode(TextAsset inkJSON, PlayerController playerController, GameObject npcController)
+    public void EnterDialogueMode(TextAsset inkJSON, PlayerController playerController, GameObject npcController, Sprite portrait = null)
     {
         dialogueIsPlaying = true;
 
@@ -98,7 +98,7 @@ public class DialogueManager : MonoBehaviour
                 playerController1.input.SwitchCurrentActionMap("UI");
                 currentController = playerController1;
                 playerController1.BindUI(eventSystem_P1, sharedCanvas, sharedFirstButton);
-                dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController1, npcController);
+                dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController1, npcController, portrait);
             }
             if (playerController.GetPlayerNumber() == 2)
             {
@@ -108,7 +108,7 @@ public class DialogueManager : MonoBehaviour
                 playerController2.input.SwitchCurrentActionMap("UI");
                 currentController = playerController2;
                 playerController2.BindUI(eventSystem_P2, sharedCanvas, sharedFirstButton);
-                dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController2, npcController);
+                dialogueContext.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController2, npcController, portrait);
             }
 
         }
@@ -124,7 +124,7 @@ public class DialogueManager : MonoBehaviour
                 isPlayer1inDialogue = true;
                 dialogueContext.SetActive(false);
                 playerController1.BindUI(eventSystem_P1, canvas_P1, firstButton_P1);
-                dialogueContext_P1.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController1, npcController);
+                dialogueContext_P1.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController1, npcController, portrait);
             }
 
             if (playerController.GetPlayerNumber() == 2)
@@ -137,7 +137,7 @@ public class DialogueManager : MonoBehaviour
                 isPlayer2inDialogue = true;
                 dialogueContext.SetActive(false);
                 playerController2.BindUI(eventSystem_P2, canvas_P2, firstButton_P2);
-                dialogueContext_P2.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController2, npcController);
+                dialogueContext_P2.GetComponent<DialogueContext>().EnterDialogueMode(inkJSON, playerController2, npcController, portrait);
             }
         }
     }

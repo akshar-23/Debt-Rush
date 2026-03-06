@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
@@ -16,19 +17,24 @@ public class DialogueContext : MonoBehaviour
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI dialogueText;
     [SerializeField] private TextMeshProUGUI displayNameText;
-    [SerializeField] private Animator portraitAnimator;
     [SerializeField] private GameObject continueIcon;
+
+    [Header("Portrait UI")]
+    [SerializeField] private Image npcPortraitImage;
+    [SerializeField] private Image playerPortraitImage;
+    [SerializeField] public Sprite p1Portrait;
+    [SerializeField] public Sprite p2Portrait;
 
     [Header("Choices UI")]
     [SerializeField] private GameObject dialogueChoicesPanel;
     [SerializeField] private GameObject[] choices;
     private TextMeshProUGUI[] choicesText;
 
-
     private Story currentStory;
+    private Sprite npcPortraitSprite;
+    private int currentPlayerNumber;
 
     private const string SPEAKER_TAG = "speaker";
-    private const string PORTRAIT_TAG = "portrait";
     private const string AUDIO_TAG = "audio";
     private const string MOVEMENT_TAG = "movement";
 
@@ -45,11 +51,10 @@ public class DialogueContext : MonoBehaviour
     {
         dialogueIsPlaying = false;
         dialoguePanel.SetActive(false);
-
         dialogueChoicesPanel.SetActive(false);
+
         choicesText = new TextMeshProUGUI[choices.Length];
         int index = 0;
-
         foreach (GameObject choice in choices)
         {
             choicesText[index] = choice.GetComponentInChildren<TextMeshProUGUI>();
@@ -59,28 +64,16 @@ public class DialogueContext : MonoBehaviour
 
     private void Update()
     {
-        // return right away if dialogue ins't playing
-        if (!dialogueIsPlaying)
-        {
-            return;
-        }
+        if (!dialogueIsPlaying) return;
 
-        // handle continuing to the next line in the dialogue when submit is pressed
-        if (canContinueToNextLine && (currentController != null && currentController.GetSubmitPressed()))
+        if (canContinueToNextLine && currentController != null && currentController.GetSubmitPressed())
         {
             ContinueStory();
         }
     }
 
-    public Story GetCurrentStory()
-    {
-        return currentStory;
-    }
-
-    public PlayerController GetCurrentController()
-    {
-        return currentController;
-    }
+    public Story GetCurrentStory() => currentStory;
+    public PlayerController GetCurrentController() => currentController;
 
     public void UpdateCurrentStory(Story _currentStory, PlayerController _currentController)
     {
@@ -92,18 +85,32 @@ public class DialogueContext : MonoBehaviour
         currentController.SetCanPlayerMove(false);
 
         HandleTags(currentStory.currentTags);
-        //DisplayChoices();
-        //continueIcon.SetActive(true);
-        //canContinueToNextLine = true;
         displayLineCoroutine = StartCoroutine(DisplayLine(currentStory.currentText));
     }
 
-    public void EnterDialogueMode(TextAsset inkJSON, PlayerController playerController, GameObject npcController)
+    public void EnterDialogueMode(TextAsset inkJSON, PlayerController playerController, GameObject npcController, Sprite portrait = null)
     {
         currentController = playerController;
+        currentPlayerNumber = playerController.playerNumber;
         currentStory = new Story(inkJSON.text);
 
-        // Defining functions that we are going to use from the NPC
+        // Store NPC portrait
+        npcPortraitSprite = portrait;
+
+        // Set player portrait based on who triggered the dialogue
+        if (playerPortraitImage != null)
+        {
+            playerPortraitImage.sprite = currentPlayerNumber == 1 ? p1Portrait : p2Portrait;
+            playerPortraitImage.gameObject.SetActive(false); // hidden until speaker tag says so
+        }
+
+        // Set NPC portrait
+        if (npcPortraitImage != null)
+        {
+            npcPortraitImage.sprite = npcPortraitSprite;
+            npcPortraitImage.gameObject.SetActive(npcPortraitSprite != null);
+        }
+
         NPCController = npcController;
         currentStory.BindExternalFunction("openGate", () => {
             NPCController.gameObject.GetComponentInParent<MoneyGate>().TryToOpenGate();
@@ -114,6 +121,7 @@ public class DialogueContext : MonoBehaviour
 
         ContinueStory();
     }
+
     public void TransitionDialogue()
     {
         ExitDialogueMode(true);
@@ -126,7 +134,7 @@ public class DialogueContext : MonoBehaviour
         dialogueChoicesPanel.SetActive(false);
         dialogueText.text = "";
 
-        if(!isTransition) DialogueManager.GetInstance().NotifyEndDialogue(currentController);
+        if (!isTransition) DialogueManager.GetInstance().NotifyEndDialogue(currentController);
 
         if (currentController != null)
         {
@@ -140,16 +148,20 @@ public class DialogueContext : MonoBehaviour
         if (currentStory.canContinue)
         {
             if (displayLineCoroutine != null)
-            {
                 StopCoroutine(displayLineCoroutine);
-            }
 
             string nextLine = currentStory.Continue();
-            //dialogueText.text = currentStory.Continue();
 
             if (nextLine.Equals("") && !currentStory.canContinue)
             {
                 ExitDialogueMode();
+                return;
+            }
+
+            if (nextLine.Equals(""))
+            {
+                ContinueStory();
+                return;
             }
 
             HandleTags(currentStory.currentTags);
@@ -164,14 +176,12 @@ public class DialogueContext : MonoBehaviour
     private IEnumerator DisplayLine(string line)
     {
         dialogueText.text = "";
-
         continueIcon.SetActive(false);
         canContinueToNextLine = false;
 
         foreach (char letter in line.ToCharArray())
         {
-            // Check both controllers, whichever press break
-            if ((currentController != null && currentController.GetSubmitPressed()))
+            if (currentController != null && currentController.GetSubmitPressed())
             {
                 dialogueText.text = line;
                 break;
@@ -186,19 +196,14 @@ public class DialogueContext : MonoBehaviour
         canContinueToNextLine = true;
     }
 
-
     private void DisplayChoices()
     {
         List<Choice> currentChoices = currentStory.currentChoices;
 
         if (currentChoices.Count > choices.Length)
-        {
             Debug.LogError("More choices were given that the UI can support. Number of choices given: " + currentChoices.Count);
-        }
 
         int index = 0;
-        
-
         foreach (Choice choice in currentChoices)
         {
             choices[index].gameObject.SetActive(true);
@@ -208,46 +213,79 @@ public class DialogueContext : MonoBehaviour
         }
 
         for (int i = index; i < choices.Length; i++)
-        {
             choices[i].gameObject.SetActive(false);
-        }
+
         if (currentChoices.Capacity > 0)
-        {
             StartCoroutine(SelectFirstChoice());
-        }
     }
 
     private void HandleTags(List<string> currentTags)
     {
-        // Loop through each tag and handle it accordingly
         foreach (string tag in currentTags)
         {
-            // Parse the tag
             string[] splitTag = tag.Split(':');
             if (splitTag.Length != 2)
             {
                 Debug.LogError("Tag could not be appropriately parsed: " + tag);
+                continue;
             }
             string tagKey = splitTag[0].Trim();
-            string tagValue = splitTag[1].Trim();
+            string tagValue = splitTag[1].Trim().ToLower();
 
-            // Handle the tag
             switch (tagKey)
             {
                 case SPEAKER_TAG:
-                    displayNameText.text = tagValue;
-                    break;
-                case PORTRAIT_TAG:
-                    portraitAnimator.Play(tagValue);
-                    break;
-                case AUDIO_TAG:
-                    if (tagValue == "radio")
+                    displayNameText.text = splitTag[1].Trim();
+                    switch (tagValue)
                     {
-                        //audioManagerInstance.PlayInterference();
+                        case "npc":
+                            if (npcPortraitImage != null)    npcPortraitImage.gameObject.SetActive(true);
+                            if (playerPortraitImage != null) playerPortraitImage.gameObject.SetActive(false);
+                            break;
+                        case "player":
+                        case "you":
+                            if (npcPortraitImage != null)    npcPortraitImage.gameObject.SetActive(false);
+                            if (playerPortraitImage != null) playerPortraitImage.gameObject.SetActive(true);
+                            break;
+                        case "initiator":
+                            displayNameText.text = currentPlayerNumber == 1 ? "Player1" : "Player2";
+                            if (playerPortraitImage != null)
+                            {
+                                playerPortraitImage.sprite = currentPlayerNumber == 1 ? p1Portrait : p2Portrait;
+                                playerPortraitImage.gameObject.SetActive(true);
+                            }
+                            if (npcPortraitImage != null) npcPortraitImage.gameObject.SetActive(false);
+                            break;
+                        case "partner":
+                            displayNameText.text = currentPlayerNumber == 1 ? "Player2" : "Player1";
+                            if (playerPortraitImage != null)
+                            {
+                                playerPortraitImage.sprite = currentPlayerNumber == 1 ? p2Portrait : p1Portrait;
+                                playerPortraitImage.gameObject.SetActive(true);
+                            }
+                            if (npcPortraitImage != null) npcPortraitImage.gameObject.SetActive(false);
+                            break;
+                        case "player1":
+                            if (playerPortraitImage != null)
+                            {
+                                playerPortraitImage.sprite = p1Portrait;
+                                playerPortraitImage.gameObject.SetActive(true);
+                            }
+                            if (npcPortraitImage != null) npcPortraitImage.gameObject.SetActive(false);
+                            break;
+                        case "player2":
+                            if (playerPortraitImage != null)
+                            {
+                                playerPortraitImage.sprite = p2Portrait;
+                                playerPortraitImage.gameObject.SetActive(true);
+                            }
+                            if (npcPortraitImage != null) npcPortraitImage.gameObject.SetActive(false);
+                            break;
                     }
                     break;
+                case AUDIO_TAG:
+                    break;
                 case MOVEMENT_TAG:
-                    //playerController.canMove = true;
                     break;
                 default:
                     Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
@@ -267,23 +305,13 @@ public class DialogueContext : MonoBehaviour
     {
         dialogueChoicesPanel.SetActive(false);
         currentStory.ChooseChoiceIndex(choiceIndex);
-        
-        if(currentController != null)
-        {
+
+        if (currentController != null)
             currentController.RegisterSubmitPressed();
-        }
 
         ContinueStory();
     }
 
-    public bool GetDialogueChoicesActiveStatus()
-    {
-        return dialogueChoicesPanel.activeInHierarchy;
-    }
-
-    public bool AreBothPlayersInDialogue()
-    {
-        return isPlayer1inDialogue && isPlayer2inDialogue;
-    }
-
+    public bool GetDialogueChoicesActiveStatus() => dialogueChoicesPanel.activeInHierarchy;
+    public bool AreBothPlayersInDialogue() => isPlayer1inDialogue && isPlayer2inDialogue;
 }

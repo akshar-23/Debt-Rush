@@ -15,6 +15,9 @@ public class DialogueTrigger : MonoBehaviour
     [Header("Ink JSON")]
     [SerializeField] private TextAsset inkJSON;
 
+    [Header("Portrait")]
+    [SerializeField] private Sprite portrait;
+
     private PlayerController playerController1;
     private PlayerController playerController2;
 
@@ -37,13 +40,13 @@ public class DialogueTrigger : MonoBehaviour
         if(playerController1 != null && playerController1.GetSubmitPressed())
         {
             isPlayerinDialogue = true;
-            DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject);
+            DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject, portrait);
             
         }
         if (playerController2 != null && playerController2.GetSubmitPressed())
         {
             isPlayerinDialogue = true;
-            DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject);
+            DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject, portrait);
         }
     }
 
