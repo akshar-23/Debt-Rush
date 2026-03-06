@@ -17,7 +17,6 @@ public class MoneyGate : MonoBehaviour
 
     public void TryToOpenGate()
     {
-        Debug.Log("TryToOpenGate called on: " + gameObject.name);
         if (bTakeAllTheMoney)
         {
             MoneyManager.Instance.ResetMoneyAmount();

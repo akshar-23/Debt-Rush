@@ -116,10 +116,7 @@ public class DialogueContext : MonoBehaviour
 
         NPCController = npcController;
         currentStory.BindExternalFunction("openGate", () => {
-            Debug.Log("openGate called, NPCController: " + NPCController);
-            var moneyGate = NPCController.gameObject.GetComponentInParent<MoneyGate>();
-            Debug.Log("MoneyGate found: " + moneyGate);
-            moneyGate.TryToOpenGate();
+            NPCController.gameObject.GetComponentInParent<MoneyGate>().TryToOpenGate();
         });
 
         dialogueIsPlaying = true;
@@ -151,7 +148,6 @@ public class DialogueContext : MonoBehaviour
 
     private void ContinueStory()
     {
-        Debug.Log("ContinueStory called, canContinue: " + currentStory.canContinue + ", choices: " + currentStory.currentChoices.Count);
         if (currentStory.canContinue)
         {
             if (displayLineCoroutine != null)

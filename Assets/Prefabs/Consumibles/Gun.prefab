@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5942470287468902659
 Transform:
   m_ObjectHideFlags: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   description: 
   maxCount: 25
   currentCount: 25
-  isActiveItem: 0
+  isActiveItem: 1
   isPassiveItem: 0
   icon: {fileID: -8128018368595608653, guid: fad8b034ed44f564185739c5f6823a7f, type: 3}
   fireRate: 0.1

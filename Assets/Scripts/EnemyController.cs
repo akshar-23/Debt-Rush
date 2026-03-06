@@ -20,6 +20,7 @@ public class EnemyController : Character
     private Transform targetPlayer;
     private NavMeshAgent agent;
     private float nextFireTime = 1f;
+    private Vector3 spawnPosition;
 
     [SerializeField] private AudioClip shootSFX_1;
     [SerializeField] private AudioClip shootSFX_2;
@@ -34,6 +35,7 @@ public class EnemyController : Character
         }
 
         agent.stoppingDistance = attackRange;
+        spawnPosition = transform.position;
     }
 
     void Update()
@@ -47,7 +49,12 @@ public class EnemyController : Character
 
         if (targetPlayer == null)
         {
-            if (!agent.isStopped)
+            if (Vector3.Distance(transform.position, spawnPosition) > 0.5f)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(spawnPosition);
+            }
+            else
             {
                 agent.isStopped = true;
             }
@@ -101,6 +108,10 @@ public class EnemyController : Character
             {
                 continue;
             }
+
+            // Skip players in sanctuary zones
+            if (SanctuaryZone.IsPlayerInSanctuary(player.transform))
+                continue;
 
             float distance = Vector3.Distance(transform.position, player.transform.position);
             
