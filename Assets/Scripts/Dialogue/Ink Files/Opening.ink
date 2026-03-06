@@ -13,7 +13,7 @@ Give me all you have then. # speaker: Gatekeeper
         ... # speaker: Partner
         He's gone… but more of them are coming. We have nothing left. # speaker: Initiator
         We need to get out of here. # speaker: Partner
-        There's a gate on the south-east side of town. That's our way into the city. # speaker: Initiator
+      There's a gate on the <color="orange">south-east</color> side of town. That's our way into the city. # speaker: Initiator
         Alright. See you at the gate. # speaker: Partner
         -> DONE
     + [Refuse to pay]

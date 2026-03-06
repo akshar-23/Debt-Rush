@@ -175,22 +175,30 @@ public class DialogueContext : MonoBehaviour
 
     private IEnumerator DisplayLine(string line)
     {
-        dialogueText.text = "";
+        dialogueText.text = line;
+        dialogueText.maxVisibleCharacters = 0;
+
         continueIcon.SetActive(false);
         canContinueToNextLine = false;
 
-        foreach (char letter in line.ToCharArray())
+        dialogueText.ForceMeshUpdate();
+        int totalVisibleChars = dialogueText.textInfo.characterCount;
+
+        int visibleCount = 0;
+        while (visibleCount <= totalVisibleChars)
         {
             if (currentController != null && currentController.GetSubmitPressed())
             {
-                dialogueText.text = line;
+                dialogueText.maxVisibleCharacters = totalVisibleChars;
                 break;
             }
 
-            dialogueText.text += letter;
+            dialogueText.maxVisibleCharacters = visibleCount;
+            visibleCount++;
             yield return new WaitForSeconds(typingSpeed);
         }
 
+        dialogueText.maxVisibleCharacters = totalVisibleChars;
         DisplayChoices();
         continueIcon.SetActive(true);
         canContinueToNextLine = true;
@@ -239,6 +247,7 @@ public class DialogueContext : MonoBehaviour
                     switch (tagValue)
                     {
                         case "npc":
+                        case "gatekeeper":
                             if (npcPortraitImage != null)    npcPortraitImage.gameObject.SetActive(true);
                             if (playerPortraitImage != null) playerPortraitImage.gameObject.SetActive(false);
                             break;
