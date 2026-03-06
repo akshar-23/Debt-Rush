@@ -190,11 +190,19 @@ public class GameplaySceneManager : MonoBehaviour
         OnPlayerRespawn?.Invoke(player.id, player.transform);
     }
 
+    private Vector3? overrideRespawnPosition = null;
+    private float overrideRespawnOffset = 1f;
+
     /// <summary>
     /// Gets the respawn point for a specific player
     /// </summary>
     private Transform GetRespawnPoint(int playerId)
     {
+        if (overrideRespawnPosition.HasValue && respawnPoints != null && playerId < respawnPoints.Length && respawnPoints[playerId] != null)
+        {
+            respawnPoints[playerId].position = overrideRespawnPosition.Value + new Vector3(playerId * overrideRespawnOffset, 0, 0);
+        }
+
         if (respawnPoints != null && playerId < respawnPoints.Length && respawnPoints[playerId] != null)
         {
             return respawnPoints[playerId];
@@ -202,6 +210,12 @@ public class GameplaySceneManager : MonoBehaviour
 
         Debug.LogWarning($"Respawn point for player {playerId} not found!");
         return transform;
+    }
+
+    public void SetRespawnPoints(Vector3 position, float offset = 1f)
+    {
+        overrideRespawnPosition = position;
+        overrideRespawnOffset = offset;
     }
 
     public void AddPlayer(Character player, int pos)

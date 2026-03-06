@@ -8,6 +8,11 @@ public class CutsceneTrigger : MonoBehaviour
     [Header("Portrait")]
     [SerializeField] private Sprite portrait;
 
+    [Header("Respawn Settings")]
+    [SerializeField] private bool updateRespawnPoints = false;
+    [SerializeField] private float respawnOffset = 1f;
+    [SerializeField] private float respawnYOffset = 0f;
+
     private bool hasTriggered = false;
     private BoxCollider boxCollider;
 
@@ -29,6 +34,18 @@ public class CutsceneTrigger : MonoBehaviour
                 if (player != null)
                 {
                     hasTriggered = true;
+
+                    if (updateRespawnPoints)
+                    {
+                        GameplaySceneManager gsm = FindObjectOfType<GameplaySceneManager>();
+                        if (gsm != null)
+                        {
+                            Vector3 respawnPos = transform.position;
+                            respawnPos.y += respawnYOffset;
+                            gsm.SetRespawnPoints(respawnPos, respawnOffset);
+                        }
+                    }
+
                     DialogueManager.GetInstance().EnterDialogueMode(inkJSON, player, this.gameObject, portrait);
                     return;
                 }
