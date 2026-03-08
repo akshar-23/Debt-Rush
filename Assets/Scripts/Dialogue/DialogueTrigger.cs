@@ -25,6 +25,10 @@ public class DialogueTrigger : MonoBehaviour
     private bool isPlayer1inDialogue = false;
     private bool isPlayer2inDialogue = false;
 
+    [Header("Hint UI")]
+    public HintText hintUI;
+    private const string TalkHintText = "X - Talk";
+
     private void Awake()
     {
         if(visualCue != null)
@@ -41,12 +45,22 @@ public class DialogueTrigger : MonoBehaviour
         {
             isPlayerinDialogue = true;
             DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject, portrait);
-            
+
+            if (hintUI != null)
+            {
+                hintUI.HideHint();
+            }
+
         }
         if (playerController2 != null && playerController2.GetSubmitPressed())
         {
             isPlayerinDialogue = true;
             DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject, portrait);
+
+            if (hintUI != null)
+            {
+                hintUI.HideHint();
+            }
         }
     }
 
@@ -64,6 +78,11 @@ public class DialogueTrigger : MonoBehaviour
                 playerController2 = colliderGO.GetComponent<PlayerController>();
             }
             visualCue.SetActive(true);
+
+            if(hintUI != null)
+            {
+                hintUI.ShowHint(TalkHintText);
+            }
         }
     }
 
@@ -85,6 +104,11 @@ public class DialogueTrigger : MonoBehaviour
         {
             visualCue.SetActive(false);
             isPlayerinDialogue = false;
+
+            if (hintUI != null)
+            {
+                hintUI.HideHint();
+            }
         }
     }
 }

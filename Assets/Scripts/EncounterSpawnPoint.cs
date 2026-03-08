@@ -1,4 +1,4 @@
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
@@ -12,6 +12,10 @@ public class EncounterSpawnPoint : MonoBehaviour
     public bool isFightOver = false;
 
     public AudioClip backgroundFightMusicClip;
+
+    [Header("Hint UI")]
+    public HintText hintUI;
+    private const string EquippedWeaponHintText = "□ - Use Item";
 
     public void Update()
     {
@@ -31,10 +35,27 @@ public class EncounterSpawnPoint : MonoBehaviour
         {
             PlayerController player = other.GetComponent<PlayerController>();
 
+            if (hintUI != null)
+            {
+                hintUI.ShowHint(EquippedWeaponHintText);
+            }
+
             if (player != null)
             {
                 ActivateAllChildren();
-                Debug.Log("One Player has reached the destination!");
+                Debug.Log("One Player has reached the encounter spawn zone!");
+            }
+        }
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        GameObject colliderGO = collider.gameObject;
+        if (colliderGO.tag == "Player")
+        {
+            if (hintUI != null)
+            {
+                hintUI.HideHint();
             }
         }
     }
