@@ -19,6 +19,12 @@ public class GameManager : MonoBehaviour
     public string[] playerSchemes = new string[2];   // "WASD", "Arrows", "GamePad"
     public Gamepad[] playerGamepads = new Gamepad[2]; // null if keyboard
 
+    /// <summary>
+    /// Set to true before loading the UI/Shop scene on restart.
+    /// Shop_UI reads this to skip the join panel and go straight to objectives/shop.
+    /// </summary>
+    [HideInInspector] public bool isRestart = false;
+
     [Header("Inventory Settings")]
     public int inventoryLimit = 6;
 
@@ -41,9 +47,14 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    /// <summary>
+    /// Full reset — called on a fresh game start (not restart).
+    /// Clears join data too.
+    /// </summary>
     public void ResetState()
     {
         isGameOver = false;
+        isRestart = false;
         checkConditions = false;
         if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
         ClearInventories();
@@ -51,6 +62,22 @@ public class GameManager : MonoBehaviour
         enemies = new Character[40];
         playerSchemes = new string[2];
         playerGamepads = new Gamepad[2];
+    }
+
+    /// <summary>
+    /// Soft reset — called when restarting after game over.
+    /// Preserves playerSchemes and playerGamepads so players don't have to re-join.
+    /// </summary>
+    public void ResetStateForRestart()
+    {
+        isGameOver = false;
+        isRestart = true;
+        checkConditions = false;
+        if (gameOverUI != null) gameOverUI.gameObject.SetActive(false);
+        ClearInventories();
+        players = new Character[2];
+        enemies = new Character[40];
+        // playerSchemes and playerGamepads are intentionally kept
     }
 
     void Start()

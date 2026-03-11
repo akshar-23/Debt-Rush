@@ -66,6 +66,25 @@ public class ShopJoinManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called on restart: marks both players as joined using the existing
+    /// GameManager join data, without requiring them to press join again.
+    /// </summary>
+    public void RestoreJoinFromGameManager()
+    {
+        if (GameManager.Instance == null) return;
+
+        bool p1HasScheme = !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[0]);
+        bool p2HasScheme = !string.IsNullOrEmpty(GameManager.Instance.playerSchemes[1]);
+
+        player1Joined = p1HasScheme;
+        player2Joined = p2HasScheme;
+
+        // Fire events so any listeners (e.g. UI) know both are joined
+        if (player1Joined) OnPlayer1Joined?.Invoke();
+        if (player2Joined) OnPlayer2Joined?.Invoke();
+    }
+
     public void ResetJoin()
     {
         player1Joined = false;

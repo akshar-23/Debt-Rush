@@ -30,17 +30,43 @@ public class Shop_UI : MonoBehaviour
     Label joinText1, joinText2;
     Button joinContinueButton;
 
+    private bool isRestart = false;
+
     void OnEnable()
     {
-        GameManager.Instance.ResetState();
-        MoneyManager.Instance.ResetState();
+        isRestart = GameManager.Instance != null && GameManager.Instance.isRestart;
 
+        if (!isRestart)
+        {
+            GameManager.Instance.ResetState();
+            MoneyManager.Instance.ResetState();
+        }
+
+        // Re-enable player event systems (they get disabled by GameOverScreen)
+        var esP1 = GameObject.Find("EventSystem_P1");
+        var esP2 = GameObject.Find("EventSystem_P2");
+        var esShared = GameObject.Find("EventSystem_Shared");
+        if (esP1 != null) esP1.SetActive(true);
+        if (esP2 != null) esP2.SetActive(true);
+        if (esShared != null) esShared.SetActive(false);
+
+        // Hook into ShopJoinManager events early
+        if (ShopJoinManager.Instance != null)
+        {
+            ShopJoinManager.Instance.OnPlayer1Joined += OnP1Joined;
+            ShopJoinManager.Instance.OnPlayer2Joined += OnP2Joined;
+        }
+    }
+
+    void Start()
+    {
+        // UI Toolkit root is guaranteed to be ready in Start
         var root = ui.rootVisualElement;
 
         // Setup join panel
-        playerJoinPanel   = root.Q<VisualElement>("PlayerJoinPanel");
-        joinText1         = root.Q<Label>("Join_Text_1");
-        joinText2         = root.Q<Label>("Join_Text_2");
+        playerJoinPanel    = root.Q<VisualElement>("PlayerJoinPanel");
+        joinText1          = root.Q<Label>("Join_Text_1");
+        joinText2          = root.Q<Label>("Join_Text_2");
         joinContinueButton = root.Q<VisualElement>("Button_Container")?.Q<Button>();
 
         if (joinContinueButton != null)
@@ -92,15 +118,16 @@ public class Shop_UI : MonoBehaviour
 
         UpdateCapacityLabels();
 
-        // Hook into ShopJoinManager events
-        if (ShopJoinManager.Instance != null)
+        if (isRestart)
         {
-            ShopJoinManager.Instance.OnPlayer1Joined += OnP1Joined;
-            ShopJoinManager.Instance.OnPlayer2Joined += OnP2Joined;
+            // Skip join panel AND mode selection — go straight to shop
+            HideJoinPanel();
+            ShowShop();
         }
-
-        // Show join panel first, hide everything else
-        ShowJoinPanel();
+        else
+        {
+            ShowJoinPanel();
+        }
     }
 
     void OnDisable()
@@ -122,8 +149,6 @@ public class Shop_UI : MonoBehaviour
     void ShowModeSelection()
     {
         if (modePanel != null)     modePanel.style.display     = DisplayStyle.Flex;
-        // Re-register callbacks every time panel is shown
-        // because UI Toolkit drops clicked listeners when display:none is set
         if (noSecretsButton != null)
         {
             noSecretsButton.clicked -= OnNoSecrets;
@@ -184,7 +209,6 @@ public class Shop_UI : MonoBehaviour
     {
         var obj = root.Q<VisualElement>(objName);
         var labels = obj?.Query<Label>().ToList();
-        // Index 1 is the objective label (index 0 is the hint letter inside HintBox)
         if (labels != null && labels.Count > 1) labels[1].text = text;
     }
 
@@ -195,7 +219,6 @@ public class Shop_UI : MonoBehaviour
         if (playerPanels != null)  playerPanels.style.display  = DisplayStyle.None;
         if (moneyPanel != null)    moneyPanel.style.display    = DisplayStyle.None;
 
-        // Reset state
         p1Chose = false;
         p2Chose = false;
         p1ChosenObjective = "";
@@ -237,12 +260,23 @@ public class Shop_UI : MonoBehaviour
         var shopPanel = root.Q<VisualElement>(shopPanelName);
         var invPanel  = root.Q<VisualElement>(invPanelName);
 
-        shopPanel?.Clear();
-        invPanel?.Clear();
+        if (shopPanel == null)
+        {
+            Debug.LogError($"Shop_UI: Could not find UI element '{shopPanelName}'. Check your UXML names.");
+            return;
+        }
+        if (invPanel == null)
+        {
+            Debug.LogError($"Shop_UI: Could not find UI element '{invPanelName}'. Check your UXML names.");
+            return;
+        }
+
+        shopPanel.Clear();
+        invPanel.Clear();
 
         var capLabel = new Label();
         capLabel.AddToClassList("capacity-labels");
-        if (invPanel != null) invPanel.Add(capLabel);
+        invPanel.Add(capLabel);
         if (playerIndex == 1) capacityLabel1 = capLabel;
         else capacityLabel2 = capLabel;
 
@@ -256,17 +290,19 @@ public class Shop_UI : MonoBehaviour
         if (descLabel != null)  descLabel.text  = "";
 
         var invList = GameManager.Instance.GetInventory(playerIndex);
-        if (invPanel != null && invList != null)
+        if (invList != null)
         {
             foreach (var itm in invList)
                 AddInventoryButton(itm, invPanel, removable: true, titleLabel, priceLabel, descLabel, playerIndex);
         }
 
         var shopList = GameManager.Instance.GetShop(playerIndex);
-        if (shopPanel != null && shopList != null)
+        if (shopList != null)
         {
             foreach (var item in shopList)
             {
+                if (item == null) continue;
+
                 var btn = new Button { focusable = true };
                 if (item.icon != null)
                 {
@@ -343,7 +379,6 @@ public class Shop_UI : MonoBehaviour
             {
                 if (GameManager.Instance.TryRemoveFromInventory(playerIndex, item.itemName, out var removed))
                 {
-                    // Focus adjacent button before removing so selection doesn't get lost
                     var siblings = invPanel.Query<Button>().ToList();
                     int idx = siblings.IndexOf(invBtn);
                     Button nextFocus = null;
@@ -355,7 +390,6 @@ public class Shop_UI : MonoBehaviour
                     UpdateMoneyLabel();
                     UpdateCapacityLabels();
 
-                    // If inventory is now empty, focus first shop item instead
                     if (nextFocus == null)
                     {
                         var shopPanel = invPanel.parent?.Q<VisualElement>(
@@ -426,6 +460,11 @@ public class Shop_UI : MonoBehaviour
         if (endPanel != null)        endPanel.style.display        = DisplayStyle.None;
     }
 
+    void HideJoinPanel()
+    {
+        if (playerJoinPanel != null) playerJoinPanel.style.display = DisplayStyle.None;
+    }
+
     void OnP1Joined()
     {
         if (joinText1 != null) joinText1.text = "Joined!";
@@ -459,14 +498,6 @@ public class Shop_UI : MonoBehaviour
 
     void HandleIndieObjInput()
     {
-        // Get which button each player pressed: A/B/X/Y = Submit/Cancel/Interact/North
-        // and map to the corresponding objective slot index (0=A, 1=B, 2=X, 3=Y)
-
-        // P1 buttons: Space=A(0), C=B(1), E=X(2), Q=Y(3)
-        // P2 buttons: RightCtrl=A(0), NumpadPeriod=B(1), Numpad0=X(2), Numpad1=Y(3)
-        // Gamepad P1: ButtonSouth=A, ButtonEast=B, ButtonWest=X, ButtonNorth=Y
-        // Gamepad P2: same
-
         if (!p1Chose)
         {
             int p1Slot = -1;
@@ -480,7 +511,7 @@ public class Shop_UI : MonoBehaviour
             var gp1 = GameManager.Instance.playerGamepads[0];
             if (p1Slot < 0 && gp1 != null)
             {
-                if (gp1.buttonSouth.wasPressedThisFrame)  p1Slot = 0;
+                if (gp1.buttonSouth.wasPressedThisFrame)      p1Slot = 0;
                 else if (gp1.buttonEast.wasPressedThisFrame)  p1Slot = 1;
                 else if (gp1.buttonWest.wasPressedThisFrame)  p1Slot = 2;
                 else if (gp1.buttonNorth.wasPressedThisFrame) p1Slot = 3;
@@ -489,8 +520,8 @@ public class Shop_UI : MonoBehaviour
             {
                 p1ChosenObjective = GetObjText(ui.rootVisualElement, p1Slot, 1);
                 p1Chose = true;
-                var objContainer1 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_1");
-                if (objContainer1 != null) objContainer1.style.display = DisplayStyle.None;
+                var oc1 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_1");
+                if (oc1 != null) oc1.style.display = DisplayStyle.None;
                 if (receivedText1 != null) receivedText1.style.display = DisplayStyle.Flex;
                 CheckBothChose();
             }
@@ -501,15 +532,15 @@ public class Shop_UI : MonoBehaviour
             int p2Slot = -1;
             if (Keyboard.current != null)
             {
-                if (Keyboard.current.rightCtrlKey.wasPressedThisFrame)      p2Slot = 0;
+                if (Keyboard.current.rightCtrlKey.wasPressedThisFrame)         p2Slot = 0;
                 else if (Keyboard.current.numpadPeriodKey.wasPressedThisFrame) p2Slot = 1;
-                else if (Keyboard.current.numpad0Key.wasPressedThisFrame)   p2Slot = 2;
-                else if (Keyboard.current.numpad1Key.wasPressedThisFrame)   p2Slot = 3;
+                else if (Keyboard.current.numpad0Key.wasPressedThisFrame)      p2Slot = 2;
+                else if (Keyboard.current.numpad1Key.wasPressedThisFrame)      p2Slot = 3;
             }
             var gp2 = GameManager.Instance.playerGamepads[1];
             if (p2Slot < 0 && gp2 != null)
             {
-                if (gp2.buttonSouth.wasPressedThisFrame)  p2Slot = 0;
+                if (gp2.buttonSouth.wasPressedThisFrame)      p2Slot = 0;
                 else if (gp2.buttonEast.wasPressedThisFrame)  p2Slot = 1;
                 else if (gp2.buttonWest.wasPressedThisFrame)  p2Slot = 2;
                 else if (gp2.buttonNorth.wasPressedThisFrame) p2Slot = 3;
@@ -518,8 +549,8 @@ public class Shop_UI : MonoBehaviour
             {
                 p2ChosenObjective = GetObjText(ui.rootVisualElement, p2Slot, 2);
                 p2Chose = true;
-                var objContainer2 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_2");
-                if (objContainer2 != null) objContainer2.style.display = DisplayStyle.None;
+                var oc2 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_2");
+                if (oc2 != null) oc2.style.display = DisplayStyle.None;
                 if (receivedText2 != null) receivedText2.style.display = DisplayStyle.Flex;
                 CheckBothChose();
             }
@@ -538,22 +569,18 @@ public class Shop_UI : MonoBehaviour
 
     void Update()
     {
-        // Handle indie objective selection
         if (indieObjPanel != null && indieObjPanel.style.display == DisplayStyle.Flex)
         {
             HandleIndieObjInput();
             return;
         }
 
-        // Only active when shop panel is visible
         if (playerPanels == null || playerPanels.style.display == DisplayStyle.None) return;
 
-        // P1: E key or gamepad 0 ButtonWest
         bool p1Interact = Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame;
         if (!p1Interact && GameManager.Instance.playerGamepads[0] != null)
             p1Interact = GameManager.Instance.playerGamepads[0].buttonWest.wasPressedThisFrame;
 
-        // P2: Numpad0 or gamepad 1 ButtonWest
         bool p2Interact = Keyboard.current != null && Keyboard.current.numpad0Key.wasPressedThisFrame;
         if (!p2Interact && GameManager.Instance.playerGamepads[1] != null)
             p2Interact = GameManager.Instance.playerGamepads[1].buttonWest.wasPressedThisFrame;
