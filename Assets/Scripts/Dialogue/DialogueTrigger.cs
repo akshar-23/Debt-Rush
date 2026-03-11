@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
@@ -29,7 +27,7 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Awake()
     {
-        if(visualCue != null)
+        if (visualCue != null)
             visualCue.SetActive(false);
     }
 
@@ -37,9 +35,8 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (isPlayerinDialogue) return;
 
-        if(playerController1 != null && playerController1.GetSubmitPressed())
+        if (playerController1 != null && playerController1.GetSubmitPressed())
         {
-            Debug.Log("[DialogueTrigger] Triggered by P1 | Ink: " + inkJSON.name + " | Object: " + transform.parent.name);
             isPlayerinDialogue = true;
             DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController1, this.gameObject, portrait);
 
@@ -48,7 +45,6 @@ public class DialogueTrigger : MonoBehaviour
         }
         if (playerController2 != null && playerController2.GetSubmitPressed())
         {
-            Debug.Log("[DialogueTrigger] Triggered by P2 | Ink: " + inkJSON.name + " | Object: " + transform.parent.name);
             isPlayerinDialogue = true;
             DialogueManager.GetInstance().EnterDialogueMode(inkJSON, playerController2, this.gameObject, portrait);
 
@@ -57,41 +53,34 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnTriggerEnter(Collider other)
     {
-        GameObject colliderGO = collider.gameObject;
-        if (colliderGO.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            if(colliderGO.GetComponent<PlayerController>().playerNumber == 1)
-                playerController1 = colliderGO.GetComponent<PlayerController>();
-
-            if(colliderGO.GetComponent<PlayerController>().playerNumber == 2)
-                playerController2 = colliderGO.GetComponent<PlayerController>();
-
-            Debug.Log("[DialogueTrigger] Player entered: " + transform.parent.name);
+            if (other.GetComponent<PlayerController>().playerNumber == 1)
+                playerController1 = other.GetComponent<PlayerController>();
+            if (other.GetComponent<PlayerController>().playerNumber == 2)
+                playerController2 = other.GetComponent<PlayerController>();
 
             if (visualCue != null)
                 visualCue.SetActive(true);
 
-            if(hintUI != null)
+            if (hintUI != null)
                 hintUI.ShowHint(TalkHintText);
         }
     }
 
-    private void OnTriggerExit(Collider collider)
+    private void OnTriggerExit(Collider other)
     {
-        GameObject colliderGO = collider.gameObject;
-        if (colliderGO.tag == "Player")
+        if (other.CompareTag("Player"))
         {
-            if (colliderGO.GetComponent<PlayerController>().playerNumber == 1)
+            if (other.GetComponent<PlayerController>().playerNumber == 1)
                 playerController1 = null;
-
-            if (colliderGO.GetComponent<PlayerController>().playerNumber == 2)
+            if (other.GetComponent<PlayerController>().playerNumber == 2)
                 playerController2 = null;
-
-            Debug.Log("[DialogueTrigger] Player exited: " + transform.parent.name);
         }
-        if(playerController1 == null && playerController2 == null && visualCue != null)
+
+        if (playerController1 == null && playerController2 == null && visualCue != null)
         {
             visualCue.SetActive(false);
             isPlayerinDialogue = false;
