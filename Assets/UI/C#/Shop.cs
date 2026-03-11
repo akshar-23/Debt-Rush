@@ -38,8 +38,10 @@ public class Shop_UI : MonoBehaviour
 
         if (!isRestart)
         {
-            GameManager.Instance.ResetState();
-            MoneyManager.Instance.ResetState();
+            if (GameManager.Instance != null)
+                GameManager.Instance.ResetState();
+            if (MoneyManager.Instance != null)
+                MoneyManager.Instance.ResetState();
         }
 
         // Re-enable player event systems (they get disabled by GameOverScreen)
