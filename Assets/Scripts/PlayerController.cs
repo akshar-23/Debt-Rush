@@ -53,6 +53,12 @@ public class PlayerController : Character
     [SerializeField]
     public int killCount = 0;
     public int lastMultiKillCount = 0;
+    public bool reachedDestinationFirst = false;
+    public int chestCount = 0;
+    public int deadCount = 0;
+    public bool hasOnly5Kills = false;
+    public bool hasNeverOpenedChest = false;
+    public bool hasOnly3Deaths = false;
 
     [Space]
     [SerializeField]
@@ -259,6 +265,24 @@ public class PlayerController : Character
             itemEquipped.isActiveItem = true;
 
             return;
+        }
+    }
+
+    public void CheckFinalObjectives()
+    {
+        if (killCount == 5)
+        {
+            hasOnly5Kills = true;
+        }
+
+        if (chestCount == 0)
+        {
+            hasNeverOpenedChest = true;
+        }
+
+        if (deadCount == 3)
+        {
+            hasOnly3Deaths = true;
         }
     }
 

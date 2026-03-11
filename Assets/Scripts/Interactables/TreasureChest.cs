@@ -35,7 +35,7 @@ public class TreasureChest : MonoBehaviour
             {
                 PlayerController player = other.gameObject.GetComponent<PlayerController>();
                 int playerNumber = player.GetPlayerNumber();
-                if(playerNumber == 1)
+                if (playerNumber == 1)
                 {
                     weaponP1.currentCount = weaponP1.maxCount;
                     player.AddInventoryItem(weaponP1);
@@ -45,6 +45,9 @@ public class TreasureChest : MonoBehaviour
                     weaponP2.currentCount = weaponP2.maxCount;
                     player.AddInventoryItem(weaponP2);
                 }
+
+                // updating opening chest count
+                player.chestCount++;
             }
 
             // Spawn pickup effect (optional)
