@@ -11,6 +11,24 @@ public class HintText : MonoBehaviour
 
     Coroutine fadeRoutine;
 
+    private void Awake()
+    {
+        // Start fully invisible
+        if (hintText != null)
+        {
+            Color c = hintText.color;
+            c.a = 0f;
+            hintText.color = c;
+        }
+
+        if (hintBackground != null)
+        {
+            Color c = hintBackground.color;
+            c.a = 0f;
+            hintBackground.color = c;
+        }
+    }
+
     public void ShowHint(string message)
     {
         hintText.text = message;
@@ -18,7 +36,6 @@ public class HintText : MonoBehaviour
         if (fadeRoutine != null)
             StopCoroutine(fadeRoutine);
 
-        //hintBackground.gameObject.SetActive(true);
         fadeRoutine = StartCoroutine(Fade(1f));
     }
 
@@ -27,33 +44,26 @@ public class HintText : MonoBehaviour
         if (fadeRoutine != null)
             StopCoroutine(fadeRoutine);
 
-        //hintBackground.gameObject.SetActive(false);
         fadeRoutine = StartCoroutine(Fade(0f));
     }
 
     IEnumerator Fade(float target)
     {
-        Color startColor = hintText.color;
-        float startAlpha = startColor.a;
-
-        Color startColorImage = hintBackground.color;
-        float startAlphaImage = startColorImage.a;
-
+        float startAlpha = hintText.color.a;
+        float startAlphaImage = hintBackground.color.a;
         float time = 0f;
 
         while (time < fadeDuration)
         {
             time += Time.deltaTime;
-
-            float newAlpha = Mathf.Lerp(startAlpha, target, time / fadeDuration);
-            float newAlphaImage = Mathf.Lerp(startAlphaImage, target/2, time / fadeDuration);
+            float t = time / fadeDuration;
 
             Color c = hintText.color;
-            c.a = newAlpha;
+            c.a = Mathf.Lerp(startAlpha, target, t);
             hintText.color = c;
 
             Color imageC = hintBackground.color;
-            imageC.a = newAlphaImage;
+            imageC.a = Mathf.Lerp(startAlphaImage, target / 2f, t);
             hintBackground.color = imageC;
 
             yield return null;

@@ -3,9 +3,14 @@ using UnityEngine;
 public class MoneyGate : MonoBehaviour
 {
     [Header("Settings")]
-    public int costToOpen = 500;
+    [Tooltip("How much money is needed to open the gate. Set low for playtesting.")]
+    public int costToOpen = 100;
     public bool bTakeAllTheMoney = false;
     public GameObject invisibleWall;
+
+    [Header("Level Passed")]
+    [Tooltip("Drag the LevelPassed canvas here")]
+    public GameObject levelPassedCanvas;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,7 +36,7 @@ public class MoneyGate : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enough money! You need " + costToOpen);
+            Debug.Log("Not enough money! You need " + costToOpen + ", you have " + MoneyManager.Instance.GetMoneyAmount());
         }
     }
 
@@ -41,6 +46,12 @@ public class MoneyGate : MonoBehaviour
         {
             invisibleWall.SetActive(false);
             Debug.Log("Gate Unlocked!");
+        }
+
+        // Show level passed screen
+        if (levelPassedCanvas != null)
+        {
+            levelPassedCanvas.SetActive(true);
         }
 
         gameObject.SetActive(false);

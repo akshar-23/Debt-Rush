@@ -251,6 +251,7 @@ public class DialogueContext : MonoBehaviour
                     {
                         case "npc":
                         case "gatekeeper":
+                        case "the port":
                             if (npcPortraitImage != null)    npcPortraitImage.gameObject.SetActive(true);
                             if (playerPortraitImage != null) playerPortraitImage.gameObject.SetActive(false);
                             break;
