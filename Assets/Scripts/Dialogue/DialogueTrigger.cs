@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -85,8 +85,9 @@ public class DialogueTrigger : MonoBehaviour
             visualCue.SetActive(false);
             isPlayerinDialogue = false;
 
-            if (hintUI != null)
-                hintUI.HideHint();
         }
+
+        if (hintUI != null)
+            hintUI.HideHint();
     }
 }

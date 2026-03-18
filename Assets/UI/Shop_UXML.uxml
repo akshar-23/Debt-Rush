@@ -7,13 +7,13 @@
                 <ui:VisualElement name="Player1_Panel" class="player-join-panel">
                     <ui:VisualElement name="Indie_Contain_1" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
                         <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="join-player-title" />
-                        <ui:Label text="Press Ⓐ to Join" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" name="Join_Text_1" class="join-text" />
+                        <ui:Label text="Press Ⓧ to Join" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" name="Join_Text_1" class="join-text" />
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="Player2_Panel" class="player-join-panel">
                     <ui:VisualElement name="Indie_Contain_2" class="container indie-container" style="flex-direction: column; align-items: center; display: flex; align-self: stretch;">
                         <ui:Label text="Player 2" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="join-player-title" />
-                        <ui:Label text="Press Ⓐ to Join" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" name="Join_Text_2" class="join-text" />
+                        <ui:Label text="Press Ⓧ to Join" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" name="Join_Text_2" class="join-text" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
@@ -39,26 +39,26 @@
                         <ui:VisualElement name="ObjectivesContainer_1" class="obj-container" style="display: flex;">
                             <ui:Label text="Player 1" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title indie-player-title" />
                             <ui:VisualElement name="obj_1_1" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="A" class="hint-text" />
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: middle-center;">
+                                    <ui:Label text="X" class="hint-text" style="-unity-text-align: middle-center;" />
                                 </ui:VisualElement>
                                 <ui:Label text="Hidden Objective" class="obj-text" />
                             </ui:VisualElement>
                             <ui:VisualElement name="obj_1_2" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="B" class="hint-text" />
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: middle-center;">
+                                    <ui:Label text="O" name="Label" class="hint-text" style="-unity-text-align: middle-center;" />
                                 </ui:VisualElement>
                                 <ui:Label text="Hidden Objective" class="obj-text" />
                             </ui:VisualElement>
                             <ui:VisualElement name="obj_1_3" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="X" class="hint-text" />
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: middle-center;">
+                                    <ui:Label text="□" class="hint-text" style="-unity-font-style: bold; font-size: 60px; -unity-text-align: middle-center;" />
                                 </ui:VisualElement>
                                 <ui:Label text="Hidden Objective" class="obj-text" />
                             </ui:VisualElement>
                             <ui:VisualElement name="obj_1_4" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="Y" class="hint-text" />
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: middle-center;">
+                                    <ui:Label text="△" class="hint-text" style="-unity-font-style: bold; font-size: 60px; -unity-text-align: middle-center;" />
                                 </ui:VisualElement>
                                 <ui:Label text="Hidden Objective" class="obj-text" />
                             </ui:VisualElement>
@@ -71,26 +71,26 @@
                         <ui:VisualElement name="ObjectivesContainer_2" class="obj-container" style="flex-grow: 1; justify-content: center; display: flex;">
                             <ui:Label text="Player 2" double-click-selects-word="false" display-tooltip-when-elided="false" triple-click-selects-line="false" class="player-title indie-player-title" style="display: flex;" />
                             <ui:VisualElement name="obj_2_1" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="A" class="hint-text" />
-                                </ui:VisualElement>
-                                <ui:Label text="Hidden Objective" class="obj-text" />
-                            </ui:VisualElement>
-                            <ui:VisualElement name="obj_2_2" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="B" class="hint-text" />
-                                </ui:VisualElement>
-                                <ui:Label text="Hidden Objective" class="obj-text" />
-                            </ui:VisualElement>
-                            <ui:VisualElement name="obj_2_3" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: middle-center;">
                                     <ui:Label text="X" class="hint-text" />
                                 </ui:VisualElement>
                                 <ui:Label text="Hidden Objective" class="obj-text" />
                             </ui:VisualElement>
+                            <ui:VisualElement name="obj_2_2" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: middle-center;">
+                                    <ui:Label text="O" class="hint-text" />
+                                </ui:VisualElement>
+                                <ui:Label text="Hidden Objective" class="obj-text" />
+                            </ui:VisualElement>
+                            <ui:VisualElement name="obj_2_3" class="obj-button">
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: upper-center;">
+                                    <ui:Label text="□" class="hint-text" style="-unity-text-align: middle-center; font-size: 60px; -unity-font-style: bold;" />
+                                </ui:VisualElement>
+                                <ui:Label text="Hidden Objective" class="obj-text" />
+                            </ui:VisualElement>
                             <ui:VisualElement name="obj_2_4" class="obj-button">
-                                <ui:VisualElement name="HintBox" class="hint-box">
-                                    <ui:Label text="Y" class="hint-text" />
+                                <ui:VisualElement name="HintBox" class="hint-box" style="-unity-text-align: middle-center;">
+                                    <ui:Label text="△" selectable="false" focusable="false" class="hint-text" style="font-size: 60px; -unity-font-style: bold;" />
                                 </ui:VisualElement>
                                 <ui:Label text="Hidden Objective" class="obj-text" />
                             </ui:VisualElement>
@@ -163,7 +163,7 @@
                             </ui:VisualElement>
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:Button text="Ⓧ I&apos;m Done" name="Done" selectable="true" class="done-button" style="background-color: rgb(255, 208, 54); border-left-color: rgb(197, 163, 53); border-right-color: rgb(197, 163, 53); border-top-color: rgb(197, 163, 53); border-bottom-color: rgb(197, 163, 53); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px;">
+                    <ui:Button text="(🟘) I&apos;m Done" name="Done" selectable="true" class="done-button" style="background-color: rgb(255, 208, 54); border-left-color: rgb(197, 163, 53); border-right-color: rgb(197, 163, 53); border-top-color: rgb(197, 163, 53); border-bottom-color: rgb(197, 163, 53); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px;">
                         <ui:Toggle name="DoneToggle_1" class="done-toggle" style="display: flex;" />
                     </ui:Button>
                 </ui:VisualElement>
@@ -193,7 +193,7 @@
                             <ui:Label text="Description" class="panel2-title" style="display: flex; rotate: 90deg;" />
                         </ui:VisualElement>
                     </ui:VisualElement>
-                    <ui:Button text="Ⓧ I&apos;m Done" name="Done" selectable="true" class="done-button" style="translate: -110px 0; background-color: rgb(255, 208, 54); border-left-color: rgb(197, 163, 53); border-right-color: rgb(197, 163, 53); border-top-color: rgb(197, 163, 53); border-bottom-color: rgb(197, 163, 53); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px;">
+                    <ui:Button text="(□) I&apos;m Done" name="Done" selectable="true" class="done-button" style="translate: -110px 0; background-color: rgb(255, 208, 54); border-left-color: rgb(197, 163, 53); border-right-color: rgb(197, 163, 53); border-top-color: rgb(197, 163, 53); border-bottom-color: rgb(197, 163, 53); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px;">
                         <ui:Toggle name="DoneToggle_2" class="done-toggle" />
                     </ui:Button>
                 </ui:VisualElement>
