@@ -187,6 +187,12 @@ public class GameManager : MonoBehaviour
 
         if (playersAtDestination >= aliveCount && aliveCount > 0)
         {
+            foreach (var player in players)
+            {
+                if (player == null || player.isDead) continue;
+
+                player.GetComponent<PlayerController>()?.CheckFinalObjectives();
+            }
             var mm = MoneyManager.Instance;
             if (mm.GetMoneyAmount() >= mm.targetMoney)
             {

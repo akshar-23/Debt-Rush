@@ -19,6 +19,10 @@ public class Shop_UI : MonoBehaviour
 
     [SerializeField] IndividualObjective objectiveData;
 
+    // Store the indices of the objectives currently offered to each player
+    List<int> p1Options = new List<int>();
+    List<int> p2Options = new List<int>();
+
     // Indie obj panel elements
     VisualElement receivedText1, receivedText2;
     Button indieContinueButton;
@@ -38,8 +42,14 @@ public class Shop_UI : MonoBehaviour
 
         if (!isRestart)
         {
-            GameManager.Instance.ResetState();
-            MoneyManager.Instance.ResetState();
+            if (GameManager.Instance != null)
+                GameManager.Instance.ResetState();
+
+            if (MoneyManager.Instance != null)
+                MoneyManager.Instance.ResetState();
+
+            if (ObjectivesManager.Instance != null)
+                ObjectivesManager.Instance.ResetState();
         }
 
         // Re-enable player event systems (they get disabled by GameOverScreen)
@@ -174,35 +184,50 @@ public class Shop_UI : MonoBehaviour
     void SetObjectiveTexts()
     {
         var root = ui.rootVisualElement;
-        var source = objectiveData != null
-            ? objectiveData.objectives
-            : new System.Collections.Generic.List<string>();
+        
+        // Ensure ObjectivesManager has data
+        if (ObjectivesManager.Instance == null || ObjectivesManager.Instance.allObjectives.Count == 0)
+        {
+            Debug.LogWarning("ObjectivesManager not ready or has no objectives.");
+            return;
+        }
+
+        var source = ObjectivesManager.Instance.allObjectives;
 
         string[] p1Names = { "obj_1_1", "obj_1_2", "obj_1_3", "obj_1_4" };
         string[] p2Names = { "obj_2_1", "obj_2_2", "obj_2_3", "obj_2_4" };
 
-        var p1 = PickRandom4(source);
-        var p2 = PickRandom4(source);
+        p1Options.Clear();
+        p2Options.Clear();
+
+        var p1Picked = PickRandomObjectives(source, 4);
+        var p2Picked = PickRandomObjectives(source, 4);
 
         for (int i = 0; i < 4; i++)
         {
-            SetObjText(root, p1Names[i], p1[i]);
-            SetObjText(root, p2Names[i], p2[i]);
+            if (i < p1Picked.Count)
+            {
+                SetObjText(root, p1Names[i], p1Picked[i].name);
+                p1Options.Add(p1Picked[i].index);
+            }
+
+            if (i < p2Picked.Count)
+            {
+                SetObjText(root, p2Names[i], p2Picked[i].name);
+                p2Options.Add(p2Picked[i].index);
+            }
         }
     }
 
-    string[] PickRandom4(System.Collections.Generic.List<string> source)
+    List<Objective> PickRandomObjectives(List<Objective> source, int count)
     {
-        var shuffled = new System.Collections.Generic.List<string>(source);
+        var shuffled = new List<Objective>(source);
         for (int i = shuffled.Count - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
             (shuffled[i], shuffled[j]) = (shuffled[j], shuffled[i]);
         }
-        string[] result = new string[4];
-        for (int i = 0; i < 4; i++)
-            result[i] = i < shuffled.Count ? shuffled[i] : "";
-        return result;
+        return shuffled.GetRange(0, Mathf.Min(count, shuffled.Count));
     }
 
     void SetObjText(VisualElement root, string objName, string text)
@@ -518,6 +543,12 @@ public class Shop_UI : MonoBehaviour
             }
             if (p1Slot >= 0)
             {
+                // Assign the objective based on the slot selected
+                if (p1Slot < p1Options.Count && ObjectivesManager.Instance != null)
+                {
+                    ObjectivesManager.Instance.AssignObjective(p1Options[p1Slot], 0);
+                }
+
                 p1ChosenObjective = GetObjText(ui.rootVisualElement, p1Slot, 1);
                 p1Chose = true;
                 var oc1 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_1");
@@ -547,6 +578,12 @@ public class Shop_UI : MonoBehaviour
             }
             if (p2Slot >= 0)
             {
+                // Assign the objective based on the slot selected
+                if (p2Slot < p2Options.Count && ObjectivesManager.Instance != null)
+                {
+                    ObjectivesManager.Instance.AssignObjective(p2Options[p2Slot], 1);
+                }
+
                 p2ChosenObjective = GetObjText(ui.rootVisualElement, p2Slot, 2);
                 p2Chose = true;
                 var oc2 = ui.rootVisualElement.Q<VisualElement>("ObjectivesContainer_2");

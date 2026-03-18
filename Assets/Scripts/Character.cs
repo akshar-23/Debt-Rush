@@ -49,6 +49,7 @@ public class Character : MonoBehaviour
             // DON'T use SetActive(false) - it breaks PlayerInput device pairing!
             // GameplaySceneManager will handle hiding the player visually
             isDead = true;
+            GameManager.Instance.players[id].GetComponent<PlayerController>().deadCount++;
             OnPlayerDied?.Invoke(id);
         }
         else if (archetype == Archetype.Enemy)
