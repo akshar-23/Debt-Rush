@@ -5,6 +5,7 @@ public class Cursor : MonoBehaviour
 {
     public Sprite sprite;
     public GameObject BombPrefab;
+    public BombPackage BombPackageRef;
 
     public int playerNumber = 2;
 
@@ -17,6 +18,11 @@ public class Cursor : MonoBehaviour
     private bool ignoreFirstInput = true;
 
     [SerializeField] private AudioClip bombFallingSFX;
+
+    public void SetBombPackage(BombPackage _BombPackageRef)
+    {
+        BombPackageRef = _BombPackageRef;
+    }
 
     void Start()
     {
@@ -80,7 +86,7 @@ public class Cursor : MonoBehaviour
 
         Destroy(gameObject);
 
-        player.hudref.UpdateItemCount(player.id, player.itemEquipped);
+        player.hudref.UpdateItemCount(player.id, player.GetInventoryPos(), player.itemEquipped);
 
     }
 

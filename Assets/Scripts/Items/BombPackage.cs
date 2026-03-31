@@ -32,10 +32,16 @@ public class BombPackage : ShopItem
                 Cursor cursor = cursorGO.GetComponent<Cursor>();
 
                 cursor.player = pc;
+                cursor.BombPackageRef = this;
                 pc.activeCursor = cursor;
                 pc.SetCanPlayerMove(false);
                 pc.SetCanPlayerAct(false);
             }
         }
+    }
+
+    public void SubtractBonmbCount() 
+    {
+        currentCount--;
     }
 }

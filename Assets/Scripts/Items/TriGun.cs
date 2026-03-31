@@ -76,7 +76,7 @@ public class TriGun : ShopItem
                 return;
             }
 
-            pc.hudref.UpdateItemCount(pc.id, this);
+            pc.hudref.UpdateItemCount(pc.id, pc.GetInventoryPos(), this);
         }
     }
 }

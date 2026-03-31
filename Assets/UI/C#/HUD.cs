@@ -56,13 +56,13 @@ public class HUD : MonoBehaviour
         PopulateBar(bar2, GameManager.Instance.GetInventory(2));
     }
 
-    public void UpdateItemCount(int _id, ShopItem itemEquipped)
+    public void UpdateItemCount(int _id, int inventoryPos, ShopItem itemEquipped)
     {
         VisualElement bar = _id == 0 ? bar1 : bar2;
         
         if (bar == null || itemEquipped == null) return;
 
-        var ammoLabel = bar.Q<Button>(itemEquipped.itemName)?.Q<Label>(className: "ammo-label");
+        var ammoLabel = bar[inventoryPos]?.Q<Label>(className: "ammo-label");
 
         if (ammoLabel != null)
         {
@@ -144,8 +144,7 @@ public class HUD : MonoBehaviour
 
         if (position < 0 || position >= inventory.Count) return;
 
-        string itemName = inventory[position].itemName;
-        var btn = currentInventory.Q<Button>(itemName);
+        var btn = currentInventory[position];
         if (btn != null) SetState(btn, state);
     }
 

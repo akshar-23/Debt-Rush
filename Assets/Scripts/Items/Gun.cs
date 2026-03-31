@@ -48,7 +48,7 @@ public class Gun : ShopItem
                 return;
             }
 
-            pc.hudref.UpdateItemCount(pc.id, this);
+            pc.hudref.UpdateItemCount(pc.id, pc.GetInventoryPos(), this);
         }
     }
 }

@@ -25,8 +25,8 @@ public class PlayerController : Character
     public Transform weaponHolder;
 
     [Header("Inventory")]
-    private List<ShopItem> inventory = new List<ShopItem>();
-    private int inventoryPos = -1;
+    [SerializeField] private List<ShopItem> inventory = new List<ShopItem>();
+    [SerializeField] private int inventoryPos = -1;
 
 
     [Header("Player Input")]
@@ -401,6 +401,7 @@ public class PlayerController : Character
         inventory.Add(_item);
         GameManager.Instance.AddToInventory(playerNumber, _item);
         hudref.BuildUI();
+        hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
 
         int totalPassiveItems = 0;
 
@@ -456,5 +457,10 @@ public class PlayerController : Character
     public int GetPlayerNumber()
     {
         return playerNumber;
+    }
+
+    public int GetInventoryPos()
+    {
+        return inventoryPos;
     }
 }
