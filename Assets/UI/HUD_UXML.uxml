@@ -8,7 +8,7 @@
             <ui:VisualElement name="Container_1" style="flex-grow: 1; align-items: auto; justify-content: center; align-self: auto; align-content: auto;">
                 <ui:VisualElement name="Inventory_1" class="inventory" style="translate: -151px -523px; flex-direction: row;">
                     <ui:VisualElement name="Button_Style_Test_1" style="flex-direction: row; align-items: flex-start;">
-                        <ui:Button text="Button" class="button inventory-button selected" style="background-color: rgb(250, 200, 0); border-left-color: rgb(20, 49, 63); border-right-color: rgb(20, 49, 63); border-top-color: rgb(20, 49, 63); border-bottom-color: rgb(20, 49, 63);">
+                        <ui:Button text="Button" class="button inventory-button" style="background-color: rgb(250, 200, 0); border-left-color: rgb(20, 49, 63); border-right-color: rgb(20, 49, 63); border-top-color: rgb(20, 49, 63); border-bottom-color: rgb(20, 49, 63);">
                             <ui:Label text="15&#10;" class="ammo-label" />
                         </ui:Button>
                         <ui:Button text="Button" class="button inventory-button" />
