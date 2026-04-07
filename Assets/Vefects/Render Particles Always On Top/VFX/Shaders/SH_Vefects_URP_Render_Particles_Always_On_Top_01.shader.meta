@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6075d812422c2e442b33197832cb3bb8
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/VFX/Shaders/SH_Vefects_URP_Render_Particles_Always_On_Top_01.shader
+  uploadId: 855064

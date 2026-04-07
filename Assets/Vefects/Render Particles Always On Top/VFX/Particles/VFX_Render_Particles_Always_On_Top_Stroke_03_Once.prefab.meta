@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e3a4866b2ee116d4ab026531f2b87039
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/VFX/Particles/VFX_Render_Particles_Always_On_Top_Stroke_03_Once.prefab
+  uploadId: 855064

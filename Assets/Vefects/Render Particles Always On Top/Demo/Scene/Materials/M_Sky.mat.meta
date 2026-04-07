@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e800259053abbf14fa54d05dd53dee19
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/Demo/Scene/Materials/M_Sky.mat
+  uploadId: 855064

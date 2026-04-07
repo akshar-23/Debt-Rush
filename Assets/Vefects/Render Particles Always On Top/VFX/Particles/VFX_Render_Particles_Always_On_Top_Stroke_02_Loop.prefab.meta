@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 372901b71ce6e5d4db1bfc1e40c50703
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/VFX/Particles/VFX_Render_Particles_Always_On_Top_Stroke_02_Loop.prefab
+  uploadId: 855064

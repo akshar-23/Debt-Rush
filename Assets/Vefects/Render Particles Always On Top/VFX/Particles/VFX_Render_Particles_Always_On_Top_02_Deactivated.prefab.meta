@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d5194a3881d375f41bf9c2dc99337bb3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/VFX/Particles/VFX_Render_Particles_Always_On_Top_02_Deactivated.prefab
+  uploadId: 855064

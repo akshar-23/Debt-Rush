@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class MoneyBag : MonoBehaviour
 {
@@ -52,12 +53,15 @@ public class MoneyBag : MonoBehaviour
 
     private IEnumerator RespawnRoutine()
     {
-        col.enabled = false;
-        mesh.enabled = false;
+        gameObject.SetActive(false);
+
+        //col.enabled = false;
+        //mesh.enabled = false;
 
         yield return new WaitForSeconds(respawnTime);
 
-        col.enabled = true;
-        mesh.enabled = true;
+        gameObject.SetActive(false);
+        //col.enabled = true;
+        //mesh.enabled = true;
     }
 }

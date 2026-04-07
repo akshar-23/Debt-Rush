@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 69b5d5a8037aaef4f99a7f64bdbf49fc
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/_ Extra/Shaders/SH_Vefects_Extra_Billboard_01_Unlit.shader
+  uploadId: 855064

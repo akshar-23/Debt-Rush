@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: 6b911b89041c5244bbb780407af107da
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _Normal: {fileID: 2800000, guid: 1b41d1ce9e0b61b41a5c00f49bcbd5d5, type: 3}
+  - _SecondaryNormal: {fileID: 2800000, guid: 723941ae16bd4e04686a44dbb5c91041, type: 3}
+  - _MainTexture: {fileID: 2800000, guid: c05d5b71e4317684a8c988bfdfe90105, type: 3}
+  - _SecondaryTexture: {fileID: 2800000, guid: 700ab324127e7b74f9cf84ebdf719c9d, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/Demo/Resources/Shaders/SH_Vefects_URP_VFX_Opaque_MCD_01.shader
+  uploadId: 855064

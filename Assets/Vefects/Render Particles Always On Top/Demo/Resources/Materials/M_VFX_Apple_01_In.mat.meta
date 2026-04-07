@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3c6058acdc6f49d408277cee4cbf168f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/Demo/Resources/Materials/M_VFX_Apple_01_In.mat
+  uploadId: 855064

@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: 3d8fd26dfe09dba4aa340510f09f281f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _LUT: {fileID: 2800000, guid: 71d41510b1636cc4fb7c41676e85d496, type: 3}
+  - _MainTexture: {fileID: 2800000, guid: 34f2aa06491110d42887449e8dc6c578, type: 3}
+  - _NoiseTexture: {fileID: 2800000, guid: ff0ca5cdf66d99e48a5fbbb46bef49eb, type: 3}
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 355858
+  packageName: Render Particles Always On Top - URP
+  packageVersion: 1.0.1
+  assetPath: Assets/Vefects/Render Particles Always On Top/VFX/Shaders/SH_Vefects_URP_Render_Particles_Always_On_Top_Stroke_01.shader
+  uploadId: 855064
