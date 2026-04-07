@@ -14,6 +14,7 @@ public class Cursor : MonoBehaviour
 
     public bool canCursorMove;
     public PlayerController player;
+    public float sensitivity = 0.5f;
 
     private bool ignoreFirstInput = true;
 
@@ -41,7 +42,7 @@ public class Cursor : MonoBehaviour
     {
         if (!ignoreFirstInput && canCursorMove)
         {
-            Vector2 input = ctx.ReadValue<Vector2>();
+            Vector2 input = ctx.ReadValue<Vector2>() * sensitivity;
             Vector3 step = new Vector3(input.x, 0, input.y);
             transform.position += step * moveSpeed * Time.deltaTime;
         }
