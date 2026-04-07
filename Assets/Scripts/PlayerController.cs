@@ -319,21 +319,20 @@ public class PlayerController : Character
         inventory[inventoryPos].gameObject.SetActive(false);
         inventory[inventoryPos].isActiveItem = false;
         
-        for (int i = inventoryPos; i < inventory.Count; i--)
+        for (int i = 0; i < inventory.Count; i++)
         {
             inventoryPos = (inventoryPos - 1 + inventory.Count) % inventory.Count;
 
-            if (inventoryPos == inventory.Count)
-            {
-                i = inventoryPos;
-            }
             // Skip passive items
             if (inventory[inventoryPos].isPassiveItem)
                 continue;
 
             // Found a non-passive item
             itemEquipped = inventory[inventoryPos];
-            hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            if (!inventory[oldInventoryPos].isPassiveItem)
+            {
+                hudref.SetStateToIndex(playerNumber, oldInventoryPos, InventoryButtonStates.Normal);
+            }
             hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
             itemEquipped.gameObject.SetActive(true);
             itemEquipped.isActiveItem = true;
@@ -423,7 +422,15 @@ public class PlayerController : Character
 
     public void AddInventoryItem(ShopItem _item)
     {
-        inventory.Add(_item);
+        if (_item.isPassiveItem)
+        {
+            int idx = inventory.FindLastIndex(i => i.isPassiveItem) + 1;
+            inventory.Insert(idx, _item);
+        }
+        else
+        {
+            inventory.Add(_item);
+        }
         GameManager.Instance.AddToInventory(playerNumber, _item);
         hudref.BuildUI();
         hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);

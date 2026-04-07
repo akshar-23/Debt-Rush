@@ -121,7 +121,16 @@ public class GameManager : MonoBehaviour
             if (inventoryP2.Count >= inventoryLimit) return;
         }
 
-        (playerIndex == 1 ? inventoryP1 : inventoryP2).Add(item);
+        var inv = playerIndex == 1 ? inventoryP1 : inventoryP2;
+        if (item.isPassiveItem)
+        {
+            int idx = inv.FindLastIndex(i => i.isPassiveItem) + 1;
+            inv.Insert(idx, item);
+        }
+        else
+        {
+            inv.Add(item);
+        }
     }
 
     public bool TryRemoveFromInventory(int playerIndex, string name, out ShopItem removed)
