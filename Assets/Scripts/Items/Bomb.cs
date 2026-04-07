@@ -19,7 +19,7 @@ public class Bomb : MonoBehaviour
     {
         if (hasExploded) return; // Prevent multiple explosions
 
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Enemy") || collision.gameObject.CompareTag("Flammable"))
         {
             Debug.Log("Explosion!");
             Explode();
@@ -65,6 +65,16 @@ public class Bomb : MonoBehaviour
                     });
                 }
             }
+
+            if (nearbyObject.CompareTag("Flammable"))
+            {
+                // Example: if the enemy has a script with a TakeDamage() method
+                Flammable flammableObject = nearbyObject.GetComponent<Flammable>();
+                if (flammableObject != null)
+                {
+                    flammableObject.Ignite();
+                }
+            }
         }
 
         // Optionally: add a physics explosion force
@@ -79,11 +89,6 @@ public class Bomb : MonoBehaviour
 
         GameManager.Instance.players[playerId - 1].GetComponent<PlayerController>().lastMultiKillCount = multiKill;
 
-
-        if (explosionEffect != null)
-        {
-            //Destroy(explosionEffect);
-        }
         // Destroy the bomb
         Destroy(gameObject);
     }
