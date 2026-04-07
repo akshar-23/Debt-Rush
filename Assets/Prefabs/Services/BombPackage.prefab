@@ -49,7 +49,7 @@ MonoBehaviour:
   itemPrice: 400
   description: 
   maxCount: 8
-  currentCount: 5
+  currentCount: 6
   isActiveItem: 1
   isPassiveItem: 0
   icon: {fileID: -4560837295273907123, guid: 8e9e79c01e126ab42ad4cebacc619352, type: 3}

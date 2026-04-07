@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionRadius: 5
   explosionDamage: 100
-  explosionEffect: {fileID: 0}
+  explosionEffect: {fileID: 1582275357731197809, guid: 5334360cd0cfad84bbf6855beaf10de4, type: 3}
   playerId: 0
   multiKill: 0
   explosionSFX_1: {fileID: 8300000, guid: 56b8052333063c84d943723568326716, type: 3}

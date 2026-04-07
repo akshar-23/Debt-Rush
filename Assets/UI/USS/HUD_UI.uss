@@ -47,10 +47,11 @@
     border-right-width: 4px;
     border-bottom-width: 4px;
     border-left-width: 4px;
-    border-left-color: rgba(197, 23, 0, 0.6);
-    border-right-color: rgba(197, 23, 0, 0.6);
-    border-top-color: rgba(197, 23, 0, 0.6);
-    border-bottom-color: rgba(197, 23, 0, 0.6);
+    border-left-color: rgb(20, 49, 63);
+    border-right-color: rgb(20, 49, 63);
+    border-top-color: rgb(20, 49, 63);
+    border-bottom-color: rgb(20, 49, 63);
+    background-color: rgb(250, 200, 0);
 }
 
 .inventory-button.normal {

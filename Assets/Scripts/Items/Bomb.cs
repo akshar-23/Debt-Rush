@@ -4,7 +4,8 @@ public class Bomb : MonoBehaviour
 {
     public float explosionRadius = 5f;   // Area of effect
     public float explosionDamage = 50f;  // Damage amount
-    public GameObject explosionEffect;   // Optional visual effect
+    public GameObject explosionEffect;
+    public float explosionEffectLifetime = 1.5f;
 
     public int playerId;
     public int multiKill = 0;
@@ -36,7 +37,9 @@ public class Bomb : MonoBehaviour
         // Optional: spawn a particle effect
         if (explosionEffect != null)
         {
-            Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            GameObject fireExplosion = Instantiate(explosionEffect, transform.position, Quaternion.identity);
+            fireExplosion.transform.localScale = Vector3.one * 2f;
+            Destroy(fireExplosion, explosionEffectLifetime);
         }
 
         // Find all nearby colliders within the radius
@@ -76,6 +79,11 @@ public class Bomb : MonoBehaviour
 
         GameManager.Instance.players[playerId - 1].GetComponent<PlayerController>().lastMultiKillCount = multiKill;
 
+
+        if (explosionEffect != null)
+        {
+            //Destroy(explosionEffect);
+        }
         // Destroy the bomb
         Destroy(gameObject);
     }
