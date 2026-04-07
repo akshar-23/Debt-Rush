@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2176301532503539804}
   - component: {fileID: -241270829469903625}
   - component: {fileID: 1930159957953791726}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TriGunProjectile
   m_TagString: PassProjectile
   m_Icon: {fileID: 0}

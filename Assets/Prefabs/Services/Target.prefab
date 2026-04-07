@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1134893551661500950}
   - component: {fileID: 8489705787927722693}
   - component: {fileID: 6997337845400729955}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Target
   m_TagString: Target
   m_Icon: {fileID: 0}
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 0}
   BombPrefab: {fileID: 3496234742590253038, guid: 8e6ce35ab9eac4547996acbdd9e1c720, type: 3}
+  BombPackageRef: {fileID: 0}
   playerNumber: 2
   moveSpeed: 100
   height: 10
@@ -295,6 +296,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 5e0d6bed-df01-41fc-b3e5-08f1b3bfd47b
     m_ActionName: 'Player/Cancel[/Keyboard/c,/Keyboard/numpadPeriod]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fb2354a6-f47b-460f-89db-119d54675247
+    m_ActionName: 'UI/North[/Keyboard/q,/Keyboard/numpad1]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3f22ec5b-7563-4ab7-8317-32c2d05a345e
+    m_ActionName: 'UI/Interact[/Keyboard/e,/Keyboard/numpad0]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d7f7d099-39b8-410b-b1d9-bb541ac7fd00
+    m_ActionName: 'Player/North[/Keyboard/q,/Keyboard/numpad1]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: PlayerCursor

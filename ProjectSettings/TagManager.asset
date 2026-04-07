@@ -18,9 +18,9 @@ TagManager:
   - Water
   - UI
   - Ground
+  - Cursor
   - 
-  - 
-  - 
+  - Projectile
   - Player
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Cursor
+    uniqueID: 3235739511
     locked: 0
   m_RenderingLayers:
   - Default

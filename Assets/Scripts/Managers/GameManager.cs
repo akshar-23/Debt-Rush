@@ -45,6 +45,12 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        Physics.IgnoreLayerCollision(
+            LayerMask.NameToLayer("Cursor"),
+            LayerMask.NameToLayer("Projectile"),
+            true
+        );
     }
 
     /// <summary>
