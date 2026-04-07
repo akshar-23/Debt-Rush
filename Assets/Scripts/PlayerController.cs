@@ -80,6 +80,14 @@ public class PlayerController : Character
 
         canPlayerMove = true;
         canPlayerAct = true;
+        if (GameManager.Instance != null)
+        {
+            hiddenStash = GameManager.Instance.playerStash[playerNumber - 1];
+        }
+        else
+        {
+            hiddenStash = 0;
+        }
 
         InventoryInit();
     }
@@ -266,6 +274,23 @@ public class PlayerController : Character
 
             return;
         }
+    }
+
+    public void UpdateHiddenStash(int amount)
+    {
+        hiddenStash += amount;
+        
+        if (hiddenStash < 0)
+        {
+            hiddenStash = 0;
+        }
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.playerStash[playerNumber - 1] = hiddenStash;
+        }
+        
+        Debug.Log($"Player {playerNumber} stash updated by {amount}. New total: {hiddenStash}");
     }
 
     public void CheckFinalObjectives()

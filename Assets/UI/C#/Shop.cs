@@ -16,8 +16,15 @@ public class Shop_UI : MonoBehaviour
     Button returnButton, continueButton, noSecretsButton, someSecretsButton;
 
     Label capacityLabel1, capacityLabel2;
+    Label personalMoney1, personalMoney2;
 
     [SerializeField] IndividualObjective objectiveData;
+
+    [Header("Testing & Debugging")]
+    [Tooltip("Enable to manually control player stash values via the Inspector below.")]
+    [SerializeField] public bool overrideStashForTesting = false;
+    [SerializeField] public int testStashP1 = 0;
+    [SerializeField] public int testStashP2 = 0;
 
     // Store the indices of the objectives currently offered to each player
     List<int> p1Options = new List<int>();
@@ -105,6 +112,8 @@ public class Shop_UI : MonoBehaviour
         SetupSide(root, 2, "ShopList_2", "Inventory_2");
 
         moneyLabel = root.Q<Label>("MoneyLabel");
+        personalMoney1 = root.Q<Label>("P1_MoneyLabel");
+        personalMoney2 = root.Q<Label>("P2_MoneyLabel");
         MoneyManager.Instance.AddMoney(initialMoney);
         UpdateMoneyLabel();
 
@@ -127,6 +136,7 @@ public class Shop_UI : MonoBehaviour
         if (continueButton != null) continueButton.clicked += LoadPrototypeScene;
 
         UpdateCapacityLabels();
+        UpdatePersonalMoneyLabels();
 
         if (isRestart)
         {
@@ -346,11 +356,26 @@ public class Shop_UI : MonoBehaviour
                 btn.clicked += () =>
                 {
                     if (invPanel == null) return;
-                    if (invPanel.childCount - 1 >= inventoryLimit) return;
-                    if (MoneyManager.Instance.GetMoneyAmount() < item.itemPrice) return;
+                    if (invPanel.childCount - 2 >= inventoryLimit) return;
 
-                    MoneyManager.Instance.SubtractMoney(item.itemPrice);
+                    int commonMoney = MoneyManager.Instance.GetMoneyAmount();
+                    int stashMoney = GameManager.Instance.playerStash[playerIndex - 1];
+
+                    if (commonMoney + stashMoney < item.itemPrice) return;
+
+                    if (commonMoney >= item.itemPrice)
+                    {
+                        MoneyManager.Instance.SubtractMoney(item.itemPrice);
+                    }
+                    else
+                    {
+                        int remainder = item.itemPrice - commonMoney;
+                        if (commonMoney > 0) MoneyManager.Instance.SubtractMoney(commonMoney);
+                        GameManager.Instance.playerStash[playerIndex - 1] -= remainder;
+                    }
+
                     UpdateMoneyLabel();
+                    UpdatePersonalMoneyLabels();
 
                     var toAdd = item;
                     if (toAdd.maxCount > 0) toAdd.currentCount = toAdd.maxCount;
@@ -414,6 +439,7 @@ public class Shop_UI : MonoBehaviour
                     MoneyManager.Instance.AddMoney(removed.itemPrice);
                     UpdateMoneyLabel();
                     UpdateCapacityLabels();
+                    UpdatePersonalMoneyLabels();
 
                     if (nextFocus == null)
                     {
@@ -457,6 +483,20 @@ public class Shop_UI : MonoBehaviour
 
         if (capacityLabel1 != null) capacityLabel1.text = $"{count1}/{inventoryLimit}";
         if (capacityLabel2 != null) capacityLabel2.text = $"{count2}/{inventoryLimit}";
+    }
+
+    void UpdatePersonalMoneyLabels()
+    {
+        if (personalMoney1 != null)
+        {
+            int moneyP1 = GameManager.Instance.playerStash[0];
+            personalMoney1.text = moneyP1.ToString();
+        }
+        if (personalMoney2 != null)
+        {
+            int moneyP2 = GameManager.Instance.playerStash[1];
+            personalMoney2.text = moneyP2.ToString();
+        }
     }
 
     void UpdateEndState()
@@ -606,6 +646,31 @@ public class Shop_UI : MonoBehaviour
 
     void Update()
     {
+        // Real-time synchronization for Testing/Debugging in the Inspector
+        if (GameManager.Instance != null)
+        {
+            if (overrideStashForTesting)
+            {
+                bool changed = (GameManager.Instance.playerStash[0] != testStashP1 || 
+                                GameManager.Instance.playerStash[1] != testStashP2);
+                
+                GameManager.Instance.playerStash[0] = testStashP1;
+                GameManager.Instance.playerStash[1] = testStashP2;
+                
+                if (changed) UpdatePersonalMoneyLabels();
+            }
+            else
+            {
+                bool stashChanged = (testStashP1 != GameManager.Instance.playerStash[0] ||
+                                     testStashP2 != GameManager.Instance.playerStash[1]);
+
+                testStashP1 = GameManager.Instance.playerStash[0];
+                testStashP2 = GameManager.Instance.playerStash[1];
+
+                if (stashChanged) UpdatePersonalMoneyLabels();
+            }
+        }
+
         if (indieObjPanel != null && indieObjPanel.style.display == DisplayStyle.Flex)
         {
             HandleIndieObjInput();

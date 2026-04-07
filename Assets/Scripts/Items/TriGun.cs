@@ -36,9 +36,9 @@ public class TriGun : ShopItem
             Vector3 midPos = spawnPos;
             Vector3 rightPos = spawnPos + transform.right * sideOffset;
 
-            GameObject projLeft = Instantiate(triGunProjectile, leftPos, transform.rotation * Quaternion.Euler(0f, 0f, angleOffset));
-            GameObject proj = Instantiate(triGunProjectile, midPos, transform.rotation);
-            GameObject projRight = Instantiate(triGunProjectile, rightPos, transform.rotation * Quaternion.Euler(0f, 0f, -angleOffset));
+            GameObject projLeft = Instantiate(triGunProjectile, leftPos, Quaternion.LookRotation(pc.transform.forward) * Quaternion.Euler(0f, 90f - angleOffset, 90f));
+            GameObject proj = Instantiate(triGunProjectile, midPos, Quaternion.LookRotation(pc.transform.forward) * Quaternion.Euler(0f, 90f, 90f));
+            GameObject projRight = Instantiate(triGunProjectile, rightPos, Quaternion.LookRotation(pc.transform.forward) * Quaternion.Euler(0f, 90f + angleOffset, 90f));
 
             Projectile pL = projLeft.GetComponent<Projectile>();
             Projectile p = proj.GetComponent<Projectile>();

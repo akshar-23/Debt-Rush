@@ -19,10 +19,9 @@ public class GameManager : MonoBehaviour
     public string[] playerSchemes = new string[2];   // "WASD", "Arrows", "GamePad"
     public Gamepad[] playerGamepads = new Gamepad[2]; // null if keyboard
 
-    /// <summary>
-    /// Set to true before loading the UI/Shop scene on restart.
-    /// Shop_UI reads this to skip the join panel and go straight to objectives/shop.
-    /// </summary>
+    [Header("Player Stash Data")]
+    public int[] playerStash = new int[2];
+
     [HideInInspector] public bool isRestart = false;
 
     [Header("Inventory Settings")]
@@ -68,6 +67,7 @@ public class GameManager : MonoBehaviour
         enemies = new Character[40];
         playerSchemes = new string[2];
         playerGamepads = new Gamepad[2];
+        playerStash = new int[2];
     }
 
     /// <summary>

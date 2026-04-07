@@ -54,7 +54,7 @@ MonoBehaviour:
   isPassiveItem: 0
   icon: {fileID: 3095840943718857290, guid: df741732e9bd1504e98bdbcb06292b67, type: 3}
   fireRate: 0.1
-  triGunProjectile: {fileID: 5828508778685869409, guid: c0acc68ebb20c2c49a1f9ce85982dddd, type: 3}
+  triGunProjectile: {fileID: 4971254670421248338, guid: 843a7c5639ae1324890fb29be2ea15c0, type: 3}
   angleOffset: 20
   sideOffset: 1
   ShotgunSFX: {fileID: 8300000, guid: 538ac2f513c266d4691307dcd360725d, type: 3}

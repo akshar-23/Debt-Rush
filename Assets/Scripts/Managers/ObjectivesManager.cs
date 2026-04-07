@@ -194,7 +194,7 @@ public class ObjectivesManager : MonoBehaviour
             if (_obj.condition(_obj))
             {
                 _obj.isCompleted = true;
-                GameManager.Instance.players[_obj.playerId].GetComponent<PlayerController>().hiddenStash += _obj.reward;
+                GameManager.Instance.players[_obj.playerId].GetComponent<PlayerController>().UpdateHiddenStash(_obj.reward);
                 Debug.LogWarning("Objective completed: " + _obj.name);
             }
         }

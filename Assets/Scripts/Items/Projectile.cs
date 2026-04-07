@@ -3,7 +3,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public Archetype archetype;
-    public float speed = 20f;
+    public float speed = 50f;
     public int damage = 25;
     public float lifetime = 5f;
     public int playerId;

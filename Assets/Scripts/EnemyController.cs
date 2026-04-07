@@ -138,9 +138,10 @@ public class EnemyController : Character
             return;
         }
         Vector3 spawnPos = transform.position + transform.forward * 1.5f;
-        GameObject proj = Instantiate(projectilePrefab, spawnPos, transform.rotation);
-
+        Vector3 direction = transform.forward;
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.LookRotation(direction) * Quaternion.Euler(90f, 0f, 0f));
         Projectile p = proj.GetComponent<Projectile>();
+        
         if (p != null)
         {
             p.archetype = Archetype.Enemy;

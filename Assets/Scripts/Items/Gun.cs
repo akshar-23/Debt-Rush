@@ -24,7 +24,7 @@ public class Gun : ShopItem
 
             Vector3 spawnPos = pc.transform.position + pc.transform.forward * 2f;
 
-            GameObject proj = Instantiate(projectile, spawnPos, transform.rotation);
+            GameObject proj = Instantiate(projectile, spawnPos, Quaternion.LookRotation(pc.transform.forward) * Quaternion.Euler(0f, 90f, 90f));
             Projectile p = proj.GetComponent<Projectile>();
 
             if (p != null)
