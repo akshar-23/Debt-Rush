@@ -1,0 +1,520 @@
+fileFormatVersion: 2
+guid: 402ce19f319138c489b22e4c366d365a
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -1224108035161267111
+    second: Debt_Rush_Logotype_BW_WhiteText_0
+  - first:
+      213: -133495916575763135
+    second: Debt_Rush_Logotype_BW_WhiteText_1
+  - first:
+      213: 8470677026525760700
+    second: Debt_Rush_Logotype_BW_WhiteText_2
+  - first:
+      213: -5069403337400663404
+    second: Debt_Rush_Logotype_BW_WhiteText_3
+  - first:
+      213: -4055749600767704041
+    second: Debt_Rush_Logotype_BW_WhiteText_4
+  - first:
+      213: -1829409484072374320
+    second: Debt_Rush_Logotype_BW_WhiteText_5
+  - first:
+      213: 3476648200168918176
+    second: Debt_Rush_Logotype_BW_WhiteText_6
+  - first:
+      213: -3420226020903782080
+    second: Debt_Rush_Logotype_BW_WhiteText_7
+  - first:
+      213: -6844392907399690281
+    second: Debt_Rush_Logotype_BW_WhiteText_8
+  - first:
+      213: 8643906337467643471
+    second: Debt_Rush_Logotype_BW_WhiteText_9
+  - first:
+      213: -2800787462801563936
+    second: Debt_Rush_Logotype_BW_WhiteText_10
+  - first:
+      213: 7681918716651503340
+    second: Debt_Rush_Logotype_BW_WhiteText_11
+  - first:
+      213: 8709330292632485686
+    second: Debt_Rush_Logotype_BW_WhiteText_12
+  - first:
+      213: -3605291647986132039
+    second: Debt_Rush_Logotype_BW_WhiteText_13
+  - first:
+      213: -2189129454653243598
+    second: Debt_Rush_Logotype_BW_WhiteText_14
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_0
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 631
+        width: 208
+        height: 197
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 954e2854a38130fe0800000000000000
+      internalID: -1224108035161267111
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_1
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 527
+        width: 171
+        height: 178
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1455981db2ab52ef0800000000000000
+      internalID: -133495916575763135
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_2
+      rect:
+        serializedVersion: 2
+        x: 337
+        y: 693
+        width: 158
+        height: 92
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cbc412540e3ed8570800000000000000
+      internalID: 8470677026525760700
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_3
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 549
+        width: 161
+        height: 147
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 492cd03068cd5a9b0800000000000000
+      internalID: -5069403337400663404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_4
+      rect:
+        serializedVersion: 2
+        x: 321
+        y: 277
+        width: 208
+        height: 374
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7140f44f93517b7c0800000000000000
+      internalID: -4055749600767704041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_5
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 535
+        width: 164
+        height: 120
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0dfa22154c1ac96e0800000000000000
+      internalID: -1829409484072374320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_6
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 277
+        width: 272
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0acc1143e198f3030800000000000000
+      internalID: 3476648200168918176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_7
+      rect:
+        serializedVersion: 2
+        x: 525
+        y: 277
+        width: 222
+        height: 240
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0497b7c1e8ae880d0800000000000000
+      internalID: -3420226020903782080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_8
+      rect:
+        serializedVersion: 2
+        x: 763
+        y: 277
+        width: 180
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d70d33f9e4d301a0800000000000000
+      internalID: -6844392907399690281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_9
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 250
+        width: 157
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f46b18c340355f770800000000000000
+      internalID: 8643906337467643471
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2
+        width: 264
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ee585c44aa9129d0800000000000000
+      internalID: -2800787462801563936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_11
+      rect:
+        serializedVersion: 2
+        x: 263
+        y: 0
+        width: 220
+        height: 243
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ceeff6b4f58ab9a60800000000000000
+      internalID: 7681918716651503340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_12
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 0
+        width: 217
+        height: 246
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63f78e3d1c1cdd870800000000000000
+      internalID: 8709330292632485686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_13
+      rect:
+        serializedVersion: 2
+        x: 677
+        y: 2
+        width: 237
+        height: 241
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9bb9a1a095e67fdc0800000000000000
+      internalID: -3605291647986132039
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Debt_Rush_Logotype_BW_WhiteText_14
+      rect:
+        serializedVersion: 2
+        x: 925
+        y: 56
+        width: 179
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23f7c080c56ae91e0800000000000000
+      internalID: -2189129454653243598
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Debt_Rush_Logotype_BW_WhiteText_0: -1224108035161267111
+      Debt_Rush_Logotype_BW_WhiteText_1: -133495916575763135
+      Debt_Rush_Logotype_BW_WhiteText_10: -2800787462801563936
+      Debt_Rush_Logotype_BW_WhiteText_11: 7681918716651503340
+      Debt_Rush_Logotype_BW_WhiteText_12: 8709330292632485686
+      Debt_Rush_Logotype_BW_WhiteText_13: -3605291647986132039
+      Debt_Rush_Logotype_BW_WhiteText_14: -2189129454653243598
+      Debt_Rush_Logotype_BW_WhiteText_2: 8470677026525760700
+      Debt_Rush_Logotype_BW_WhiteText_3: -5069403337400663404
+      Debt_Rush_Logotype_BW_WhiteText_4: -4055749600767704041
+      Debt_Rush_Logotype_BW_WhiteText_5: -1829409484072374320
+      Debt_Rush_Logotype_BW_WhiteText_6: 3476648200168918176
+      Debt_Rush_Logotype_BW_WhiteText_7: -3420226020903782080
+      Debt_Rush_Logotype_BW_WhiteText_8: -6844392907399690281
+      Debt_Rush_Logotype_BW_WhiteText_9: 8643906337467643471
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
