@@ -356,7 +356,7 @@ public class Shop_UI : MonoBehaviour
                 btn.clicked += () =>
                 {
                     if (invPanel == null) return;
-                    if (invPanel.childCount - 2 >= inventoryLimit) return;
+                    if (GameManager.Instance.GetInventory(playerIndex).Count >= inventoryLimit) return;
 
                     int commonMoney = MoneyManager.Instance.GetMoneyAmount();
                     int stashMoney = GameManager.Instance.playerStash[playerIndex - 1];
