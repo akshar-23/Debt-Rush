@@ -47,7 +47,7 @@ MonoBehaviour:
   id: 0
   itemName: Mines
   itemPrice: 200
-  description: 
+  description: 'It doesn''t harm you, but will explode when enemies are near. '
   maxCount: 3
   currentCount: 3
   isActiveItem: 1
