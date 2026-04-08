@@ -137,9 +137,8 @@
                                     <ui:Button text="Button" class="button" />
                                     <ui:Button text="Button" class="button" />
                                     <ui:Button text="Button" class="button" />
-                                    <ui:Button text="Button" class="button" />
-                                    <ui:Button text="Button" class="button" />
-                                    <ui:Button text="Button" class="button" />
+                                    <ui:Button text="Button" class="button" style="display: none;" />
+                                    <ui:Button text="Button" class="button" style="display: none;" />
                                 </ui:VisualElement>
                             </ui:VisualElement>
                             <ui:VisualElement name="Inventory_1" class="frame" style="flex-direction: row;">
@@ -171,7 +170,16 @@
                     <ui:Label text="Player 2" double-click-selects-word="false" triple-click-selects-line="false" display-tooltip-when-elided="false" class="player-title" style="translate: -45px 21px; align-items: center; align-self: center;" />
                     <ui:VisualElement name="Panel_2" style="flex-grow: 1; flex-direction: row;">
                         <ui:VisualElement name="Container_2" class="container" style="flex-direction: column; align-items: center; background-color: rgb(255, 208, 54);">
-                            <ui:VisualElement name="ShopList_2" class="frame" />
+                            <ui:VisualElement name="ShopList_2" class="frame">
+                                <ui:VisualElement name="Button_Style_Test" style="width: 100%; height: 100%; white-space: normal; flex-direction: row; display: flex; flex-wrap: wrap; align-items: flex-start;">
+                                    <ui:Button text="Button" class="button" />
+                                    <ui:Button text="Button" class="button" />
+                                    <ui:Button text="Button" class="button" />
+                                    <ui:Button text="Button" class="button" />
+                                    <ui:Button text="Button" class="button" />
+                                    <ui:Button text="Button" class="button" />
+                                </ui:VisualElement>
+                            </ui:VisualElement>
                             <ui:VisualElement name="Inventory_2" class="frame">
                                 <ui:VisualElement name="Capacity_2" />
                             </ui:VisualElement>

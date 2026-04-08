@@ -43,17 +43,17 @@
 }
 
 .button {
-     -unity-background-scale-mode: scale-to-fit;
-    height: 32%;
-    width: 77px;
+    -unity-background-scale-mode: scale-to-fit;
+    height: 45%;
+    width: 108px;
     translate: 15px 17px;
     font-size: 15px;
     -unity-font-definition: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=8aed8cd85b271f542a574c85c519397f&type=3#NotInter-Regular");
     -unity-font-style: bold;
-    margin-top: 19px;
+    margin-top: 40px;
     margin-right: 4px;
     margin-bottom: -2px;
-    margin-left: 34px;
+    margin-left: 12px;
     border-top-left-radius: 22px;
     border-top-right-radius: 22px;
     border-bottom-right-radius: 22px;
@@ -164,8 +164,11 @@
 }
 
 .ammo-label {
-    translate: 20px 29px;
-    font-size: 16px;
+    translate: 30px 47px;
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    align-self: stretch;
 }
 
 .panel-title {
@@ -196,7 +199,7 @@
     margin-top: 35px;
     padding-bottom: 0;
     padding-top: 0;
-    margin-bottom: -11px;
+    margin-bottom: -50px;
 }
 
 .unity-button {
@@ -413,5 +416,5 @@
     right: 0;
     bottom: 0;
     -unity-background-scale-mode: scale-to-fit;
- --unity-image-tint-color: rgba(253, 229, 85, 0.85);
+    --unity-image-tint-color: rgba(253, 229, 85, 0.85);
 }
