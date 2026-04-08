@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3811804138463097120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6347609945993501890}
+  - component: {fileID: 7400448260401507452}
+  m_Layer: 0
+  m_Name: MineItem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6347609945993501890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3811804138463097120}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -47.97225, y: -25.92636, z: -240.22687}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7400448260401507452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3811804138463097120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3fc1a68ff408a54f930759c980c2740, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MineItem
+  id: 0
+  itemName: Mines
+  itemPrice: 200
+  description: 
+  maxCount: 3
+  currentCount: 3
+  isActiveItem: 1
+  isPassiveItem: 0
+  icon: {fileID: 7504457166237363852, guid: eae6dbc3074d04b458a84295e207107c, type: 3}
+  minePrefab: {fileID: 2315288123277678, guid: aaba5b311cbe57842a992174e5a070a0, type: 3}
+  ownerPlayerNumber: 2

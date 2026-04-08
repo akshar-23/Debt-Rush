@@ -725,7 +725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: shopItemsP2.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: 'shopItemsP1.Array.data[0]'
@@ -755,6 +755,10 @@ PrefabInstance:
       propertyPath: 'shopItemsP2.Array.data[2]'
       value: 
       objectReference: {fileID: 7371401142414244680, guid: ba69c4c41790e3644bf2b5500db5439a, type: 3}
+    - target: {fileID: 4032430490888682559, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
+      propertyPath: 'shopItemsP2.Array.data[3]'
+      value: 
+      objectReference: {fileID: 7400448260401507452, guid: 5e83c0e77e9ed7e4abec7450c46179f3, type: 3}
     - target: {fileID: 4117088242009838603, guid: 95a2aec08e62f904c9b72533a5c896f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
