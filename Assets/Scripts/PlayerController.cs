@@ -433,6 +433,11 @@ public class PlayerController : Character
         }
         GameManager.Instance.AddToInventory(playerNumber, _item);
         hudref.BuildUI();
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].maxCount > 0)
+                hudref.UpdateItemCount(id, i, inventory[i]);
+        }
         if (itemEquipped != null)
         {
             hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
