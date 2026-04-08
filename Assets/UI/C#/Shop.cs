@@ -427,7 +427,7 @@ public class Shop_UI : MonoBehaviour
         {
             invBtn.clicked += () =>
             {
-                if (GameManager.Instance.TryRemoveFromInventory(playerIndex, item.itemName, out var removed))
+                if (GameManager.Instance.TryRemoveFromInventory(playerIndex, item, out var removed))
                 {
                     var siblings = invPanel.Query<Button>().ToList();
                     int idx = siblings.IndexOf(invBtn);

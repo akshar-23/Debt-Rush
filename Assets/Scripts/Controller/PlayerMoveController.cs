@@ -223,7 +223,7 @@ public class PlayerMoveController : Character
     {
         Destroy(_item.gameObject);
         inventory.Remove(_item);
-        GameManager.Instance.TryRemoveFromInventory(playerNumber, _item.itemName, out ShopItem removed);
+        GameManager.Instance.TryRemoveFromInventory(playerNumber, _item, out ShopItem removed);
         hudref.BuildUI();
         
         if (inventory.Count == 0)

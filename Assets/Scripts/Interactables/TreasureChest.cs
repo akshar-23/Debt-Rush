@@ -37,13 +37,15 @@ public class TreasureChest : MonoBehaviour
                 int playerNumber = player.GetPlayerNumber();
                 if (playerNumber == 1)
                 {
-                    weaponP1.currentCount = weaponP1.maxCount;
-                    player.AddInventoryItem(weaponP1);
+                    ShopItem instance1 = Instantiate(weaponP1);
+                    instance1.currentCount = instance1.maxCount;
+                    player.AddInventoryItem(instance1);
                 }
                 else
                 {
-                    weaponP2.currentCount = weaponP2.maxCount;
-                    player.AddInventoryItem(weaponP2);
+                    ShopItem instance2 = Instantiate(weaponP2);
+                    instance2.currentCount = instance2.maxCount;
+                    player.AddInventoryItem(instance2);
                 }
 
                 // updating opening chest count

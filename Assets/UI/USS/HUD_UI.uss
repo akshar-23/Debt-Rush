@@ -84,8 +84,9 @@
 }
 
 .ammo-label {
-    translate: 19px 28px;
-    font-size: 20px;
+    translate: 19px 26px;
+    font-size: 22px;
+    -unity-font-style: bold;
 }
 
 .num-Labels {

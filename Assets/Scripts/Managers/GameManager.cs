@@ -133,10 +133,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool TryRemoveFromInventory(int playerIndex, string name, out ShopItem removed)
+    public bool TryRemoveFromInventory(int playerIndex, ShopItem item, out ShopItem removed)
     {
         var list = (playerIndex == 1) ? inventoryP1 : inventoryP2;
-        int i = list.FindIndex(x => x.itemName == name);
+        int i = list.IndexOf(item);
+        if (i < 0) i = list.FindIndex(x => x.itemName == item.itemName);
         if (i >= 0)
         {
             removed = list[i];

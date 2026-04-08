@@ -433,7 +433,10 @@ public class PlayerController : Character
         }
         GameManager.Instance.AddToInventory(playerNumber, _item);
         hudref.BuildUI();
-        hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
+        if (itemEquipped != null)
+        {
+            hudref.SetStateToIndex(playerNumber, inventoryPos, InventoryButtonStates.Selected);
+        }
 
         int totalPassiveItems = 0;
 
@@ -452,7 +455,7 @@ public class PlayerController : Character
     {
         Destroy(_item.gameObject);
         inventory.Remove(_item);
-        GameManager.Instance.TryRemoveFromInventory(playerNumber, _item.itemName, out ShopItem removed);
+        GameManager.Instance.TryRemoveFromInventory(playerNumber, _item, out ShopItem removed);
         hudref.BuildUI();
         
         if (inventory.Count == 0)
