@@ -136,6 +136,14 @@ public class Shop_UI : MonoBehaviour
         if (continueButton != null) continueButton.clicked += LoadPrototypeScene;
 
         UpdateCapacityLabels();
+
+        // Apply stash override once at startup (testing only)
+        if (overrideStashForTesting && GameManager.Instance != null)
+        {
+            GameManager.Instance.playerStash[0] = testStashP1;
+            GameManager.Instance.playerStash[1] = testStashP2;
+        }
+
         UpdatePersonalMoneyLabels();
 
         if (isRestart)
@@ -646,29 +654,16 @@ public class Shop_UI : MonoBehaviour
 
     void Update()
     {
-        // Real-time synchronization for Testing/Debugging in the Inspector
+        // Mirror real-time stash values into Inspector fields for visibility
         if (GameManager.Instance != null)
         {
-            if (overrideStashForTesting)
-            {
-                bool changed = (GameManager.Instance.playerStash[0] != testStashP1 || 
-                                GameManager.Instance.playerStash[1] != testStashP2);
-                
-                GameManager.Instance.playerStash[0] = testStashP1;
-                GameManager.Instance.playerStash[1] = testStashP2;
-                
-                if (changed) UpdatePersonalMoneyLabels();
-            }
-            else
-            {
-                bool stashChanged = (testStashP1 != GameManager.Instance.playerStash[0] ||
-                                     testStashP2 != GameManager.Instance.playerStash[1]);
+            bool stashChanged = (testStashP1 != GameManager.Instance.playerStash[0] ||
+                                 testStashP2 != GameManager.Instance.playerStash[1]);
 
-                testStashP1 = GameManager.Instance.playerStash[0];
-                testStashP2 = GameManager.Instance.playerStash[1];
+            testStashP1 = GameManager.Instance.playerStash[0];
+            testStashP2 = GameManager.Instance.playerStash[1];
 
-                if (stashChanged) UpdatePersonalMoneyLabels();
-            }
+            if (stashChanged) UpdatePersonalMoneyLabels();
         }
 
         if (indieObjPanel != null && indieObjPanel.style.display == DisplayStyle.Flex)

@@ -295,7 +295,7 @@ public class PlayerController : Character
 
     public void CheckFinalObjectives()
     {
-        if (killCount == 5)
+        if (killCount <= 5)
         {
             hasOnly5Kills = true;
         }
@@ -305,7 +305,7 @@ public class PlayerController : Character
             hasNeverOpenedChest = true;
         }
 
-        if (deadCount == 3)
+        if (deadCount <= 3)
         {
             hasOnly3Deaths = true;
         }
