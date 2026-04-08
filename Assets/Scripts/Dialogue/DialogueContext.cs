@@ -37,6 +37,9 @@ public class DialogueContext : MonoBehaviour
     private const string SPEAKER_TAG = "speaker";
     private const string AUDIO_TAG = "audio";
     private const string MOVEMENT_TAG = "movement";
+    private const string NOSKIP_TAG = "noskip";
+
+    private bool noSkipCurrentLine = false;
 
     public bool dialogueIsPlaying { get; private set; }
     public bool isPlayer1inDialogue { get; private set; }
@@ -190,7 +193,7 @@ public class DialogueContext : MonoBehaviour
         int visibleCount = 0;
         while (visibleCount <= totalVisibleChars)
         {
-            if (currentController != null && currentController.GetSubmitPressed())
+            if (!noSkipCurrentLine && currentController != null && currentController.GetSubmitPressed())
             {
                 dialogueText.maxVisibleCharacters = totalVisibleChars;
                 break;
@@ -232,6 +235,7 @@ public class DialogueContext : MonoBehaviour
 
     private void HandleTags(List<string> currentTags)
     {
+        noSkipCurrentLine = false;
         foreach (string tag in currentTags)
         {
             string[] splitTag = tag.Split(':');
@@ -299,6 +303,9 @@ public class DialogueContext : MonoBehaviour
                 case AUDIO_TAG:
                     break;
                 case MOVEMENT_TAG:
+                    break;
+                case NOSKIP_TAG:
+                    noSkipCurrentLine = (tagValue == "true");
                     break;
                 default:
                     Debug.LogWarning("Tag came in but is not currently being handled: " + tag);
