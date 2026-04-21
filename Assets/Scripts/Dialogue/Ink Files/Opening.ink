@@ -1,6 +1,6 @@
 EXTERNAL openGate()
 
-You owe me $200,000. Pay it all back right now, or you're not going anywhere. # speaker: Gatekeeper
+You owe me $10,000. Pay it all back right now, or you're not going anywhere. # speaker: Gatekeeper
 I don't have it..!! # speaker: You
 Give me all you have then. # speaker: Gatekeeper # noskip: true
 
