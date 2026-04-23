@@ -14,6 +14,10 @@ public class Flammable : MonoBehaviour
 
     private bool isBurning = false;
 
+    private int hitToIgnite = 5; // Number of hits required to ignite
+    private int hitCount = 0;
+
+
     [Header("Money Settings")]
     [SerializeField] private int moneyValue = 200;
     public void Ignite()
@@ -21,6 +25,16 @@ public class Flammable : MonoBehaviour
         if (isBurning) return;          // prevent igniting twice
         isBurning = true;
         StartCoroutine(BurnRoutine());
+    }
+
+    public void AddHit()
+    {
+        if (isBurning) return; // Already burning, no need to count hits
+        hitCount++;
+        if (hitCount >= hitToIgnite)
+        {
+            Ignite();
+        }
     }
 
     IEnumerator BurnRoutine()
