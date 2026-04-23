@@ -14,7 +14,7 @@ public class Cursor : MonoBehaviour
 
     public bool canCursorMove;
     public PlayerController player;
-    public float sensitivity = 0.5f;
+    public float sensitivity = 0.2f;
 
     private bool ignoreFirstInput = true;
 
