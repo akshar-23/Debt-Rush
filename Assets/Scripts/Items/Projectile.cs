@@ -63,6 +63,16 @@ public class Projectile : MonoBehaviour
             return;
         }
 
+        if (other.CompareTag("Flammable"))
+        {
+            // Example: if the enemy has a script with a TakeDamage() method
+            Flammable flammableObject = other.GetComponent<Flammable>();
+            if (flammableObject != null)
+            {
+                flammableObject.AddHit();
+            }
+        }
+
         Character character = other.GetComponent<Character>();
         if (character != null && character.archetype != archetype) character.TakeDamage(damage, playerId);
         
