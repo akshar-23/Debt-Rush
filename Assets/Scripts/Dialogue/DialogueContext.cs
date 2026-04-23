@@ -121,6 +121,20 @@ public class DialogueContext : MonoBehaviour
         currentStory.BindExternalFunction("openGate", () => {
             NPCController.gameObject.GetComponentInParent<MoneyGate>().TryToOpenGate();
         });
+        currentStory.BindExternalFunction("sellItem", () => {
+            string message = NPCController.gameObject.GetComponentInParent<SellItem>().TryToSellItem(playerController);
+            return message;
+        });
+
+        currentStory.BindExternalFunction("getItemName", () => {
+            string itemName = NPCController.gameObject.GetComponentInParent<SellItem>().GetItemName(playerController);
+            return itemName;
+        });
+
+        currentStory.BindExternalFunction("getItemPrice", () => {
+            string itemPrice = NPCController.gameObject.GetComponentInParent<SellItem>().GetItemPrice(playerController);
+            return itemPrice;
+        });
 
         dialogueIsPlaying = true;
         dialoguePanel.SetActive(true);
@@ -256,6 +270,7 @@ public class DialogueContext : MonoBehaviour
                         case "npc":
                         case "gatekeeper":
                         case "the port":
+                        case "widow":
                             if (npcPortraitImage != null)    npcPortraitImage.gameObject.SetActive(true);
                             if (playerPortraitImage != null) playerPortraitImage.gameObject.SetActive(false);
                             break;

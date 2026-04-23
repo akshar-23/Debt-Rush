@@ -8,6 +8,9 @@ public class MoneyManager : MonoBehaviour
 
     public TextMeshProUGUI moneyText;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip pickupSound;
+
     [SerializeField]
     private int moneyAmount = 0;
     public int targetMoney = 1000;
@@ -54,6 +57,12 @@ public class MoneyManager : MonoBehaviour
         {
             Debug.LogWarning("The amount was negative!");
             return;
+        }
+
+        // Play sound (optional)
+        if (pickupSound != null)
+        {
+            if(AudioManager.Instance != null) AudioManager.Instance.PlaySFX(pickupSound);
         }
 
         moneyAmount += amount;

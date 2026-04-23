@@ -14,6 +14,8 @@ public class Flammable : MonoBehaviour
 
     private bool isBurning = false;
 
+    [Header("Money Settings")]
+    [SerializeField] private int moneyValue = 200;
     public void Ignite()
     {
         if (isBurning) return;          // prevent igniting twice
@@ -51,6 +53,8 @@ public class Flammable : MonoBehaviour
 
         GameObject fireExplosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         fireExplosion.transform.localScale = Vector3.one * 2f;
+
+        MoneyManager.Instance.GetComponent<MoneyManager>().AddMoney(moneyValue);
 
         Destroy(fireExplosion, 1.0f);
         Destroy(gameObject);

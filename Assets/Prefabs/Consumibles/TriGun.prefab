@@ -48,7 +48,7 @@ MonoBehaviour:
   itemName: Tri-Gun
   itemPrice: 300
   description: TriGun to shoot 3 bullets at the same time.
-  maxCount: 6
+  maxCount: 12
   currentCount: 6
   isActiveItem: 1
   isPassiveItem: 0

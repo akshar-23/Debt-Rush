@@ -45,4 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moneyText: {fileID: 0}
+  pickupSound: {fileID: 8300000, guid: d37d59de9871bc04b80078a9e9c60ce3, type: 3}
   moneyAmount: 0
+  targetMoney: 1000

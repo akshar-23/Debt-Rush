@@ -10,7 +10,6 @@ public class MoneyBag : MonoBehaviour
 
     [Header("Optional Effects")]
     [SerializeField] private GameObject pickupEffect;
-    [SerializeField] private AudioClip pickupSound;
 
     private Collider col;
     private MeshRenderer mesh;
@@ -39,12 +38,6 @@ public class MoneyBag : MonoBehaviour
             if (pickupEffect != null)
             {
                 Instantiate(pickupEffect, transform.position, Quaternion.identity);
-            }
-
-            // Play sound (optional)
-            if (pickupSound != null)
-            {
-                AudioManager.Instance.PlaySFX(pickupSound);
             }
 
             StartCoroutine(RespawnRoutine());

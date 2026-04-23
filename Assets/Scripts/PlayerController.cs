@@ -420,6 +420,15 @@ public class PlayerController : Character
         }
     }
 
+    public bool CheckInventorySpace()
+    {
+        bool bIsThereFreeSpace = false;
+
+        if (GameManager.Instance.inventoryLimit > inventory.Count) bIsThereFreeSpace = true;
+
+        return bIsThereFreeSpace;
+    }
+
     public void AddInventoryItem(ShopItem _item)
     {
         if (_item.isPassiveItem)
