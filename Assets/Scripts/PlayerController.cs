@@ -59,6 +59,8 @@ public class PlayerController : Character
     public bool hasOnly5Kills = false;
     public bool hasNeverOpenedChest = false;
     public bool hasOnly3Deaths = false;
+    public bool hasMoreKillsthanPartner = false;
+    public bool hasLessKillsthanPartner = false;
 
     [Space]
     [SerializeField]
@@ -308,6 +310,16 @@ public class PlayerController : Character
         if (deadCount <= 3)
         {
             hasOnly3Deaths = true;
+        }
+
+        if (killCount > GameManager.Instance.players[1-id].GetComponent<PlayerController>().killCount)
+        {
+            hasMoreKillsthanPartner = true;
+        }
+
+        if (killCount < GameManager.Instance.players[1-id].GetComponent<PlayerController>().killCount)
+        {
+            hasLessKillsthanPartner = true;
         }
     }
 

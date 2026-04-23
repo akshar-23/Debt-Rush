@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class GameplaySceneManager : MonoBehaviour
 {
+    public static GameplaySceneManager Instance { get; private set; }
+
     [SerializeField] private GameObject _gameOverUI;
     [SerializeField] private HUD _HUD;
     [SerializeField] private Character[] _players;
@@ -18,6 +20,9 @@ public class GameplaySceneManager : MonoBehaviour
     [SerializeField] private float respawnDelay = 15f;
     [SerializeField] private Transform[] respawnPoints;
 
+    [Header("Objectives Indicator")]
+    public GameObject[] _hiddenObjIndicator;
+
     public static event System.Action<int, Transform> OnPlayerRespawn;
     private Dictionary<Character, Coroutine> _respawnRoutines = new Dictionary<Character, Coroutine>();
 
@@ -27,6 +32,8 @@ public class GameplaySceneManager : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
+
         // Add items from inventory lists to GameManager
         foreach (var item in inventoryP1)
         {

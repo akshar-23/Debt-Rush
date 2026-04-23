@@ -181,34 +181,37 @@ public class GameManager : MonoBehaviour
             {
                 deadPlayers++;
             }
-            else
+            else if (player.TryGetComponent<PlayerController>(out var pc) && pc.isAtDestination)
             {
-                var controller = player.GetComponent<PlayerController>();
-                if (controller != null && controller.isAtDestination)
-                {
-                    playersAtDestination++;
-                }
+                playersAtDestination++;
             }
         }
 
         if (totalActivePlayers == 0) return;
 
-        if (deadPlayers >= totalActivePlayers)
+        bool allDead = deadPlayers == totalActivePlayers;
+        int aliveCount = totalActivePlayers - deadPlayers;
+        bool allAliveAtDestination = aliveCount > 0 && playersAtDestination == aliveCount;
+
+        // Early exit if no win/loss condition is met yet to avoid deep nesting
+        if (!allDead && !allAliveAtDestination) return;
+
+        // Evaluate final objectives for everyone
+        foreach (var player in players)
         {
-            ShowGameOverScreen("GAME OVER");
-            return;
+            if (player != null && player.TryGetComponent<PlayerController>(out var pc))
+            {
+                pc.CheckFinalObjectives();
+            }
         }
 
-        int aliveCount = totalActivePlayers - deadPlayers;
-
-        if (playersAtDestination >= aliveCount && aliveCount > 0)
+        // Handle final outcomes
+        if (allDead)
         {
-            foreach (var player in players)
-            {
-                if (player == null || player.isDead) continue;
-
-                player.GetComponent<PlayerController>()?.CheckFinalObjectives();
-            }
+            ShowGameOverScreen("GAME OVER");
+        }
+        else if (allAliveAtDestination)
+        {
             var mm = MoneyManager.Instance;
             if (mm.GetMoneyAmount() >= mm.targetMoney)
             {

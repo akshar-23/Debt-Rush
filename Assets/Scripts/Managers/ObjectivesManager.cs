@@ -72,7 +72,7 @@ public class ObjectivesManager : MonoBehaviour
                 index = 2,
                 name = "Open and collect 20 chests",
                 isCompleted = false,
-                reward = 200,
+                reward = 400,
                 condition = (obj) =>
                 {
                     var player = GameManager.Instance.players[obj.playerId]?.GetComponent<PlayerController>();
@@ -98,7 +98,7 @@ public class ObjectivesManager : MonoBehaviour
                 index = 4,
                 name = "Die at least 20 times",
                 isCompleted = false,
-                reward = 200,
+                reward = 400,
                 condition = (obj) =>
                 {
                     var player = GameManager.Instance.players[obj.playerId]?.GetComponent<PlayerController>();
@@ -111,13 +111,12 @@ public class ObjectivesManager : MonoBehaviour
                 index = 5,
                 name = "Kill more enemies than your Partner",
                 isCompleted = false,
-                reward = 200,
+                reward = 400,
                 condition = (obj) =>
                 {
-                    var myPlayer = GameManager.Instance.players[obj.playerId]?.GetComponent<PlayerController>();
-                    var otherPlayer = GameManager.Instance.players[obj.playerId == 0 ? 1 : 0]?.GetComponent<PlayerController>();
-                    if(myPlayer == null || otherPlayer == null) return false;
-                    return myPlayer.killCount > otherPlayer.killCount;
+                    var player = GameManager.Instance.players[obj.playerId]?.GetComponent<PlayerController>();
+                    if(player == null) return false;
+                    return player.hasMoreKillsthanPartner == true;
                 }
             },
             new Objective
@@ -125,13 +124,12 @@ public class ObjectivesManager : MonoBehaviour
                 index = 6,
                 name = "Kill less enemies than your Partner",
                 isCompleted = false,
-                reward = 200,
+                reward = 400,
                 condition = (obj) =>
                 {
-                    var myPlayer = GameManager.Instance.players[obj.playerId]?.GetComponent<PlayerController>();
-                    var otherPlayer = GameManager.Instance.players[obj.playerId == 0 ? 1 : 0]?.GetComponent<PlayerController>();
-                    if(myPlayer == null || otherPlayer == null) return false;
-                    return myPlayer.killCount < otherPlayer.killCount;
+                    var player = GameManager.Instance.players[obj.playerId]?.GetComponent<PlayerController>();
+                    if(player == null) return false;
+                    return player.hasLessKillsthanPartner == true;
                 }
             },
             new Objective
@@ -139,7 +137,7 @@ public class ObjectivesManager : MonoBehaviour
                 index = 7,
                 name = "Be the first to reach the Port",
                 isCompleted = false,
-                reward = 200,
+                reward = 1000,
                 condition = (obj) =>
                 {
                     var player = GameManager.Instance.players[obj.playerId]?.GetComponent<PlayerController>();
@@ -195,6 +193,12 @@ public class ObjectivesManager : MonoBehaviour
             {
                 _obj.isCompleted = true;
                 GameManager.Instance.players[_obj.playerId].GetComponent<PlayerController>().UpdateHiddenStash(_obj.reward);
+
+                if (GameplaySceneManager.Instance != null && GameplaySceneManager.Instance._hiddenObjIndicator != null)
+                {
+                    GameplaySceneManager.Instance._hiddenObjIndicator[_obj.playerId].SetActive(true);
+                }
+
                 Debug.LogWarning("Objective completed: " + _obj.name);
             }
         }
