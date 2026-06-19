@@ -53,7 +53,7 @@ Shader "Vefects/SH_Vefects_URP_Render_Particles_Always_On_Top_Alpha_01"
 		
 
 		HLSLINCLUDE
-		#pragma target 4.5
+		#pragma target 3.5
 		#pragma prefer_hlslcc gles
 		// ensure rendering platforms toggle list is visible
 
