@@ -30,7 +30,7 @@ public class ShopJoinManager : MonoBehaviour
             if (!player1Joined && Keyboard.current.spaceKey.wasPressedThisFrame)
                 JoinPlayer(1, "WASD", null);
 
-            if (!player2Joined && Keyboard.current.rightCtrlKey.wasPressedThisFrame)
+            if (!player2Joined && (Keyboard.current.rightCtrlKey.wasPressedThisFrame || Keyboard.current.oKey.wasPressedThisFrame))
                 JoinPlayer(2, "Arrows", null);
         }
 

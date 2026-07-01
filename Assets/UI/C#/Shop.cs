@@ -619,10 +619,10 @@ public class Shop_UI : MonoBehaviour
             int p2Slot = -1;
             if (Keyboard.current != null)
             {
-                if (Keyboard.current.rightCtrlKey.wasPressedThisFrame)         p2Slot = 0;
-                else if (Keyboard.current.numpadPeriodKey.wasPressedThisFrame) p2Slot = 1;
-                else if (Keyboard.current.numpad0Key.wasPressedThisFrame)      p2Slot = 2;
-                else if (Keyboard.current.numpad1Key.wasPressedThisFrame)      p2Slot = 3;
+                if (Keyboard.current.rightCtrlKey.wasPressedThisFrame || Keyboard.current.oKey.wasPressedThisFrame)         p2Slot = 0; //Cross
+                else if (Keyboard.current.numpadPeriodKey.wasPressedThisFrame || Keyboard.current.pKey.wasPressedThisFrame) p2Slot = 1; //Circle
+                else if (Keyboard.current.numpad0Key.wasPressedThisFrame || Keyboard.current.uKey.wasPressedThisFrame)      p2Slot = 2; //Square
+                else if (Keyboard.current.numpad1Key.wasPressedThisFrame || Keyboard.current.digit8Key.wasPressedThisFrame)      p2Slot = 3; //Triangle
             }
             var gp2 = GameManager.Instance.playerGamepads[1];
             if (p2Slot < 0 && gp2 != null)
@@ -686,7 +686,7 @@ public class Shop_UI : MonoBehaviour
         if (!p1Interact && GameManager.Instance.playerGamepads[0] != null)
             p1Interact = GameManager.Instance.playerGamepads[0].buttonWest.wasPressedThisFrame;
 
-        bool p2Interact = Keyboard.current != null && Keyboard.current.numpad0Key.wasPressedThisFrame;
+        bool p2Interact = Keyboard.current != null && (Keyboard.current.numpad0Key.wasPressedThisFrame || Keyboard.current.uKey.wasPressedThisFrame);
         if (!p2Interact && GameManager.Instance.playerGamepads[1] != null)
             p2Interact = GameManager.Instance.playerGamepads[1].buttonWest.wasPressedThisFrame;
 
