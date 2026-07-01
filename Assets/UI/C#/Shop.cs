@@ -38,7 +38,7 @@ public class Shop_UI : MonoBehaviour
 
     // Join panel elements
     VisualElement playerJoinPanel;
-    Label joinText1, joinText2;
+    Label joinText1_1, joinText1_2, joinText1_3, joinText2_1, joinText2_2, joinText2_3;
     Button joinContinueButton;
 
     private bool isRestart = false;
@@ -82,8 +82,12 @@ public class Shop_UI : MonoBehaviour
 
         // Setup join panel
         playerJoinPanel    = root.Q<VisualElement>("PlayerJoinPanel");
-        joinText1          = root.Q<Label>("Join_Text_1");
-        joinText2          = root.Q<Label>("Join_Text_2");
+        joinText1_1 = root.Q<Label>("Join_Text_1_1");
+        joinText1_2 = root.Q<Label>("Join_Text_1_2");
+        joinText1_3 = root.Q<Label>("Join_Text_1_3");
+        joinText2_1 = root.Q<Label>("Join_Text_2_1");
+        joinText2_2 = root.Q<Label>("Join_Text_2_2");
+        joinText2_3 = root.Q<Label>("Join_Text_2_3");
         joinContinueButton = root.Q<VisualElement>("Button_Container")?.Q<Button>();
 
         if (joinContinueButton != null)
@@ -540,13 +544,17 @@ public class Shop_UI : MonoBehaviour
 
     void OnP1Joined()
     {
-        if (joinText1 != null) joinText1.text = "Joined!";
+        if (joinText1_1 != null) joinText1_1.text = "Joined!";
+        if (joinText1_2 != null) joinText1_2.RemoveFromClassList("icon-X");
+        if (joinText1_3 != null) joinText1_3.text = "";
         CheckBothJoined();
     }
 
     void OnP2Joined()
     {
-        if (joinText2 != null) joinText2.text = "Joined!";
+        if (joinText2_1 != null) joinText2_1.text = "Joined!";
+        if (joinText2_2 != null) joinText2_2.RemoveFromClassList("icon-X");
+        if (joinText2_3 != null) joinText2_3.text = "";
         CheckBothJoined();
     }
 

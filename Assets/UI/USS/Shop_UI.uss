@@ -418,3 +418,64 @@
     -unity-background-scale-mode: scale-to-fit;
     --unity-image-tint-color: rgba(253, 229, 85, 0.85);
 }
+
+.icon-text-container {
+    flex-direction: row;
+    align-items: center;
+}
+
+.icon-X {
+    width: 60px;
+    height: 60px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_cross.png");
+    margin-right: 6px;
+}
+
+.icon-Square {
+    width: 60px;
+    height: 60px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_square.png");
+    margin-right: 6px;
+}
+
+.icon-Circle {
+    width: 60px;
+    height: 60px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_circle.png");
+    margin-right: 6px;
+}
+
+.icon-Triangle {
+    width: 60px;
+    height: 60px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_triangle.png");
+    margin-right: 6px;
+}
+
+.icon-X-BW {
+    width: 50px;
+    height: 50px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_cross_outline.png");
+    margin-right: 6px;
+}
+
+.icon-Square-BW {
+    width: 50px;
+    height: 50px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_square_outline.png");
+    margin-right: 6px;
+}
+
+.icon-Circle-BW {
+    width: 50px;
+    height: 50px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_circle_outline.png");
+    margin-right: 6px;
+}
+
+.icon-Triangle-BW {
+    width: 50px;
+    height: 50px;
+    background-image: url("project://database/Assets/Images/UI_Input_Icon_PS5/playstation_button_triangle_outline.png");
+    margin-right: 6px;
+}
